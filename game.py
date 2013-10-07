@@ -3,8 +3,10 @@
 import pygame
 import os
 import sys
+import convert
 import world
 import player
+import block
 
 
 #GLOBAL CONSTANTS
@@ -19,9 +21,6 @@ RESET = 2
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 SKY = (128, 128, 255)
-
-VIEW_WIDTH = 40
-VIEW_HEIGHT = 30
 
 DEBUG = True
 
@@ -51,9 +50,9 @@ def start():
     global view_x
     view_x = 0
     global view_y
-    view_y = 170
+    view_y = 0
     global player_char
-    player_char = player.Player(0, 180, "img/player.png", 6)
+    player_char = player.Player([0, 180], "img/player.png", 6)
     run()
 
 def run():
@@ -88,6 +87,9 @@ def update():
         #viewy += 1
         player_char.dir[1] += 1
     player_char.update()
+    global view_x, view_y
+    view_x = convert.world_to_pixels(player_char.pos)[0] - SCREEN_WIDTH / 2 #replace with center
+    view_y = convert.world_to_pixels(player_char.pos)[1] - SCREEN_HEIGHT / 2
     #viewx = max(viewx, 0)
     #if viewx + VIEW_WIDTH > world.WIDTH:
     #    viewx = world.WIDTH - VIEW_WIDTH
@@ -101,11 +103,12 @@ def update():
 def render():
     screen.fill(SKY)
     #draw clouds
-    gameworld.render(screen, pygame.Rect(view_x, view_y, VIEW_WIDTH, VIEW_HEIGHT))
+    viewport = pygame.Rect(view_x, view_y, SCREEN_WIDTH, SCREEN_HEIGHT)
+    gameworld.render(screen, viewport)
     if DEBUG:
         fps = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
         screen.blit(fps, (10, 10))
-    player_char.render(screen, player_char.x - view_x, player_char.y - view_y)
+    player_char.render(screen, convert.world_to_viewport(player_char.pos, viewport))
     pygame.display.flip()
 
 def main():
@@ -121,12 +124,14 @@ BUGS
 NEEDED FEATURES
 World generation
     Serialization of unloaded chunks
-        man i sound so legitimate
     Chunks at side of world (player movement)
     Caves
     Spawn midpoint displacement
+Entities
+    Position & rendering between blocks (0.5, 0.5)
+    Collision detection
 Player
-    Camera movement
+    Center player on camera
 Crafting
 Menus
 Combat

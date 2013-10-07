@@ -1,6 +1,7 @@
-import block
-import world
 import random
+import convert
+import world
+import block
 
 WIDTH = 16
 LEFT = False
@@ -25,9 +26,9 @@ class Chunk(object):
     
     def generate_from_chunk(self, chunk, sidegenerated):
         if sidegenerated == LEFT:
-            self.x = chunk.x + WIDTH
+            self.x = chunk.x + 1
         else:
-            self.x = chunk.x - WIDTH
+            self.x = chunk.x - 1
         self.generate_heights_from_chunk(chunk, sidegenerated)
         self.generate_blocks()
     
@@ -73,15 +74,29 @@ class Chunk(object):
                     self.blocks[y][x] = block.Block(block.DIRT)
     
     def render(self, screen, viewport):
-        blocky = viewport.y
-        for drawy in range(0, viewport.height * block.SIZE, block.SIZE):
-            drawx = self.x * block.SIZE - viewport.x * block.SIZE
+        #print("P:", viewport.x, viewport.y)
+        viewport_y1 = convert.y_pixels_to_world(viewport.y)
+        viewport_y2 = convert.y_pixels_to_world(viewport.y + viewport.width)
+        #print("W:", viewport_y1, viewport_y2)
+        print("Rendering chunk " + str(self.x) + " to " + str(convert.world_to_viewport([convert.chunk_to_world(0, self), 0], viewport)))
+        for blocky in range(viewport_y1, viewport_y2):
             for blockx in range(WIDTH):
-                self.blocks[blocky][blockx].render(screen, drawx, drawy)
+                self.blocks[blocky][blockx].render(screen, convert.world_to_viewport([convert.chunk_to_world(blockx, self), blocky], viewport))
+        for entity in self.entities:
+            entity.render(screen, convert.world_to_viewport([convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
+            #entity.render(screen, (self.x * entity.x - viewport.x, self.x * entity.y - viewport.y))
+        
+        """
+        print(viewport.x, viewport.y)
+        viewport_blocks = convert.pixels_to_world([viewport.x, viewport.y])
+        blocky = viewport.y // block.SIZE
+        for drawy in range(0, viewport.height, block.SIZE):
+            drawx = self.x * block.SIZE - viewport.x
+            for blockx in range(WIDTH):
+                self.blocks[blocky][blockx].render(screen, (drawx, drawy))
                 #pos = font.render(str(blockx) + " " + str(blocky), 0, (0, 0, 0))
                 #if blockx % 8 == 0 and blocky % 8 == 0:
                 #    screen.blit(pos, (drawx, drawy))
                 drawx += block.SIZE
             blocky += 1
-        for entity in self.entities:
-            entity.render(screen, entity.x - viewport.x, entity.y - viewport.y)
+        """

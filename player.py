@@ -2,8 +2,8 @@ import entity
 
 class Player(entity.Entity):
     
-    def __init__(self, x, y, imageurl, max_speed):
-        super(Player, self).__init__(x, y, imageurl)
+    def __init__(self, pos, imageurl, max_speed):
+        super(Player, self).__init__(pos, imageurl)
         self.max_speed = max_speed
         self.acceleration = 0.5 #fiddle with this until it seems good
     

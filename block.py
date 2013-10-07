@@ -13,13 +13,14 @@ class Block(object):
     def __init__(self, blockid):
         self.blockid = blockid
     
-    def render(self, screen, x, y):
+    def render(self, screen, pos):
         if self.blockid == AIR:
             #pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(x, y, SIZE, SIZE))
             pass
         elif self.blockid == WATER:
-            pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(x, y, SIZE, SIZE))
+            pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(pos[0], pos[1], SIZE, SIZE))
         elif self.blockid == DIRT:
-            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(x, y, SIZE, SIZE))
+            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(pos[0], pos[1], SIZE, SIZE))
+        #draw bounding boxes
         if game.DEBUG:
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(x, y, SIZE, SIZE), 1)
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(pos[0], pos[1], SIZE, SIZE), 1)
