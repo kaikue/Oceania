@@ -41,11 +41,11 @@ class Entity(object):
         block_top = int(self.pos[1])
         block_bottom = int(self.pos[1] + self.height) + 1
         if chunk_left == chunk_right:
-            print("[x] One chunk:", chunk_left)
+            #print("[x] One chunk:", chunk_left)
             check_chunk = world.chunks.get(chunk_left)
             self.check_collision(check_chunk, block_left, block_right, block_top, block_bottom, old_pos, 0)
         else:
-            print("[x] Multiple chunks:", chunk_left, "to", chunk_right)
+            #print("[x] Multiple chunks:", chunk_left, "to", chunk_right)
             check_chunk = world.chunks.get(chunk_left)
             self.check_collision(check_chunk, block_left, chunk.WIDTH, block_top, block_bottom, old_pos, 0)
             for c in range(chunk_left + 1, chunk_right):
@@ -53,6 +53,7 @@ class Entity(object):
                 self.check_collision(check_chunk, 0, chunk.WIDTH, block_top, block_bottom, old_pos, 0)
             check_chunk = world.chunks.get(chunk_right)
             self.check_collision(check_chunk, 0, block_right, block_top, block_bottom, old_pos, 0)
+        self.bounding_box.x = convert.world_to_pixel(self.pos[0])
         
         self.pos[1] += self.vel[1]
         self.bounding_box.y = convert.world_to_pixel(self.pos[1])
@@ -77,7 +78,6 @@ class Entity(object):
             check_chunk = world.chunks.get(chunk_right)
             self.check_collision(check_chunk, 0, block_right, block_top, block_bottom, old_pos, 1)
         #print("4) Moved from", old_pos, "to", self.pos)
-        self.bounding_box.x = convert.world_to_pixel(self.pos[0])
         self.bounding_box.y = convert.world_to_pixel(self.pos[1])
         #print("5) Bounding box", self.bounding_box)
     
