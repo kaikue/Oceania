@@ -75,11 +75,13 @@ class Chunk(object):
     
     def render(self, screen, viewport):
         #print("P:", viewport.x, viewport.y)
-        viewport_y1 = convert.y_pixels_to_world(viewport.y)
-        viewport_y2 = convert.y_pixels_to_world(viewport.y + viewport.width)
+        viewport_y1 = convert.pixel_to_world(viewport.y)
+        viewport_y2 = convert.pixel_to_world(viewport.y + viewport.width)
         #print("W:", viewport_y1, viewport_y2)
-        print("Rendering chunk " + str(self.x) + " to " + str(convert.world_to_viewport([convert.chunk_to_world(0, self), 0], viewport)))
+        #print("Rendering chunk " + str(self.x) + " to " + str(convert.world_to_viewport([convert.chunk_to_world(0, self), 0], viewport)))
         for blocky in range(viewport_y1, viewport_y2):
+            if blocky < 0 or blocky > world.HEIGHT:
+                continue
             for blockx in range(WIDTH):
                 self.blocks[blocky][blockx].render(screen, convert.world_to_viewport([convert.chunk_to_world(blockx, self), blocky], viewport))
         for entity in self.entities:

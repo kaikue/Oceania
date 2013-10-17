@@ -6,12 +6,17 @@ WATER = 1
 DIRT = 2
 STONE = 3
 
-SIZE = 16
+SOLID_BLOCKS = (DIRT, STONE)
+
+SIZE = 32
 
 class Block(object):
     
     def __init__(self, blockid):
         self.blockid = blockid
+    
+    def is_solid(self):
+        return self.blockid in SOLID_BLOCKS
     
     def render(self, screen, pos):
         if self.blockid == AIR:

@@ -32,6 +32,14 @@ class World(object):
     
     def update(self):
         for x in range(self.loaded_chunks.first, self.loaded_chunks.last):
+            check_chunk = self.loaded_chunks.get(x)
+            for entity in check_chunk.entities:
+                entity.update(self)
+                if entity.pos[0] / chunk.WIDTH != check_chunk.x: 
+                    check_chunk.entities.remove(entity)
+                    self.chunks.get(entity.pos[0] / chunk.WIDTH).entities.append(entity)
+        """
+        for x in range(self.loaded_chunks.first, self.loaded_chunks.last):
             chunk = self.loaded_chunks.get(x)
             for entity in chunk.entities:
                 entity.update()
@@ -46,15 +54,14 @@ class World(object):
                     chunk.entities.remove(entity)
                     #entity.x = convert.world_to_chunk(convert.chunk_to_world(entity.x))[0]
                     self.chunks.get(x - chunkmove).entities.append(entity)
+        """
     
     def render(self, screen, viewport):
-        #change this to render only chunks on screen, not just all loaded chunks
-        #for chunk in self.loaded_chunks.elements:
-        #    chunk.render(screen, viewport)
-        #left_chunk = viewport.x // block.SIZE // chunk.WIDTH
-        #right_chunk = left_chunk + viewport.width // block.SIZE // chunk.WIDTH + 2
-        left_chunk = convert.world_to_chunk(convert.x_pixels_to_world(viewport.x))[1]
-        right_chunk = left_chunk + convert.world_to_chunk(convert.x_pixels_to_world(viewport.width))[1] + 2
+        left_chunk = convert.world_to_chunk(convert.pixel_to_world(viewport.x))[1]
+        right_chunk = left_chunk + convert.world_to_chunk(convert.pixel_to_world(viewport.width))[1] + 2
         #print(left_chunk, right_chunk)
         for i in range(left_chunk, right_chunk):
-            self.loaded_chunks.get(i).render(screen, viewport)
+            try:
+                self.loaded_chunks.get(i).render(screen, viewport)
+            except IndexError:
+                pass
