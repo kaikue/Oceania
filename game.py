@@ -45,10 +45,8 @@ def start():
     font = pygame.font.SysFont("monospace", 20)
     global world
     world = World.World()
-    global view_x
-    view_x = 0
-    global view_y
-    view_y = 0
+    global viewport
+    viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global player
     player = Player.Player([0, 180], "img/player.png")
     run()
@@ -70,7 +68,7 @@ def update():
         if event.type == pygame.QUIT:
             sys.exit(0)
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            world.break_block(player, pygame.mouse.get_pos())
+            world.break_block(player, pygame.mouse.get_pos(), viewport)
             pass
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_ESCAPE]:
@@ -85,15 +83,13 @@ def update():
     if pressed[pygame.K_DOWN]:
         player.dir[1] += 1
     player.update(world)
-    global view_x, view_y
-    view_x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2 #replace with center
-    view_y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2
+    viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2 #replace with center
+    viewport.y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2
     world.update()
 
 def render():
     screen.fill(SKY)
     #draw clouds
-    viewport = pygame.Rect(view_x, view_y, SCREEN_WIDTH, SCREEN_HEIGHT)
     world.render(screen, viewport)
     if DEBUG:
         fps = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
@@ -126,5 +122,4 @@ Crafting
 Menus
 Combat
 Block placement & destruction
-Rename modules to make variable naming easier
 """

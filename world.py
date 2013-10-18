@@ -1,3 +1,4 @@
+import math
 import Convert
 import Chunk
 import TwoWayList
@@ -36,11 +37,13 @@ class World(object):
                     check_chunk.entities.remove(entity)
                     self.chunks.get(entity.pos[0] / Chunk.WIDTH).entities.append(entity)
     
-    def break_block(self, player_char, mouse_pos):
+    def break_block(self, player_char, mouse_pos, viewport):
         #find nearest breakable block based on angle from player pos to mouse pos (raycasting?)
         #begin breaking it
-        x_diff = mouse_pos[0] - player_char.pos[0]
-        y_diff = mouse_pos[1] - player_char.pos[1]
+        x_diff = mouse_pos[0] - Convert.pixels_to_viewport(player_char.bounding_box.topleft, viewport)[0]
+        y_diff = mouse_pos[1] - Convert.pixels_to_viewport(player_char.bounding_box.topleft, viewport)[1]
+        angle = math.atan2(-y_diff, x_diff) #not sure if y should be negative
+        print(x_diff, y_diff, angle)
     
     def render(self, screen, viewport):
         left_chunk = Convert.world_to_chunk(Convert.pixel_to_world(viewport.x))[1]
