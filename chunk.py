@@ -1,7 +1,7 @@
 import random
-import convert
-import world
-import block
+import Convert
+import World
+import Block
 
 WIDTH = 16
 LEFT = False
@@ -11,7 +11,7 @@ MAX_SLOPE = 32
 class Chunk(object):
     def __init__(self):
         self.heights = [0] * WIDTH
-        self.blocks = [[0] * WIDTH for _ in range(world.HEIGHT)]
+        self.blocks = [[0] * WIDTH for _ in range(World.HEIGHT)]
         self.entities = []
     
     def generate_spawn(self):
@@ -66,39 +66,20 @@ class Chunk(object):
     def generate_blocks(self):
         for y in range(len(self.blocks)):
             for x in range(len(self.blocks[y])):
-                if y < world.SEA_LEVEL:
-                    self.blocks[y][x] = block.Block(block.AIR)
+                if y < World.SEA_LEVEL:
+                    self.blocks[y][x] = Block.Block(Block.AIR)
                 elif y < self.heights[x]:
-                    self.blocks[y][x] = block.Block(block.WATER)
+                    self.blocks[y][x] = Block.Block(Block.WATER)
                 else:
-                    self.blocks[y][x] = block.Block(block.DIRT)
+                    self.blocks[y][x] = Block.Block(Block.DIRT)
     
     def render(self, screen, viewport):
-        #print("P:", viewport.x, viewport.y)
-        viewport_y1 = convert.pixel_to_world(viewport.y)
-        viewport_y2 = convert.pixel_to_world(viewport.y + viewport.width)
-        #print("W:", viewport_y1, viewport_y2)
-        #print("Rendering chunk " + str(self.x) + " to " + str(convert.world_to_viewport([convert.chunk_to_world(0, self), 0], viewport)))
+        viewport_y1 = Convert.pixel_to_world(viewport.y)
+        viewport_y2 = Convert.pixel_to_world(viewport.y + viewport.width)
         for blocky in range(viewport_y1, viewport_y2):
-            if blocky < 0 or blocky > world.HEIGHT:
+            if blocky < 0 or blocky > World.HEIGHT:
                 continue
             for blockx in range(WIDTH):
-                self.blocks[blocky][blockx].render(screen, convert.world_to_viewport([convert.chunk_to_world(blockx, self), blocky], viewport))
+                self.blocks[blocky][blockx].render(screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
         for entity in self.entities:
-            entity.render(screen, convert.world_to_viewport([convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
-            #entity.render(screen, (self.x * entity.x - viewport.x, self.x * entity.y - viewport.y))
-        
-        """
-        print(viewport.x, viewport.y)
-        viewport_blocks = convert.pixels_to_world([viewport.x, viewport.y])
-        blocky = viewport.y // block.SIZE
-        for drawy in range(0, viewport.height, block.SIZE):
-            drawx = self.x * block.SIZE - viewport.x
-            for blockx in range(WIDTH):
-                self.blocks[blocky][blockx].render(screen, (drawx, drawy))
-                #pos = font.render(str(blockx) + " " + str(blocky), 0, (0, 0, 0))
-                #if blockx % 8 == 0 and blocky % 8 == 0:
-                #    screen.blit(pos, (drawx, drawy))
-                drawx += block.SIZE
-            blocky += 1
-        """
+            entity.render(screen, Convert.world_to_viewport([Convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))

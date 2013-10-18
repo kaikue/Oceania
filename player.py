@@ -1,6 +1,6 @@
-import entity
+import Entity
 
-class Player(entity.Entity):
+class Player(Entity.Entity):
     
     def __init__(self, pos, imageurl):
         super(Player, self).__init__(pos, imageurl)

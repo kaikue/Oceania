@@ -3,10 +3,9 @@
 import pygame
 import os
 import sys
-import convert
-import world
-import player
-import block
+import Convert
+import World
+import Player
 
 
 #GLOBAL CONSTANTS
@@ -44,54 +43,62 @@ def start():
     gamemode = PLAYING
     global font
     font = pygame.font.SysFont("monospace", 20)
-    global gameworld
-    gameworld = world.World()
+    global world
+    world = World.World()
     global view_x
     view_x = 0
     global view_y
     view_y = 0
-    global player_char
-    player_char = player.Player([0, 180], "img/player.png")
+    global player
+    player = Player.Player([0, 180], "img/player.png")
     run()
 
 def run():
     while True:
-        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-            sys.exit(0)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit(0)
+        #if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+        #    sys.exit(0)
+        #for event in pygame.event.get():
+        #    if event.type == pygame.QUIT:
+        #        sys.exit(0)
         clock.tick(60)
         update()
         render()
         #pygame.time.wait(1)
 
 def update():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit(0)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            world.break_block(player, pygame.mouse.get_pos())
+            pass
     pressed = pygame.key.get_pressed()
-    player_char.dir = [0, 0]
+    if pressed[pygame.K_ESCAPE]:
+        sys.exit(0)
+    player.dir = [0, 0]
     if pressed[pygame.K_LEFT]:
-        player_char.dir[0] -= 1
+        player.dir[0] -= 1
     if pressed[pygame.K_RIGHT]:
-        player_char.dir[0] += 1
+        player.dir[0] += 1
     if pressed[pygame.K_UP]:
-        player_char.dir[1] -= 1
+        player.dir[1] -= 1
     if pressed[pygame.K_DOWN]:
-        player_char.dir[1] += 1
-    player_char.update(gameworld)
+        player.dir[1] += 1
+    player.update(world)
     global view_x, view_y
-    view_x = convert.world_to_pixels(player_char.pos)[0] - SCREEN_WIDTH / 2 #replace with center
-    view_y = convert.world_to_pixels(player_char.pos)[1] - SCREEN_HEIGHT / 2
-    gameworld.update()
+    view_x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2 #replace with center
+    view_y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2
+    world.update()
 
 def render():
     screen.fill(SKY)
     #draw clouds
     viewport = pygame.Rect(view_x, view_y, SCREEN_WIDTH, SCREEN_HEIGHT)
-    gameworld.render(screen, viewport)
+    world.render(screen, viewport)
     if DEBUG:
         fps = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
         screen.blit(fps, (10, 10))
-    player_char.render(screen, convert.world_to_viewport(player_char.pos, viewport))
+    player.render(screen, Convert.world_to_viewport(player.pos, viewport))
     pygame.display.flip()
 
 def main():
@@ -112,7 +119,7 @@ World generation
     Caves
     Spawn midpoint displacement
 Entities
-    Collision detection
+    Enemies, friendlies
 Player
     Inventory
 Crafting

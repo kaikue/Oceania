@@ -1,5 +1,5 @@
 import pygame
-import game
+import Game
 
 AIR = 0
 WATER = 1
@@ -27,5 +27,5 @@ class Block(object):
         elif self.blockid == DIRT:
             pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(pos[0], pos[1], SIZE, SIZE))
         #draw bounding boxes
-        if game.DEBUG:
+        if Game.DEBUG:
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(pos[0], pos[1], SIZE, SIZE), 1)
