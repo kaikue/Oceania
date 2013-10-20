@@ -14,6 +14,9 @@ class Entity(object):
         self.dir = [0, 0] #direction: -1, 0, 1
         self.vel = [0, 0] #speeds: any numbers
     
+    def pixel_pos(self):
+        return [self.bounding_box.x, self.bounding_box.y]
+    
     def collides(self, block_pos):
         return self.bounding_box.colliderect(pygame.Rect(Convert.world_to_pixel(block_pos[0]), Convert.world_to_pixel(block_pos[1]), Convert.world_to_pixel(1), Convert.world_to_pixel(1)))
     

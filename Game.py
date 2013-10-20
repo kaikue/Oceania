@@ -5,6 +5,7 @@ import os
 import sys
 import Convert
 import World
+import Block
 import Player
 
 
@@ -49,6 +50,10 @@ def start():
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global player
     player = Player.Player([0, 180], "img/player.png")
+    Block.load_images()
+    #improve this later
+    global img_target
+    img_target = pygame.image.load("img/target.png").convert_alpha()
     run()
 
 def run():
@@ -95,6 +100,7 @@ def render():
         fps = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
         screen.blit(fps, (10, 10))
     player.render(screen, Convert.world_to_viewport(player.pos, viewport))
+    screen.blit(img_target, world.find_pos(world.find_angle(player, pygame.mouse.get_pos(), viewport), Convert.pixels_to_viewport(player.pixel_pos(), viewport)))
     pygame.display.flip()
 
 def main():
@@ -121,5 +127,7 @@ Player
 Crafting
 Menus
 Combat
+Move player coordinate to centera
 Block placement & destruction
+    Shorten raycast to nearest block
 """

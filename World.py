@@ -2,6 +2,7 @@ import math
 import Convert
 import Chunk
 import TwoWayList
+import Block
 
 HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
@@ -37,13 +38,25 @@ class World(object):
                     check_chunk.entities.remove(entity)
                     self.chunks.get(entity.pos[0] / Chunk.WIDTH).entities.append(entity)
     
-    def break_block(self, player_char, mouse_pos, viewport):
+    def find_angle(self, player, mouse_pos, viewport):
         #find nearest breakable block based on angle from player pos to mouse pos (raycasting?)
         #begin breaking it
-        x_diff = mouse_pos[0] - Convert.pixels_to_viewport(player_char.bounding_box.topleft, viewport)[0]
-        y_diff = mouse_pos[1] - Convert.pixels_to_viewport(player_char.bounding_box.topleft, viewport)[1]
-        angle = math.atan2(-y_diff, x_diff) #not sure if y should be negative
-        print(x_diff, y_diff, angle)
+        x_diff = mouse_pos[0] - Convert.pixels_to_viewport(player.bounding_box.topleft, viewport)[0]
+        y_diff = mouse_pos[1] - Convert.pixels_to_viewport(player.bounding_box.topleft, viewport)[1]
+        angle = math.atan2(y_diff, x_diff) #not sure if y should be negative
+        return angle
+    
+    def find_pos(self, angle, offset):
+        #in pixels
+        MAX_DIST = 64
+        dist = MAX_DIST
+        return [offset[0] + dist * math.cos(angle), offset[1] + dist * math.sin(angle)]
+    
+    def break_block(self, player, mouse_pos, viewport):
+        angle = self.find_angle(player, mouse_pos, viewport)
+        block_pos = Convert.pixels_to_world(self.find_pos(angle, Convert.pixels_to_viewport(player.pixel_pos(), viewport)))
+        print(block_pos)
+        self.chunks.get(Convert.viewport_to_chunk(mouse_pos[0], viewport)[1]).blocks[block_pos[1]][block_pos[0]] = Block.WATER
     
     def render(self, screen, viewport):
         left_chunk = Convert.world_to_chunk(Convert.pixel_to_world(viewport.x))[1]
