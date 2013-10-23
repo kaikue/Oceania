@@ -35,6 +35,12 @@ def world_to_pixel(p):
 def world_to_viewport(pos, viewport):
     return pixels_to_viewport(world_to_pixels(pos), viewport)
 
+def viewport_to_pixel(pos, viewport, axis):
+    if axis == 0:
+        return pos + viewport.x
+    else:
+        return pos + viewport.y
+
 def viewport_to_pixels(pos, viewport):
     return [pos[0] + viewport.x, pos[1] + viewport.y]
 

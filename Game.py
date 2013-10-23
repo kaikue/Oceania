@@ -127,7 +127,10 @@ Player
 Crafting
 Menus
 Combat
-Move player coordinate to centera
+Move player coordinate to center
 Block placement & destruction
+    Make block breaking take time
     Shorten raycast to nearest block
+    Center target image
+    Make target only show when pointing at block within range???
 """
