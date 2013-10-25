@@ -115,6 +115,7 @@ BUGS
 
 NEEDED FEATURES
 World generation
+    Loading & unloading chunks (in Player & World)
     Serialization of unloaded chunks
     Chunks at side of world (player movement)
     Better terrain
@@ -133,4 +134,5 @@ Block placement & destruction
     Shorten raycast to nearest block
     Center target image
     Make target only show when pointing at block within range???
+        could remove target entirely, highlight selected block/space?
 """

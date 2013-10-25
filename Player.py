@@ -11,4 +11,5 @@ class Player(Entity.Entity):
         hspeed = min(abs(self.vel[0] + self.acceleration * self.dir[0]), self.max_speed) * self.dir[0]
         vspeed = min(abs(self.vel[1] + self.acceleration * self.dir[1]), self.max_speed) * self.dir[1]
         self.vel = [hspeed, vspeed]
+        #check if changed chunk, then tell world to load/unload as needed
         super(Player, self).update(world)

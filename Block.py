@@ -4,9 +4,9 @@ import Game
 AIR = 0
 WATER = 1
 DIRT = 2
-STONE = 3
+BASALT = 3
 
-SOLID_BLOCKS = (DIRT, STONE)
+SOLID_BLOCKS = (AIR, DIRT, BASALT)
 
 SIZE = 32
 
@@ -29,15 +29,10 @@ class Block(object):
     
     def render(self, screen, pos):
         if self.blockid == AIR:
-            #pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(x, y, SIZE, SIZE))
             pass
-        #elif self.blockid == WATER:
-        #    pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(pos[0], pos[1], SIZE, SIZE))
-        #elif self.blockid == DIRT:
-        #    pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(pos[0], pos[1], SIZE, SIZE))
         else:
             global images
             screen.blit(images[self.blockid], pos)
-        #draw bounding boxes
         if Game.DEBUG:
+            #draw bounding box
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(pos[0], pos[1], SIZE, SIZE), 1)
