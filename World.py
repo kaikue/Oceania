@@ -7,6 +7,7 @@ import Block
 HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
 SEA_FLOOR = HEIGHT * 3 / 4
+CHUNKS_TO_SIDE = 1
 
 class World(object):
     
@@ -27,16 +28,17 @@ class World(object):
         r2l = Chunk.Chunk()
         r2l.generate_from_chunk(r1l, Chunk.RIGHT)
         self.chunks.prepend(r2l)
-        self.loaded_chunks = self.chunks #improve
+        self.loaded_chunks = self.chunks.get_range(-CHUNKS_TO_SIDE, CHUNKS_TO_SIDE + 1)
     
     def update(self):
-        for x in range(self.loaded_chunks.first, self.loaded_chunks.last):
-            check_chunk = self.loaded_chunks.get(x)
-            for entity in check_chunk.entities:
+        for x in range(self.loaded_chunks.first, self.loaded_chunks.end):
+            chunk = self.loaded_chunks.get(x)
+            for entity in chunk.entities:
                 entity.update(self)
-                if entity.pos[0] / Chunk.WIDTH != check_chunk.x: 
-                    check_chunk.entities.remove(entity)
+                if entity.pos[0] / Chunk.WIDTH != chunk.x: 
+                    chunk.entities.remove(entity)
                     self.chunks.get(entity.pos[0] / Chunk.WIDTH).entities.append(entity)
+        print(self.loaded_chunks)
     
     def find_angle(self, player, mouse_pos, viewport):
         #find nearest breakable block based on angle from player pos to mouse pos (raycasting?)

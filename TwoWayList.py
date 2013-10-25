@@ -2,15 +2,19 @@
 
 class TwoWayList(object):
     
-    def __init__(self):
-        self.elements = []
-        self.start = 0
-        self.first = 0
-        self.last = 0
+    def __init__(self, elements=None, start=0):
+        if elements is None:
+            self.elements = []
+        else:
+            self.elements = elements
+        #hopefully this is right
+        self.start = start
+        self.first = -start
+        self.end = len(self.elements) + self.start
     
     def append(self, element):
         self.elements.append(element)
-        self.last += 1
+        self.end += 1
     
     def prepend(self, element):
         self.elements.insert(0, element)
@@ -20,8 +24,19 @@ class TwoWayList(object):
     def get(self, index):
         return self.elements[index + self.start]
     
+    def get_range(self, start, end):
+        return TwoWayList(self.elements[start + self.start:end + self.start], start)
+    
     def set(self, index, element):
         self.elements[index + self.start] = element
+    
+    def __str__(self):
+        s = "Start: " + str(self.start) + ", first: " + str(self.first) + ", end: " + str(self.end) + " ["
+        for element in self.elements:
+            s += str(element) + ", "
+        s = s[:len(s) - 2]
+        s += "]"
+        return s
 
 if __name__ == "__main__":
     l = TwoWayList()

@@ -83,3 +83,6 @@ class Chunk(object):
                 self.blocks[blocky][blockx].render(screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
         for entity in self.entities:
             entity.render(screen, Convert.world_to_viewport([Convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
+    
+    def __str__(self):
+        return "Chunk at x=" + str(self.x) + " contains entities " + str(self.entities)
