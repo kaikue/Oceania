@@ -28,7 +28,7 @@ class World(object):
         r2l = Chunk.Chunk()
         r2l.generate_from_chunk(r1l, Chunk.RIGHT)
         self.chunks.prepend(r2l)
-        self.loaded_chunks = self.chunks.get_range(-CHUNKS_TO_SIDE, CHUNKS_TO_SIDE + 1)
+        self.load_chunks(0)
     
     def update(self):
         for x in range(self.loaded_chunks.first, self.loaded_chunks.end):
@@ -38,7 +38,6 @@ class World(object):
                 if entity.pos[0] / Chunk.WIDTH != chunk.x: 
                     chunk.entities.remove(entity)
                     self.chunks.get(entity.pos[0] / Chunk.WIDTH).entities.append(entity)
-        print(self.loaded_chunks)
     
     def find_angle(self, player, mouse_pos, viewport):
         #find nearest breakable block based on angle from player pos to mouse pos (raycasting?)
@@ -61,12 +60,18 @@ class World(object):
         x_in_chunk = Convert.world_to_chunk(block_pos[0])[0]
         self.chunks.get(chunk).blocks[block_pos[1]][x_in_chunk] = Block.Block(Block.WATER)
     
+    def load_chunks(self, center):
+        self.loaded_chunks = self.chunks.get_range(center - CHUNKS_TO_SIDE, center + CHUNKS_TO_SIDE + 1)
+    
     def render(self, screen, viewport):
+        """
         left_chunk = Convert.world_to_chunk(Convert.pixel_to_world(viewport.x))[1]
         right_chunk = left_chunk + Convert.world_to_chunk(Convert.pixel_to_world(viewport.width))[1] + 2
-        #print(left_chunk, right_chunk)
         for i in range(left_chunk, right_chunk):
             try:
                 self.loaded_chunks.get(i).render(screen, viewport)
             except IndexError:
                 pass
+        """
+        for chunk in self.loaded_chunks.elements:
+            chunk.render(screen, viewport)

@@ -115,7 +115,6 @@ BUGS
 
 NEEDED FEATURES
 World generation
-    Loading & unloading chunks (in Player & World)
     Serialization of unloaded chunks
     Chunks at side of world (player movement)
     Better terrain
