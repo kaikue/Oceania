@@ -1,4 +1,5 @@
 import math
+import pickle
 import Convert
 import Chunk
 import TwoWayList
@@ -11,7 +12,7 @@ CHUNKS_TO_SIDE = 1
 
 class World(object):
     
-    def __init__(self):
+    def __init__(self, player):
         spawn = Chunk.Chunk()
         spawn.generate_spawn()
         self.chunks = TwoWayList.TwoWayList()
@@ -28,7 +29,12 @@ class World(object):
         r2l = Chunk.Chunk()
         r2l.generate_from_chunk(r1l, Chunk.RIGHT)
         self.chunks.prepend(r2l)
+        #for chunk in self.chunks.elements:
+        #    chunkfile = open("chunk" + str(chunk.x) + "data", "wb")
+        #    pickle.dump(chunk, chunkfile)
+        #    chunkfile.close()
         self.load_chunks(0)
+        self.player = player
     
     def update(self):
         for x in range(self.loaded_chunks.first, self.loaded_chunks.end):
@@ -61,17 +67,27 @@ class World(object):
         self.chunks.get(chunk).blocks[block_pos[1]][x_in_chunk] = Block.Block(Block.WATER)
     
     def load_chunks(self, center):
+        #unload and serialize unneeded chunks
         self.loaded_chunks = self.chunks.get_range(center - CHUNKS_TO_SIDE, center + CHUNKS_TO_SIDE + 1)
     
     def render(self, screen, viewport):
-        """
-        left_chunk = Convert.world_to_chunk(Convert.pixel_to_world(viewport.x))[1]
-        right_chunk = left_chunk + Convert.world_to_chunk(Convert.pixel_to_world(viewport.width))[1] + 2
-        for i in range(left_chunk, right_chunk):
-            try:
-                self.loaded_chunks.get(i).render(screen, viewport)
-            except IndexError:
-                pass
-        """
         for chunk in self.loaded_chunks.elements:
             chunk.render(screen, viewport)
+    
+    def load(self):
+        self.chunks = TwoWayList.TwoWayList()
+        for i in range(-1, -3, -1):
+            chunkfile = open("dat/chunk" + str(i) + "data", "rb")
+            self.chunks.prepend(pickle.load(chunkfile))
+            chunkfile.close()
+        for i in range(0, 3):
+            chunkfile = open("dat/chunk" + str(i) + "data", "rb")
+            self.chunks.append(pickle.load(chunkfile))
+            chunkfile.close()
+        self.load_chunks(Convert.world_to_chunk(self.player.pos[0])[1])
+    
+    def close(self):
+        for chunk in self.chunks.elements:
+            chunkfile = open("dat/chunk" + str(chunk.x) + "data", "wb")
+            pickle.dump(chunk, chunkfile)
+            chunkfile.close()

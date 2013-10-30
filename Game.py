@@ -26,6 +26,8 @@ DEBUG = True
 
 
 #GAME FUNCTIONS
+#For handling input, overall game functions.
+#Savable data should be stored in World.
 
 def start():
     os.environ["SDL_VIDEO_CENTERED"] = "1"
@@ -44,12 +46,12 @@ def start():
     gamemode = PLAYING
     global font
     font = pygame.font.SysFont("monospace", 20)
-    global world
-    world = World.World()
     global viewport
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global player
     player = Player.Player([0, 180], "img/player.png")
+    global world
+    world = World.World(player)
     Block.load_images()
     #improve this later
     global img_target
@@ -58,26 +60,22 @@ def start():
 
 def run():
     while True:
-        #if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-        #    sys.exit(0)
-        #for event in pygame.event.get():
-        #    if event.type == pygame.QUIT:
-        #        sys.exit(0)
         clock.tick(60)
         update()
         render()
-        #pygame.time.wait(1)
 
 def update():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            sys.exit(0)
+            close()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             world.break_block(player, pygame.mouse.get_pos(), viewport)
             pass
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_ESCAPE]:
-        sys.exit(0)
+        close()
+    elif pressed[pygame.K_l]:
+        world.load()
     player.dir = [0, 0]
     if pressed[pygame.K_LEFT]:
         player.dir[0] -= 1
@@ -102,6 +100,11 @@ def render():
     player.render(screen, Convert.world_to_viewport(player.pos, viewport))
     screen.blit(img_target, world.find_pos(world.find_angle(player, pygame.mouse.get_pos(), viewport), Convert.pixels_to_viewport(player.pixel_pos(), viewport)))
     pygame.display.flip()
+
+def close():
+    #pickle loaded chunks
+    world.close()
+    sys.exit(0)
 
 def main():
     start()
@@ -128,6 +131,7 @@ Crafting
 Menus
 Combat
 Move player coordinate to center
+Sound
 Block placement & destruction
     Make block breaking take time
     Shorten raycast to nearest block
