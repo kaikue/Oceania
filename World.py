@@ -1,3 +1,4 @@
+import os
 import math
 import pickle
 import Convert
@@ -12,28 +13,29 @@ CHUNKS_TO_SIDE = 1
 
 class World(object):
     
-    def __init__(self, player):
+    def __init__(self, name, player):
+        self.name = name
+        self.dir = "dat/" + self.name
+        if not os.path.exists(self.dir):
+            os.makedirs(self.dir)
         spawn = Chunk.Chunk()
         spawn.generate_spawn()
-        self.chunks = TwoWayList.TwoWayList()
-        self.chunks.append(spawn)
+        self.loaded_chunks = TwoWayList.TwoWayList()
+        self.loaded_chunks.append(spawn)
         r1 = Chunk.Chunk()
         r1.generate_from_chunk(spawn, Chunk.LEFT)
-        self.chunks.append(r1)
+        self.loaded_chunks.append(r1)
         r2 = Chunk.Chunk()
         r2.generate_from_chunk(r1, Chunk.LEFT)
-        self.chunks.append(r2)
+        self.loaded_chunks.append(r2)
         r1l = Chunk.Chunk()
         r1l.generate_from_chunk(spawn, Chunk.RIGHT)
-        self.chunks.prepend(r1l)
+        self.loaded_chunks.prepend(r1l)
         r2l = Chunk.Chunk()
         r2l.generate_from_chunk(r1l, Chunk.RIGHT)
-        self.chunks.prepend(r2l)
-        #for chunk in self.chunks.elements:
-        #    chunkfile = open("chunk" + str(chunk.x) + "data", "wb")
-        #    pickle.dump(chunk, chunkfile)
-        #    chunkfile.close()
-        self.load_chunks(0)
+        self.loaded_chunks.prepend(r2l)
+        #self.load_chunks(0)
+        self.save_all()
         self.player = player
     
     def update(self):
@@ -68,26 +70,50 @@ class World(object):
     
     def load_chunks(self, center):
         #unload and serialize unneeded chunks
-        self.loaded_chunks = self.chunks.get_range(center - CHUNKS_TO_SIDE, center + CHUNKS_TO_SIDE + 1)
+        self.old_chunks = []
+        for chunk in self.loaded_chunks.elements:
+            self.old_chunks.append(chunk)
+        
+        self.loaded_chunks = TwoWayList.TwoWayList()
+        #if the needed chunks do not all exist, generate some more
+        print("Loading: ", end="")
+        for i in range(center - CHUNKS_TO_SIDE, center + CHUNKS_TO_SIDE + 1):
+            self.loaded_chunks.append(self.load_chunk(i))
+            print(i, end=" ")
+        print()
+        self.loaded_chunks.update_start(-(center - CHUNKS_TO_SIDE)) #???
+        for chunk in self.old_chunks:
+            if chunk not in self.loaded_chunks.elements:
+                self.save_chunk(chunk)
+        #self.loaded_chunks = self.chunks.get_range(center - CHUNKS_TO_SIDE, center + CHUNKS_TO_SIDE + 1)
     
     def render(self, screen, viewport):
         for chunk in self.loaded_chunks.elements:
             chunk.render(screen, viewport)
     
-    def load(self):
+    def save_chunk(self, chunk):
+        chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")
+        pickle.dump(chunk, chunkfile)
+        chunkfile.close()
+    
+    def save_all(self):
+        for chunk in self.loaded_chunks.elements:
+            self.save_chunk(chunk)
+    
+    def load_chunk(self, index):
+        chunkfile = open(self.dir + "/chunk" + str(index) + "data", "rb")
+        chunk = pickle.load(chunkfile)
+        chunkfile.close()
+        return chunk
+    
+    def load_all(self):
+        #Remove this!!!
         self.chunks = TwoWayList.TwoWayList()
         for i in range(-1, -3, -1):
-            chunkfile = open("dat/chunk" + str(i) + "data", "rb")
-            self.chunks.prepend(pickle.load(chunkfile))
-            chunkfile.close()
+            self.chunks.prepend(self.load_chunk(i))
         for i in range(0, 3):
-            chunkfile = open("dat/chunk" + str(i) + "data", "rb")
-            self.chunks.append(pickle.load(chunkfile))
-            chunkfile.close()
+            self.chunks.append(self.load_chunk(i))
         self.load_chunks(Convert.world_to_chunk(self.player.pos[0])[1])
     
     def close(self):
-        for chunk in self.chunks.elements:
-            chunkfile = open("dat/chunk" + str(chunk.x) + "data", "wb")
-            pickle.dump(chunk, chunkfile)
-            chunkfile.close()
+        self.save_all()

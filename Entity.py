@@ -40,15 +40,15 @@ class Entity(object):
         block_top = int(self.pos[1])
         block_bottom = int(self.pos[1] + self.height) + 1
         if chunk_left == chunk_right:
-            chunk = world.chunks.get(chunk_left)
+            chunk = world.loaded_chunks.get(chunk_left)
             self.check_collision(chunk, block_left, block_right, block_top, block_bottom, old_pos, 0)
         else:
-            chunk = world.chunks.get(chunk_left)
+            chunk = world.loaded_chunks.get(chunk_left)
             self.check_collision(chunk, block_left, Chunk.WIDTH, block_top, block_bottom, old_pos, 0)
             for c in range(chunk_left + 1, chunk_right):
-                chunk = world.chunks.get(c)
+                chunk = world.loaded_chunks.get(c)
                 self.check_collision(chunk, 0, Chunk.WIDTH, block_top, block_bottom, old_pos, 0)
-            chunk = world.chunks.get(chunk_right)
+            chunk = world.loaded_chunks.get(chunk_right)
             self.check_collision(chunk, 0, block_right, block_top, block_bottom, old_pos, 0)
         self.bounding_box.x = Convert.world_to_pixel(self.pos[0])
         
@@ -61,15 +61,15 @@ class Entity(object):
         block_top = int(self.pos[1])
         block_bottom = int(self.pos[1] + self.height) + 1
         if chunk_left == chunk_right:
-            chunk = world.chunks.get(chunk_left)
+            chunk = world.loaded_chunks.get(chunk_left)
             self.check_collision(chunk, block_left, block_right, block_top, block_bottom, old_pos, 1)
         else:
-            chunk = world.chunks.get(chunk_left)
+            chunk = world.loaded_chunks.get(chunk_left)
             self.check_collision(chunk, block_left, Chunk.WIDTH, block_top, block_bottom, old_pos, 1)
             for c in range(chunk_left + 1, chunk_right):
-                chunk = world.chunks.get(c)
+                chunk = world.loaded_chunks.get(c)
                 self.check_collision(chunk, 0, Chunk.WIDTH, block_top, block_bottom, old_pos, 1)
-            chunk = world.chunks.get(chunk_right)
+            chunk = world.loaded_chunks.get(chunk_right)
             self.check_collision(chunk, 0, block_right, block_top, block_bottom, old_pos, 1)
         self.bounding_box.y = Convert.world_to_pixel(self.pos[1])
     

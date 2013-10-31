@@ -51,7 +51,7 @@ def start():
     global player
     player = Player.Player([0, 180], "img/player.png")
     global world
-    world = World.World(player)
+    world = World.World("defaultworld", player)
     Block.load_images()
     #improve this later
     global img_target
@@ -75,7 +75,7 @@ def update():
     if pressed[pygame.K_ESCAPE]:
         close()
     elif pressed[pygame.K_l]:
-        world.load()
+        world.load_all()
     player.dir = [0, 0]
     if pressed[pygame.K_LEFT]:
         player.dir[0] -= 1

@@ -7,10 +7,7 @@ class TwoWayList(object):
             self.elements = []
         else:
             self.elements = elements
-        #hopefully this is right
-        self.start = start
-        self.first = -start
-        self.end = len(self.elements) + self.start
+        self.update_start(start)
     
     def append(self, element):
         self.elements.append(element)
@@ -18,8 +15,7 @@ class TwoWayList(object):
     
     def prepend(self, element):
         self.elements.insert(0, element)
-        self.start += 1
-        self.first -= 1
+        self.update_start(self.start + 1)
     
     def get(self, index):
         return self.elements[index + self.start]
@@ -29,6 +25,12 @@ class TwoWayList(object):
     
     def set(self, index, element):
         self.elements[index + self.start] = element
+    
+    def update_start(self, start):
+        self.start = start
+        self.first = -start
+        self.end = len(self.elements) + self.first
+        #I guess?
     
     def __str__(self):
         s = "Start: " + str(self.start) + ", first: " + str(self.first) + ", end: " + str(self.end) + " ["
