@@ -115,10 +115,10 @@ if __name__ == "__main__":
 
 """
 BUGS
+Pickling is slow- use marshal?
 
 NEEDED FEATURES
 World generation
-    Serialization of unloaded chunks
     Chunks at side of world (player movement)
     Better terrain
     Caves
