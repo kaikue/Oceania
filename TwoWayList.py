@@ -32,6 +32,13 @@ class TwoWayList(object):
         self.end = len(self.elements) + self.first
         #I guess?
     
+    def clone(self):
+        clone = TwoWayList()
+        for e in self.elements:
+            clone.append(e)
+        clone.update_start(self.start)
+        return clone
+    
     def __str__(self):
         s = "Start: " + str(self.start) + ", first: " + str(self.first) + ", end: " + str(self.end) + " ["
         for element in self.elements:

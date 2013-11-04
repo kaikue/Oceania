@@ -123,8 +123,11 @@ World generation
     Better terrain
     Caves
     Spawn midpoint displacement
+    Structures (over multiple chunks)
+    Biomes
 Entities
     Enemies, friendlies
+    Dropped blocks
 Player
     Inventory
 Crafting
@@ -134,6 +137,7 @@ Move player coordinate to center
 Sound
 Block placement & destruction
     Make block breaking take time
+    Drop block item
     Shorten raycast to nearest block
     Center target image
     Make target only show when pointing at block within range???
