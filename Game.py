@@ -116,10 +116,10 @@ if __name__ == "__main__":
 """
 BUGS
 Pickling is slow- use marshal?
+World generation might use old chunks if they exist- needs more testing
 
 NEEDED FEATURES
 World generation
-    Chunks at side of world (player movement)
     Better terrain
     Caves
     Spawn midpoint displacement

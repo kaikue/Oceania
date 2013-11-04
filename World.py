@@ -69,14 +69,13 @@ class World(object):
     
     def load_chunks(self, center):
         #unload and serialize unneeded chunks
-        self.old_chunks = self.loaded_chunks.clone()
+        old_chunks = self.loaded_chunks.clone()
+        for chunk in old_chunks.elements:
+            self.save_chunk(chunk)
         
         self.loaded_chunks = TwoWayList.TwoWayList()
-        #if the needed chunks do not all exist, generate some more
         leftchunk = center - CHUNKS_TO_SIDE
-        print("Start:", leftchunk)
         rightchunk = center + CHUNKS_TO_SIDE + 1
-        print("End:", rightchunk)
         
         for i in range(leftchunk, rightchunk):
             if self.chunk_exists(i):
@@ -84,42 +83,13 @@ class World(object):
             else:
                 if i < 0:
                     side = Chunk.RIGHT
-                    prev = self.old_chunks.get(i + 1)
+                    prev = old_chunks.get(i + 1)
                 else:
                     side = Chunk.LEFT
-                    prev = self.old_chunks.get(i - 1)
+                    prev = old_chunks.get(i - 1)
                 chunk = self.generate_chunk(i, prev, side)
             self.loaded_chunks.append(chunk)
         self.loaded_chunks.update_start(-leftchunk)
-        
-        """negstart = min(-1, rightchunk) - 1
-        for i in range(negstart, leftchunk, -1):
-            #print(i, self.old_chunks)
-            self.loaded_chunks.prepend(self.load_chunk(i))
-        #print(lastchunk, self.old_chunks)
-        self.loaded_chunks.prepend(self.generate_chunk(leftchunk, self.old_chunks.get(leftchunk + 1), Chunk.RIGHT))
-        
-        posstart = max(0, leftchunk)
-        for i in range(posstart, rightchunk):
-            #print("", i, self.old_chunks)
-            self.loaded_chunks.append(self.load_chunk(i))
-        #print(lastchunk, self.old_chunks)
-        self.loaded_chunks.append(self.generate_chunk(rightchunk, self.old_chunks.get(rightchunk - 1), Chunk.LEFT))
-        #self.loaded_chunks.update_start(-(center - CHUNKS_TO_SIDE))
-        """
-        
-        #save all unloaded chunks
-        print(self.loaded_chunks)
-        for old in self.old_chunks.elements:
-            save = True
-            #if chunk not in self.loaded_chunks.elements:
-            for new in self.loaded_chunks.elements:
-                if old.x == new.x:
-                    save = False
-            if save:
-                print("Unloaded", old.x)
-                self.save_chunk(old)
-        print()
     
     def render(self, screen, viewport):
         for chunk in self.loaded_chunks.elements:
@@ -129,7 +99,6 @@ class World(object):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")
         pickle.dump(chunk, chunkfile)
         chunkfile.close()
-        #print("Saved chunk", chunk.x)
     
     def save_all(self):
         for chunk in self.loaded_chunks.elements:
@@ -148,7 +117,6 @@ class World(object):
         return chunk
     
     def generate_chunk(self, index, basechunk, side):
-        #print("Generating", index, "from", basechunk.x)
         chunk = Chunk.Chunk()
         chunk.generate_from_chunk(basechunk, side)
         self.save_chunk(chunk)
