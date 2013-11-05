@@ -74,11 +74,9 @@ class Chunk(object):
                     self.blocks[y][x] = Block.Block(Block.DIRT)
     
     def render(self, screen, viewport):
-        viewport_y1 = Convert.pixel_to_world(viewport.y)
-        viewport_y2 = Convert.pixel_to_world(viewport.y + viewport.width)
-        for blocky in range(viewport_y1, viewport_y2):
-            if blocky < 0 or blocky > World.HEIGHT:
-                continue
+        top = max(Convert.pixel_to_world(viewport.y), 0)
+        bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
+        for blocky in range(top, bottom):
             for blockx in range(WIDTH):
                 self.blocks[blocky][blockx].render(screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
         for entity in self.entities:
