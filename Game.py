@@ -53,6 +53,7 @@ def start():
     global world
     world = World.World("defaultworld", player)
     Block.load_images()
+    World.load_biomes()
     #improve this later
     global img_target
     img_target = pygame.image.load("img/target.png").convert_alpha()
@@ -70,7 +71,6 @@ def update():
             close()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             world.break_block(player, pygame.mouse.get_pos(), viewport)
-            pass
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_ESCAPE]:
         close()
@@ -122,8 +122,11 @@ NEEDED FEATURES
 World generation
     Better terrain
     Caves
+        Lava tubes
     Spawn midpoint displacement
     Structures (over multiple chunks)
+        Temple
+        Volcanic pipe- kimberlite, diamond
     Biomes
 Entities
     Enemies, friendlies

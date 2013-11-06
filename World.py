@@ -1,6 +1,8 @@
 import os
 import math
+import random
 import pickle
+import json
 import Convert
 import Chunk
 import TwoWayList
@@ -11,6 +13,11 @@ SEA_LEVEL = HEIGHT / 4
 SEA_FLOOR = HEIGHT * 3 / 4
 CHUNKS_TO_SIDE = 2
 
+def load_biomes():
+    biomes_file = open("biomes.json", "r")
+    biomes = json.load(biomes_file)
+    print(biomes["default"]["ores"])
+
 class World(object):
     
     def __init__(self, name, player):
@@ -18,6 +25,7 @@ class World(object):
         self.dir = "dat/" + self.name
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
+        random.seed(self.name)
         spawn = Chunk.Chunk()
         spawn.generate_spawn()
         self.loaded_chunks = TwoWayList.TwoWayList()

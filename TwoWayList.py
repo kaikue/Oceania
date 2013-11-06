@@ -30,7 +30,6 @@ class TwoWayList(object):
         self.start = start
         self.first = -start
         self.end = len(self.elements) + self.first
-        #I guess?
     
     def clone(self):
         clone = TwoWayList()
