@@ -16,7 +16,7 @@ CHUNKS_TO_SIDE = 2
 def load_biomes():
     biomes_file = open("biomes.json", "r")
     biomes = json.load(biomes_file)
-    print(biomes["default"]["ores"])
+    print(biomes["ridge"]["ores"])
 
 class World(object):
     
