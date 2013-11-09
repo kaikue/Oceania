@@ -1,0 +1,43 @@
+{
+	"default": {
+		"name": "Default",
+		"maxelevation": 64,
+		"minelevation": 192,
+		"slope": 8,
+		"surface": "dirt",
+		"ores": [
+			
+		]
+	},
+	"ridge": {
+		"name": "Mid-Ocean Ridge",
+		"maxelevation": 128,
+		"minelevation": 192,
+		"slope": 32,
+		"surface": "basalt",
+		"ores": [
+			"peridot",
+			"iron"
+		]
+	}
+	"reef": {
+		"name": "Coral Reef",
+		"maxelevation": 64,
+		"minelevation": 96,
+		"slope": 16,
+		"surface": "coral",
+		"ores": [
+		
+		]
+	}
+	"forest": {
+		"name": "Kelp Forest",
+		"maxelevation": 64,
+		"minelevation": 96,
+		"slope": 16,
+		"surface": "coral",
+		"ores": [
+		
+		]
+	}
+}
