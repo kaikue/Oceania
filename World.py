@@ -3,6 +3,7 @@ import math
 import random
 import pickle
 import json
+import Game
 import Convert
 import Chunk
 import TwoWayList
@@ -15,8 +16,9 @@ CHUNKS_TO_SIDE = 2
 
 def load_biomes():
     biomes_file = open("biomes.json", "r")
+    global biomes
     biomes = json.load(biomes_file)
-    print(biomes["ridge"]["ores"])
+    biomes_file.close()
 
 class World(object):
     
@@ -26,23 +28,7 @@ class World(object):
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
         random.seed(self.name)
-        spawn = Chunk.Chunk()
-        spawn.generate_spawn()
-        self.loaded_chunks = TwoWayList.TwoWayList()
-        self.loaded_chunks.append(spawn)
-        r1 = Chunk.Chunk()
-        r1.generate_from_chunk(spawn, Chunk.LEFT)
-        self.loaded_chunks.append(r1)
-        r2 = Chunk.Chunk()
-        r2.generate_from_chunk(r1, Chunk.LEFT)
-        self.loaded_chunks.append(r2)
-        r1l = Chunk.Chunk()
-        r1l.generate_from_chunk(spawn, Chunk.RIGHT)
-        self.loaded_chunks.prepend(r1l)
-        r2l = Chunk.Chunk()
-        r2l.generate_from_chunk(r1l, Chunk.RIGHT)
-        self.loaded_chunks.prepend(r2l)
-        self.save_all()
+        self.generate_spawn()
         self.player = player
     
     def update(self):
@@ -124,6 +110,25 @@ class World(object):
         chunkfile.close()
         return chunk
     
+    def generate_spawn(self):
+        spawn = Chunk.Chunk()
+        spawn.generate_spawn()
+        self.loaded_chunks = TwoWayList.TwoWayList()
+        self.loaded_chunks.append(spawn)
+        r1 = Chunk.Chunk()
+        r1.generate_from_chunk(spawn, Chunk.LEFT)
+        self.loaded_chunks.append(r1)
+        r2 = Chunk.Chunk()
+        r2.generate_from_chunk(r1, Chunk.LEFT)
+        self.loaded_chunks.append(r2)
+        r1l = Chunk.Chunk()
+        r1l.generate_from_chunk(spawn, Chunk.RIGHT)
+        self.loaded_chunks.prepend(r1l)
+        r2l = Chunk.Chunk()
+        r2l.generate_from_chunk(r1l, Chunk.RIGHT)
+        self.loaded_chunks.prepend(r2l)
+        self.save_all()
+    
     def generate_chunk(self, index, basechunk, side):
         chunk = Chunk.Chunk()
         chunk.generate_from_chunk(basechunk, side)
@@ -132,3 +137,6 @@ class World(object):
     
     def close(self):
         self.save_all()
+
+if __name__ == "__main__":
+    Game.main()

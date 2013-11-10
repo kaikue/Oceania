@@ -1,12 +1,15 @@
 {
 	"default": {
-		"name": "Default",
+		"name": "Test Biome",
 		"maxelevation": 64,
 		"minelevation": 192,
 		"slope": 8,
 		"surface": "dirt",
 		"ores": [
-			
+			"peridot"
+		],
+		"structures": [
+			"kelp"
 		]
 	},
 	"ridge": {
@@ -18,26 +21,35 @@
 		"ores": [
 			"peridot",
 			"iron"
+		],
+		"structures": [
+			"ridge"
 		]
-	}
+	},
 	"reef": {
 		"name": "Coral Reef",
 		"maxelevation": 64,
 		"minelevation": 96,
 		"slope": 16,
-		"surface": "coral",
+		"surface": "sand",
 		"ores": [
 		
+		],
+		"structures": [
+			"coral"
 		]
-	}
+	},
 	"forest": {
 		"name": "Kelp Forest",
 		"maxelevation": 64,
 		"minelevation": 96,
 		"slope": 16,
-		"surface": "coral",
+		"surface": "basalt",
 		"ores": [
 		
+		],
+		"structures": [
+			"kelp"
 		]
 	}
 }

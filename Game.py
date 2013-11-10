@@ -46,14 +46,14 @@ def start():
     gamemode = PLAYING
     global font
     font = pygame.font.SysFont("monospace", 20)
+    World.load_biomes()
+    Block.load_images()
     global viewport
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global player
     player = Player.Player([0, 180], "img/player.png")
     global world
     world = World.World("defaultworld", player)
-    Block.load_images()
-    World.load_biomes()
     #improve this later
     global img_target
     img_target = pygame.image.load("img/target.png").convert_alpha()
@@ -95,8 +95,17 @@ def render():
     #draw clouds
     world.render(screen, viewport)
     if DEBUG:
-        fps = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
-        screen.blit(fps, (10, 10))
+        h = 10
+        fpsimg = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
+        screen.blit(fpsimg, (10, h))
+        h += fpsimg.get_height()
+        chunk = world.loaded_chunks.get(Convert.world_to_chunk(player.pos[0])[1])
+        chunkimg = font.render("chunk: " + str(chunk.x), 0, BLACK)
+        screen.blit(chunkimg, (10, h))
+        h += chunkimg.get_height()
+        biomeimg = font.render("biome: " + str(chunk.biome["name"]), 0, BLACK)
+        screen.blit(biomeimg, (10, h))
+        h += biomeimg.get_height()
     player.render(screen, Convert.world_to_viewport(player.pos, viewport))
     screen.blit(img_target, world.find_pos(world.find_angle(player, pygame.mouse.get_pos(), viewport), Convert.pixels_to_viewport(player.pixel_pos(), viewport)))
     pygame.display.flip()

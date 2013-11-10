@@ -1,5 +1,6 @@
 import math
 import pygame
+import Game
 import Convert
 import Chunk
 
@@ -65,3 +66,6 @@ class Entity(object):
     
     def render(self, screen, pos):
         screen.blit(self.img, pos)
+
+if __name__ == "__main__":
+    Game.main()

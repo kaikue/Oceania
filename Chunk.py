@@ -1,4 +1,5 @@
 import random
+import Game
 import Convert
 import World
 import Block
@@ -16,10 +17,9 @@ class Chunk(object):
     
     def generate_spawn(self):
         self.x = 0
-        #g = self.midpoint_displace([0, 0])
-        #print(g, len(g))
+        self.biome = World.biomes["default"] #this works
         self.generate_spawn_heights()
-        self.generate_blocks()
+        self.populate()
     
     def generate_spawn_heights(self):
         self.heights = [196] * WIDTH
@@ -29,17 +29,17 @@ class Chunk(object):
             self.x = chunk.x + 1
         else:
             self.x = chunk.x - 1
+        self.biome = chunk.biome
         self.generate_heights_from_chunk(chunk, sidegenerated)
-        self.generate_blocks()
+        self.populate()
     
     def generate_heights_from_chunk(self, chunk, sidegenerated):
-        #tempheights = [0] * WIDTH
         tempheights = [0, 0]
         if sidegenerated == LEFT:
             #generate with left start
             leftx = int(chunk.heights[WIDTH - 1])
             tempheights[0] = leftx
-            tempheights[1] = random.randint(leftx - MAX_SLOPE, leftx + MAX_SLOPE) #WIDTH - 1
+            tempheights[1] = random.randint(leftx - MAX_SLOPE, leftx + MAX_SLOPE)
         else:
             #generate with right start
             rightx = int(chunk.heights[0])
@@ -63,7 +63,7 @@ class Chunk(object):
             lst = newpoints
         return lst
     
-    def generate_blocks(self):
+    def populate(self):
         for y in range(len(self.blocks)):
             for x in range(len(self.blocks[y])):
                 if y < World.SEA_LEVEL:
@@ -72,7 +72,15 @@ class Chunk(object):
                     self.blocks[y][x] = Block.Block(Block.WATER)
                 else:
                     self.blocks[y][x] = Block.Block(Block.DIRT)
+        self.decorate()
     
+    def decorate(self):
+        for x in range(WIDTH):
+            for structure in self.biome["structures"]:
+                if random.random() < structure["frequency"]:
+                    #create that structure at x
+                    break
+        
     def render(self, screen, viewport):
         top = max(Convert.pixel_to_world(viewport.y), 0)
         bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
@@ -84,3 +92,6 @@ class Chunk(object):
     
     def __str__(self):
         return "Chunk at x=" + str(self.x) + " contains entities " + str(self.entities)
+
+if __name__ == "__main__":
+    Game.main()
