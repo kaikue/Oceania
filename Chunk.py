@@ -1,8 +1,8 @@
 import random
+import pygame
 import Game
 import Convert
 import World
-import Block
 
 WIDTH = 16
 LEFT = False
@@ -67,28 +67,43 @@ class Chunk(object):
         for y in range(len(self.blocks)):
             for x in range(len(self.blocks[y])):
                 if y < World.SEA_LEVEL:
-                    self.blocks[y][x] = Block.Block(Block.AIR)
+                    self.blocks[y][x] = World.blocks["air"]
                 elif y < self.heights[x]:
-                    self.blocks[y][x] = Block.Block(Block.WATER)
+                    self.blocks[y][x] = World.blocks["water"]
                 else:
-                    self.blocks[y][x] = Block.Block(Block.DIRT)
+                    self.blocks[y][x] = World.blocks["dirt"]
         self.decorate()
     
     def decorate(self):
         for x in range(WIDTH):
-            for structure in self.biome["structures"]:
+            for structure_name in self.biome["structures"]:
+                structure = World.structures[structure_name]
                 if random.random() < structure["frequency"]:
                     #create that structure at x
+                    self.generate_structure(structure, x)
                     break
-        
+    
+    def generate_structure(self, structure, x):
+        if structure["type"] == "column":
+            print(":)")
+        elif structure["type"] == "blob":
+            print(":(")
+    
     def render(self, screen, viewport):
         top = max(Convert.pixel_to_world(viewport.y), 0)
         bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
         for blocky in range(top, bottom):
             for blockx in range(WIDTH):
-                self.blocks[blocky][blockx].render(screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
+                #self.blocks[blocky][blockx].render(screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
+                self.render_block(self.blocks[blocky][blockx], screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
         for entity in self.entities:
             entity.render(screen, Convert.world_to_viewport([Convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
+    
+    def render_block(self, block, screen, pos):
+        screen.blit(World.block_images[block["id"]], pos)
+        if Game.DEBUG:
+            #draw bounding box
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(pos[0], pos[1], Game.BLOCK_SIZE, Game.BLOCK_SIZE), 1)
     
     def __str__(self):
         return "Chunk at x=" + str(self.x) + " contains entities " + str(self.entities)

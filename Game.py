@@ -5,7 +5,6 @@ import os
 import sys
 import Convert
 import World
-import Block
 import Player
 
 
@@ -13,6 +12,8 @@ import Player
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
+
+BLOCK_SIZE = 32
 
 MENU = 0
 PLAYING = 1
@@ -46,8 +47,8 @@ def start():
     gamemode = PLAYING
     global font
     font = pygame.font.SysFont("monospace", 20)
-    World.load_biomes()
-    Block.load_images()
+    World.load_data()
+    #Block.load_images()
     global viewport
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global player
@@ -125,7 +126,7 @@ if __name__ == "__main__":
 """
 BUGS
 Pickling is slow- use marshal?
-World generation might use old chunks if they exist- needs more testing
+Eclipse doesn't believe in function-defined global variables- make these objects or something?
 
 NEEDED FEATURES
 World generation

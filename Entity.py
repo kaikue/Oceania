@@ -26,7 +26,8 @@ class Entity(object):
         for block_x in range(left, right):
             for block_y in range(top, bottom):
                 check_block = chunk.blocks[block_y][block_x]
-                if check_block.is_solid() and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
+                #if check_block.is_solid() and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
+                if check_block["solid"] and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
                     #found a collision! 
                     self.pos[index] = old_pos[index]
                     return

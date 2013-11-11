@@ -1,0 +1,27 @@
+{
+	"air": {
+		"id": 0,
+		"solid": true,
+		"image": ""
+	},
+	"water": {
+		"id": 1,
+		"solid": false,
+		"image": "img/water.png"
+	},
+	"dirt": {
+		"id": 2,
+		"solid": true,
+		"image": "img/dirt.png"
+	},
+	"basalt": {
+		"id": 3,
+		"solid": true,
+		"image": "img/basalt.png"
+	},
+	"kelp": {
+		"id": 4,
+		"solid": false,
+		"image": "img/kelp.png"
+	}
+}

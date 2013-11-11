@@ -3,22 +3,51 @@ import math
 import random
 import pickle
 import json
+import pygame
 import Game
 import Convert
 import Chunk
 import TwoWayList
-import Block
 
 HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
 SEA_FLOOR = HEIGHT * 3 / 4
 CHUNKS_TO_SIDE = 2
 
+def load_data():
+    load_biomes()
+    load_structures()
+    load_blocks()
+    load_block_images()
+
 def load_biomes():
     biomes_file = open("biomes.json", "r")
     global biomes
     biomes = json.load(biomes_file)
     biomes_file.close()
+
+def load_structures():
+    structures_file = open("structures.json", "r")
+    global structures
+    structures = json.load(structures_file)
+    structures_file.close()
+
+def load_blocks():
+    blocks_file = open("blocks.json", "r")
+    global blocks
+    blocks = json.load(blocks_file)
+    blocks_file.close()
+
+def load_block_images():
+    global block_images
+    block_images = {}
+    for block in blocks:
+        path = blocks[block]["image"]
+        if path != "":
+            image = pygame.image.load(path).convert_alpha()
+            image = pygame.transform.scale(image, (Game.BLOCK_SIZE, Game.BLOCK_SIZE))
+            block_images[blocks[block]["id"]] = image
+
 
 class World(object):
     
@@ -59,7 +88,7 @@ class World(object):
         block_pos = Convert.pixels_to_world(self.find_pos(angle, player.pixel_pos()))
         chunk = Convert.world_to_chunk(block_pos[0])[1]
         x_in_chunk = Convert.world_to_chunk(block_pos[0])[0]
-        self.loaded_chunks.get(chunk).blocks[block_pos[1]][x_in_chunk] = Block.Block(Block.WATER)
+        self.loaded_chunks.get(chunk).blocks[block_pos[1]][x_in_chunk] = blocks["water"]#Block.Block(Block.WATER)
     
     def load_chunks(self, center):
         #unload and serialize unneeded chunks
