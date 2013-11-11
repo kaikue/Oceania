@@ -86,7 +86,6 @@ class Chunk(object):
     def generate_structure(self, structure, x):
         if structure["type"] == "column":
             height = random.randint(structure["minheight"], structure["maxheight"])
-            print(self.heights[x])
             for y in range(self.heights[x] - height, self.heights[x]):
                 self.blocks[y][x] = World.blocks[structure["block"]]
         elif structure["type"] == "other":
@@ -97,7 +96,6 @@ class Chunk(object):
         bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
         for blocky in range(top, bottom):
             for blockx in range(WIDTH):
-                #self.blocks[blocky][blockx].render(screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
                 self.render_block(self.blocks[blocky][blockx], screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
         for entity in self.entities:
             entity.render(screen, Convert.world_to_viewport([Convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
@@ -105,6 +103,8 @@ class Chunk(object):
     def render_block(self, block, screen, pos):
         #fix this later
         if block["id"] != 0:
+            #if image is transparent:
+            #    screen.blit(World.block_images[1], pos)
             screen.blit(World.block_images[block["id"]], pos)
         if Game.DEBUG:
             #draw bounding box

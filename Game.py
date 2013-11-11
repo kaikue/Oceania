@@ -123,39 +123,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-"""
-BUGS
-Pickling is slow- use marshal?
-Eclipse doesn't believe in function-defined global variables- make these objects or something?
-
-NEEDED FEATURES
-World generation
-    Better terrain
-    Caves
-        Lava tubes
-    Spawn midpoint displacement
-    Structures (over multiple chunks)
-        Temple
-        Volcanic pipe- kimberlite, diamond
-    Biomes
-Entities
-    Enemies, friendlies
-    Dropped blocks
-Player
-    Inventory
-Crafting
-Menus
-    Get input from user to name world
-Combat
-Move player coordinate to center
-Sound
-Block placement & destruction
-    Make block breaking take time
-    Drop block item
-    Shorten raycast to nearest block
-    Center target image
-    Make target only show when pointing at block within range???
-        could remove target entirely, highlight selected block/space?
-"""

@@ -5,6 +5,7 @@
 		"minelevation": 192,
 		"slope": 8,
 		"surface": "dirt",
+		"base": "basalt",
 		"ores": [
 			"peridot"
 		],
@@ -18,6 +19,7 @@
 		"minelevation": 192,
 		"slope": 32,
 		"surface": "basalt",
+		"base": "basalt",
 		"ores": [
 			"peridot",
 			"iron"
@@ -32,6 +34,7 @@
 		"minelevation": 96,
 		"slope": 16,
 		"surface": "sand",
+		"base": "basalt",
 		"ores": [
 		
 		],
@@ -45,6 +48,7 @@
 		"minelevation": 96,
 		"slope": 16,
 		"surface": "basalt",
+		"base": "basalt",
 		"ores": [
 		
 		],
