@@ -2,8 +2,8 @@
 	"kelp": {
 		"type": "column",
 		"block": "kelp",
-		"minheight": "4",
-		"maxheight": "24",
+		"minheight": 4,
+		"maxheight": 24,
 		"frequency": 0.2
 	}
 	

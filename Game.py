@@ -48,7 +48,6 @@ def start():
     global font
     font = pygame.font.SysFont("monospace", 20)
     World.load_data()
-    #Block.load_images()
     global viewport
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global player
@@ -100,6 +99,9 @@ def render():
         fpsimg = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
         screen.blit(fpsimg, (10, h))
         h += fpsimg.get_height()
+        posimg = font.render("pos: " + str(player.pos), 0, BLACK)
+        screen.blit(posimg, (10, h))
+        h += posimg.get_height()
         chunk = world.loaded_chunks.get(Convert.world_to_chunk(player.pos[0])[1])
         chunkimg = font.render("chunk: " + str(chunk.x), 0, BLACK)
         screen.blit(chunkimg, (10, h))
@@ -145,6 +147,7 @@ Player
     Inventory
 Crafting
 Menus
+    Get input from user to name world
 Combat
 Move player coordinate to center
 Sound

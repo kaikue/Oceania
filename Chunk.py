@@ -57,9 +57,9 @@ class Chunk(object):
                 midpoint = (lst[i] + lst[i + 1]) / 2
                 midpoint += random.randint(-int(displace), int(displace))
                 displace /= 2
-                newpoints.append(lst[i])
-                newpoints.append(midpoint)
-            newpoints.append(lst[-1]) #add the last point which wasn't counted
+                newpoints.append(int(lst[i]))
+                newpoints.append(int(midpoint))
+            newpoints.append(int(lst[-1])) #add the last point which wasn't counted
             lst = newpoints
         return lst
     
@@ -85,9 +85,12 @@ class Chunk(object):
     
     def generate_structure(self, structure, x):
         if structure["type"] == "column":
-            print(":)")
-        elif structure["type"] == "blob":
-            print(":(")
+            height = random.randint(structure["minheight"], structure["maxheight"])
+            print(self.heights[x])
+            for y in range(self.heights[x] - height, self.heights[x]):
+                self.blocks[y][x] = World.blocks[structure["block"]]
+        elif structure["type"] == "other":
+            pass
     
     def render(self, screen, viewport):
         top = max(Convert.pixel_to_world(viewport.y), 0)
@@ -100,7 +103,9 @@ class Chunk(object):
             entity.render(screen, Convert.world_to_viewport([Convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
     
     def render_block(self, block, screen, pos):
-        screen.blit(World.block_images[block["id"]], pos)
+        #fix this later
+        if block["id"] != 0:
+            screen.blit(World.block_images[block["id"]], pos)
         if Game.DEBUG:
             #draw bounding box
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(pos[0], pos[1], Game.BLOCK_SIZE, Game.BLOCK_SIZE), 1)
