@@ -4,7 +4,7 @@ import Convert
 class Player(Entity.Entity):
     
     def __init__(self, pos, imageurl):
-        super(Player, self).__init__(pos, imageurl)
+        Entity.Entity.__init__(self, pos, imageurl=imageurl)
         self.max_speed = 0.25
         self.acceleration = 0.025 #fiddle with this until it seems good
     

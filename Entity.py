@@ -6,9 +6,12 @@ import Chunk
 
 class Entity(object):
     
-    def __init__(self, pos, imageurl):
+    def __init__(self, pos, imageurl="", image=None):
         self.pos = pos
-        self.img = pygame.image.load(imageurl).convert_alpha()
+        if image != None:
+            self.img = image
+        elif imageurl != "":
+            self.img = pygame.image.load(imageurl).convert_alpha()
         #bounding box is in pixels because it can only have ints
         self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), self.img.get_width(), self.img.get_height())
         self.width = Convert.pixel_to_world(self.img.get_width()) + 1

@@ -8,6 +8,7 @@ import Game
 import Convert
 import Chunk
 import TwoWayList
+import BlockDrop
 
 HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
@@ -23,7 +24,6 @@ def load_data():
     load_biomes()
     load_structures()
     load_blocks()
-    load_block_images()
 
 def load_biomes():
     biomes_file = open("biomes.json", "r")
@@ -42,12 +42,12 @@ def load_blocks():
     global blocks
     blocks = json.load(blocks_file)
     blocks_file.close()
-
-def load_block_images():
+    
     global block_images
     block_images = {}
     water_image = pygame.image.load(blocks["water"]["image"]).convert_alpha()
     for block in blocks:
+        blocks[block]["name"] = block #add the name to the dictionary so we can look it up only knowing the position
         path = blocks[block]["image"]
         if path != "":
             image = water_image.copy()
@@ -75,11 +75,10 @@ class World(object):
                 entity.update(self)
                 if entity.pos[0] / Chunk.WIDTH != chunk.x: 
                     chunk.entities.remove(entity)
-                    self.loaded_chunks.get(entity.pos[0] / Chunk.WIDTH).entities.append(entity)
+                    self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
     
     def find_angle(self, player, mouse_pos, viewport):
         #find nearest breakable block based on angle from player pos to mouse pos (raycasting?)
-        #begin breaking it
         x_diff = Convert.viewport_to_pixel(mouse_pos[0], viewport, 0) - player.bounding_box.x
         y_diff = Convert.viewport_to_pixel(mouse_pos[1], viewport, 1) - player.bounding_box.y
         angle = math.atan2(y_diff, x_diff)
@@ -94,9 +93,12 @@ class World(object):
     def break_block(self, player, mouse_pos, viewport):
         angle = self.find_angle(player, mouse_pos, viewport)
         block_pos = Convert.pixels_to_world(self.find_pos(angle, player.pixel_pos()))
-        chunk = Convert.world_to_chunk(block_pos[0])[1]
+        chunk = self.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
         x_in_chunk = Convert.world_to_chunk(block_pos[0])[0]
-        self.loaded_chunks.get(chunk).blocks[block_pos[1]][x_in_chunk] = blocks["water"]#Block.Block(Block.WATER)
+        block = chunk.blocks[block_pos[1]][x_in_chunk]
+        if block["name"] != "water":
+            chunk.blocks[block_pos[1]][x_in_chunk] = blocks["water"]
+            chunk.entities.append(BlockDrop.BlockDrop(block_pos, block["name"]))
     
     def load_chunks(self, center):
         #unload and serialize unneeded chunks
