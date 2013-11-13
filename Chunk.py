@@ -103,7 +103,7 @@ class Chunk(object):
     def render_block(self, block, screen, pos):
         #fix this later
         if block["id"] != 0:
-            #if image is transparent:
+            #if block["transparent"]:
             #    screen.blit(World.block_images[1], pos)
             screen.blit(World.block_images[block["id"]], pos)
         if Game.DEBUG:

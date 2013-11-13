@@ -21,6 +21,7 @@ RESET = 2
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+TRANSPARENT = (0, 0, 0, 0)
 SKY = (128, 128, 255)
 
 DEBUG = True
@@ -61,7 +62,7 @@ def start():
 
 def run():
     while True:
-        clock.tick(60)
+        clock.tick_busy_loop(60)
         update()
         render()
 

@@ -8,9 +8,6 @@ BUGS
 --
  - Pickling is slow- multithread?
  - Eclipse doesn't believe in function-defined global variables- make these objects or something?
- - Draw water under transparent blocks
-     - check if transparent, somehow?
-     - do this at image load
 
 NEEDED FEATURES
 --

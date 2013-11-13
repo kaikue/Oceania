@@ -41,12 +41,15 @@ def load_blocks():
 def load_block_images():
     global block_images
     block_images = {}
+    water_image = pygame.image.load(blocks["water"]["image"]).convert_alpha()
     for block in blocks:
         path = blocks[block]["image"]
         if path != "":
-            image = pygame.image.load(path).convert_alpha()
-            image = pygame.transform.scale(image, (Game.BLOCK_SIZE, Game.BLOCK_SIZE))
-            block_images[blocks[block]["id"]] = image
+            image = water_image.copy()
+            blockimg = pygame.image.load(path).convert_alpha()
+            image.blit(blockimg, (0, 0))
+            surf = pygame.transform.scale(image, (Game.BLOCK_SIZE, Game.BLOCK_SIZE))
+            block_images[blocks[block]["id"]] = surf
 
 
 class World(object):
