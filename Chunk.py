@@ -101,10 +101,7 @@ class Chunk(object):
             entity.render(screen, Convert.world_to_viewport([Convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
     
     def render_block(self, block, screen, pos):
-        #fix this later
         if block["id"] != 0:
-            #if block["transparent"]:
-            #    screen.blit(World.block_images[1], pos)
             screen.blit(World.block_images[block["id"]], pos)
         if Game.DEBUG:
             #draw bounding box

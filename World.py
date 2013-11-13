@@ -14,6 +14,11 @@ SEA_LEVEL = HEIGHT / 4
 SEA_FLOOR = HEIGHT * 3 / 4
 CHUNKS_TO_SIDE = 2
 
+biomes = {}
+structures = {}
+blocks = {}
+block_images = {}
+
 def load_data():
     load_biomes()
     load_structures()

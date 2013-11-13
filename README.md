@@ -7,7 +7,6 @@ Created by Kai Kuehner, 2013.
 BUGS
 --
  - Pickling is slow- multithread?
- - Eclipse doesn't believe in function-defined global variables- make these objects or something?
 
 NEEDED FEATURES
 --

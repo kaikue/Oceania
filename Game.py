@@ -93,9 +93,9 @@ def update():
 
 def render():
     screen.fill(SKY)
-    #draw clouds
     world.render(screen, viewport)
     if DEBUG:
+        #render debug text
         h = 10
         fpsimg = font.render("fps: " + str(clock.get_fps()), 0, BLACK)
         screen.blit(fpsimg, (10, h))
