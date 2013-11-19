@@ -7,6 +7,8 @@ Created by Kai Kuehner, 2013.
 BUGS
 --
  - Pickling is slow- multithread?
+ - Block breaking & drops have issues in non-spawn chunks
+ - Crash if attempt to generate biome with altitude too high
 
 NEEDED FEATURES
 --

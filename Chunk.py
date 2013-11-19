@@ -7,7 +7,6 @@ import World
 WIDTH = 16
 LEFT = False
 RIGHT = True
-MAX_SLOPE = 32
 
 class Chunk(object):
     def __init__(self):
@@ -22,40 +21,76 @@ class Chunk(object):
         self.populate()
     
     def generate_spawn_heights(self):
-        self.heights = [196] * WIDTH
+        self.heights = [144] * WIDTH
     
     def generate_from_chunk(self, chunk, sidegenerated):
         if sidegenerated == LEFT:
             self.x = chunk.x + 1
+            sideheight = chunk.heights[WIDTH - 1]
         else:
             self.x = chunk.x - 1
-        self.biome = chunk.biome
+            sideheight = chunk.heights[0]
+        if random.random() < 0.5: #can fiddle with this- maybe based on previous chunk's biome
+            biomes_wanted = []
+            print(sideheight)
+            for biome in World.biomes:
+                print(World.biomes[biome]["maxelevation"], World.biomes[biome]["minelevation"])
+                if World.biomes[biome]["maxelevation"] < sideheight < World.biomes[biome]["minelevation"]:
+                    biomes_wanted.append(World.biomes[biome])
+            print(biomes_wanted)
+            self.biome = biomes_wanted[random.randrange(len(biomes_wanted))] #select random from biomes_wanted
+        else:
+            self.biome = chunk.biome
+        print("Chunk", self.x, "is biome", self.biome)
         self.generate_heights_from_chunk(chunk, sidegenerated)
         self.populate()
     
     def generate_heights_from_chunk(self, chunk, sidegenerated):
+        displace = self.biome["displacement"]
+        floor = self.biome["maxelevation"]
+        ceiling = self.biome["minelevation"]
         tempheights = [0, 0]
         if sidegenerated == LEFT:
-            #generate with left start
-            leftx = int(chunk.heights[WIDTH - 1])
-            tempheights[0] = leftx
-            tempheights[1] = random.randint(leftx - MAX_SLOPE, leftx + MAX_SLOPE)
+            #Pre-existing chunk is on the left side
+            lefth = int(chunk.heights[WIDTH - 1])
+            righth = random.randint(lefth - self.biome["slope"], lefth + self.biome["slope"])
+            righth = min(righth, ceiling)
+            righth = max(righth, floor)
         else:
-            #generate with right start
-            rightx = int(chunk.heights[0])
-            tempheights[1] = rightx
-            tempheights[0] = random.randint(rightx - MAX_SLOPE, rightx + MAX_SLOPE)
-        tempheights = self.midpoint_displace(tempheights)
+            #Pre-existing chunk is on the right side
+            righth = int(chunk.heights[0])
+            lefth = random.randint(righth - self.biome["slope"], righth + self.biome["slope"])
+            lefth = min(lefth, ceiling)
+            lefth = max(lefth, floor)
+        tempheights[0] = lefth
+        tempheights[1] = righth
+        
+        #Midpoint Displacement Algorithm
+        while len(tempheights) < WIDTH:
+            newpoints = []
+            for i in range(len(tempheights) - 1):
+                midpoint = (tempheights[i] + tempheights[i + 1]) / 2
+                midpoint += random.randint(-int(displace), int(displace))
+                midpoint = min(midpoint, ceiling)
+                midpoint = max(midpoint, floor)
+                displace /= 2
+                newpoints.append(int(tempheights[i]))
+                newpoints.append(int(midpoint))
+            newpoints.append(int(tempheights[-1])) #add the last point which wasn't counted
+            tempheights = newpoints
         self.heights = tempheights
     
     def midpoint_displace(self, lst):
-        displace = 8
-        #for _ in range(iters):
+        displace = self.biome["displacement"]
+        floor = self.biome["maxelevation"]
+        ceiling = self.biome["minelevation"]
         while len(lst) < WIDTH:
             newpoints = []
             for i in range(len(lst) - 1):
                 midpoint = (lst[i] + lst[i + 1]) / 2
                 midpoint += random.randint(-int(displace), int(displace))
+                midpoint = min(midpoint, ceiling)
+                midpoint = max(midpoint, floor)
                 displace /= 2
                 newpoints.append(int(lst[i]))
                 newpoints.append(int(midpoint))

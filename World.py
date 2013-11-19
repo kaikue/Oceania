@@ -96,9 +96,10 @@ class World(object):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
         x_in_chunk = Convert.world_to_chunk(block_pos[0])[0]
         block = chunk.blocks[block_pos[1]][x_in_chunk]
+        print(x_in_chunk, block_pos[1])
         if block["name"] != "water":
             chunk.blocks[block_pos[1]][x_in_chunk] = blocks["water"]
-            chunk.entities.append(BlockDrop.BlockDrop(block_pos, block["name"]))
+            chunk.entities.append(BlockDrop.BlockDrop([x_in_chunk, block_pos[1]], block["name"]))
     
     def load_chunks(self, center):
         #unload and serialize unneeded chunks

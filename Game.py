@@ -52,7 +52,7 @@ def start():
     global viewport
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global player
-    player = Player.Player([0, 180], "img/player.png")
+    player = Player.Player([0, 140], "img/player.png")
     global world
     world = World.World("defaultworld", player)
     #improve this later

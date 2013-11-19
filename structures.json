@@ -5,6 +5,13 @@
 		"minheight": 4,
 		"maxheight": 24,
 		"frequency": 0.2
+	},
+	"ridge": {
+		"type": "mountain",
+		"frequency": 0.0
+	},
+	"coral": {
+		"type": "blob",
+		"frequency": 0.0
 	}
-	
 }
