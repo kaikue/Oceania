@@ -73,7 +73,8 @@ class World(object):
             chunk = self.loaded_chunks.get(x)
             for entity in chunk.entities:
                 entity.update(self)
-                if entity.pos[0] / Chunk.WIDTH != chunk.x: 
+                if Convert.world_to_chunk(entity.pos[0])[1] != chunk.x:
+                    print("Moving", entity, entity.pos)
                     chunk.entities.remove(entity)
                     self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
     
@@ -96,10 +97,9 @@ class World(object):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
         x_in_chunk = Convert.world_to_chunk(block_pos[0])[0]
         block = chunk.blocks[block_pos[1]][x_in_chunk]
-        print(x_in_chunk, block_pos[1])
         if block["name"] != "water":
             chunk.blocks[block_pos[1]][x_in_chunk] = blocks["water"]
-            chunk.entities.append(BlockDrop.BlockDrop([x_in_chunk, block_pos[1]], block["name"]))
+            chunk.entities.append(BlockDrop.BlockDrop(block_pos, block["name"]))
     
     def load_chunks(self, center):
         #unload and serialize unneeded chunks
@@ -148,6 +148,8 @@ class World(object):
         chunkfile = open(self.get_chunk_file(index), "rb")
         chunk = pickle.load(chunkfile)
         chunkfile.close()
+        for entity in chunk.entities:
+            entity.load_image()
         return chunk
     
     def generate_spawn(self):

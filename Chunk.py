@@ -32,16 +32,16 @@ class Chunk(object):
             sideheight = chunk.heights[0]
         if random.random() < 0.5: #can fiddle with this- maybe based on previous chunk's biome
             biomes_wanted = []
-            print(sideheight)
+            #print(sideheight)
             for biome in World.biomes:
-                print(World.biomes[biome]["maxelevation"], World.biomes[biome]["minelevation"])
+                #print(World.biomes[biome]["maxelevation"], World.biomes[biome]["minelevation"])
                 if World.biomes[biome]["maxelevation"] < sideheight < World.biomes[biome]["minelevation"]:
                     biomes_wanted.append(World.biomes[biome])
-            print(biomes_wanted)
+            #print(biomes_wanted)
             self.biome = biomes_wanted[random.randrange(len(biomes_wanted))] #select random from biomes_wanted
         else:
             self.biome = chunk.biome
-        print("Chunk", self.x, "is biome", self.biome)
+        #print("Chunk", self.x, "is biome", self.biome)
         self.generate_heights_from_chunk(chunk, sidegenerated)
         self.populate()
     
@@ -133,7 +133,7 @@ class Chunk(object):
             for blockx in range(WIDTH):
                 self.render_block(self.blocks[blocky][blockx], screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
         for entity in self.entities:
-            entity.render(screen, Convert.world_to_viewport([Convert.chunk_to_world(entity.pos[0], self), entity.pos[1]], viewport))
+            entity.render(screen, Convert.world_to_viewport(entity.pos, viewport))
     
     def render_block(self, block, screen, pos):
         if block["id"] != 0:

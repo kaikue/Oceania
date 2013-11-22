@@ -6,18 +6,22 @@ import Chunk
 
 class Entity(object):
     
-    def __init__(self, pos, imageurl="", image=None):
+    def __init__(self, pos, imageurl, scale=()):
         self.pos = pos
-        if image != None:
-            self.img = image
-        elif imageurl != "":
-            self.img = pygame.image.load(imageurl).convert_alpha()
+        self.imageurl = imageurl
+        self.scale = scale
+        self.load_image()
         #bounding box is in pixels because it can only have ints
         self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), self.img.get_width(), self.img.get_height())
         self.width = Convert.pixel_to_world(self.img.get_width()) + 1
         self.height = Convert.pixel_to_world(self.img.get_height()) + 1
         self.dir = [0, 0] #direction: -1, 0, 1
         self.vel = [0, 0] #speeds: any numbers
+    
+    def load_image(self):
+        self.img = pygame.image.load(self.imageurl).convert_alpha()
+        if self.scale != ():
+            self.img = pygame.transform.scale(self.img, (self.scale[0], self.scale[1]))
     
     def pixel_pos(self):
         return [self.bounding_box.x, self.bounding_box.y]
