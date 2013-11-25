@@ -35,9 +35,8 @@ class Chunk(object):
             #print(sideheight)
             for biome in World.biomes:
                 #print(World.biomes[biome]["maxelevation"], World.biomes[biome]["minelevation"])
-                if World.biomes[biome]["maxelevation"] < sideheight < World.biomes[biome]["minelevation"]:
+                if World.biomes[biome]["maxelevation"] <= sideheight <= World.biomes[biome]["minelevation"]:
                     biomes_wanted.append(World.biomes[biome])
-            #print(biomes_wanted)
             self.biome = biomes_wanted[random.randrange(len(biomes_wanted))] #select random from biomes_wanted
         else:
             self.biome = chunk.biome
@@ -114,7 +113,6 @@ class Chunk(object):
             for structure_name in self.biome["structures"]:
                 structure = World.structures[structure_name]
                 if random.random() < structure["frequency"]:
-                    #create that structure at x
                     self.generate_structure(structure, x)
                     break
     

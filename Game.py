@@ -36,7 +36,7 @@ def start():
     pygame.init()
     pygame.display.set_caption("Oceania")
     global screen
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #add double buffering flag
     global clock
     clock = pygame.time.Clock()
     #pygame.mixer.init()

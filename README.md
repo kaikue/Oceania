@@ -7,33 +7,31 @@ Created by Kai Kuehner, 2013.
 BUGS
 --
  - Pickling is slow- multithread?
- - Crash if attempt to generate biome with altitude too high
 
 NEEDED FEATURES
 --
  - World generation
-     - Better terrain
      - Caves
          - Lava tubes
      - Spawn midpoint displacement
-     - Structures (over multiple chunks)
-         - Temple
-         - Volcanic pipe- kimberlite, diamond
      - Biomes
+         - Different terrain blocks
+         - Ores
+         - Structures (over multiple chunks)
+             - Temple
+             - Volcanic pipe- kimberlite, diamond
  - Entities
      - Enemies, friendlies
-     - Dropped blocks
  - Player
      - Inventory
  - Crafting
  - Menus
      - Get input from user to name world
  - Combat
- - Move player coordinate to center
+ - Move player coordinate to center of imag
  - Sound
  - Block placement & destruction
      - Make block breaking take time
-     - Drop block item
      - Shorten raycast to nearest block
      - Center target image
      - Make target only show when pointing at block within range???
