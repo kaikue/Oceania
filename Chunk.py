@@ -98,14 +98,19 @@ class Chunk(object):
         return lst
     
     def populate(self):
+        #Fill in blocks based on heights
         for y in range(len(self.blocks)):
             for x in range(len(self.blocks[y])):
+                surface_depth = self.heights[x] + 2 + random.randrange(4)
                 if y < World.SEA_LEVEL:
                     self.blocks[y][x] = World.blocks["air"]
                 elif y < self.heights[x]:
                     self.blocks[y][x] = World.blocks["water"]
+                elif y < surface_depth:
+                    #for some reason this sometimes makes base blocks above surface blocks, but it looks cool so I'll probably leave it
+                    self.blocks[y][x] = World.blocks[self.biome["surface"]]
                 else:
-                    self.blocks[y][x] = World.blocks["dirt"]
+                    self.blocks[y][x] = World.blocks[self.biome["base"]]
         self.decorate()
     
     def decorate(self):

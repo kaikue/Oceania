@@ -24,7 +24,7 @@ WHITE = (255, 255, 255)
 TRANSPARENT = (0, 0, 0, 0)
 SKY = (128, 128, 255)
 
-DEBUG = True
+DEBUG = True #displays fps, coords, grid, etc. but impacts performance.
 
 
 #GAME FUNCTIONS

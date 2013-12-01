@@ -15,7 +15,6 @@ NEEDED FEATURES
          - Lava tubes
      - Spawn midpoint displacement
      - Biomes
-         - Different terrain blocks
          - Ores
          - Structures (over multiple chunks)
              - Temple
@@ -28,7 +27,7 @@ NEEDED FEATURES
  - Menus
      - Get input from user to name world
  - Combat
- - Move player coordinate to center of imag
+ - Move player coordinate to center of image
  - Sound
  - Block placement & destruction
      - Make block breaking take time
