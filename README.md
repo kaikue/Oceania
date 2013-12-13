@@ -6,6 +6,8 @@ Created by Kai Kuehner, 2013.
 
 BUGS
 --
+ - Button does not function correctly when run from Game.py
+     - problem with global variables- look into singleton?
  - Pickling is slow- multithread?
 
 NEEDED FEATURES
