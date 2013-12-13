@@ -2,18 +2,12 @@ import pygame
 import Game
 
 #Buttons needed: play, quit, options
-"""
-BACKGROUND_PATH = "img/button.png"
-BACKGROUND = pygame.image.load(BACKGROUND_PATH).convert_alpha()
-WIDTH = BACKGROUND.get_width()
-HEIGHT = BACKGROUND.get_height()
-"""
 WIDTH = 150
 HEIGHT = 60
 COLOR_INACTIVE = (97, 180, 207)
 COLOR_HOVER = (58, 170, 207)
 COLOR_PRESSED = (9, 121, 159)
-
+FONT_COLOR = (0, 0, 0)
 
 def draw_rounded_rect(surface, rect, color, radius=0.4):
     """
@@ -60,6 +54,7 @@ class Button(object):
         self.text = text
         self.effect = effect
         self.pressed = False
+        self.font = pygame.font.SysFont("monospace", 20)
     
     def activate(self):
         if self.effect == "play":
@@ -82,7 +77,7 @@ class Button(object):
         else:
             color = COLOR_INACTIVE
         draw_rounded_rect(screen, self.get_rect(), color)
-        text_img = Game.font.render(self.text, 0, Game.BLACK)
+        text_img = self.font.render(self.text, 0, FONT_COLOR)
         h = text_img.get_height()
         w = text_img.get_width()
         screen.blit(text_img, (self.pos[0] + (WIDTH - w) / 2, self.pos[1] + (HEIGHT - h) / 2))
