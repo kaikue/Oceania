@@ -48,6 +48,9 @@ def load_blocks():
     water_image = pygame.image.load(blocks["water"]["image"]).convert_alpha()
     for block in blocks:
         blocks[block]["name"] = block #add the name to the dictionary so we can look it up only knowing the position
+        #if block has the attribute breakable, set it to that, otherwise set it to true
+        if "breakable" not in blocks[block].keys():
+            blocks[block]["breakable"] = True
         path = blocks[block]["image"]
         if path != "":
             image = water_image.copy()
@@ -97,7 +100,7 @@ class World(object):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
         x_in_chunk = Convert.world_to_chunk(block_pos[0])[0]
         block = chunk.blocks[block_pos[1]][x_in_chunk]
-        if block["name"] != "water":
+        if block["breakable"]:
             chunk.blocks[block_pos[1]][x_in_chunk] = blocks["water"]
             chunk.entities.append(BlockDrop.BlockDrop(block_pos, block["name"]))
     

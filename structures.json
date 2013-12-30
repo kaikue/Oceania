@@ -6,6 +6,10 @@
 		"maxheight": 24,
 		"frequency": 0.2
 	},
+	"temple": {
+		"type": "json",
+		"location": "temple.json"
+	},
 	"ridge": {
 		"type": "mountain",
 		"frequency": 0.0

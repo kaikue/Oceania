@@ -2,12 +2,14 @@
 	"air": {
 		"id": 0,
 		"solid": true,
-		"image": ""
+		"image": "",
+		"breakable": false
 	},
 	"water": {
 		"id": 1,
 		"solid": false,
-		"image": "img/water.png"
+		"image": "img/water.png",
+		"breakable": false
 	},
 	"dirt": {
 		"id": 2,

@@ -9,6 +9,7 @@ BUGS
  - Button does not function correctly when run from Game.py
      - problem with global variables- look into singleton?
  - Pickling is slow- multithread?
+ - Crash when breaking air
 
 NEEDED FEATURES
 --

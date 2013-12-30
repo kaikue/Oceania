@@ -1,0 +1,11 @@
+{
+	"shape": [
+		"OOO   OOO",
+		" O OMO O ",
+		"OOO   OOO"
+	],
+	"blocks": {
+		"O": "basalt",
+		"M": "kelp"
+	}
+}
