@@ -7,9 +7,9 @@ Created by Kai Kuehner, 2013.
 BUGS
 --
  - Button does not function correctly when run from Game.py
-     - problem with global variables- look into singleton?
- - Pickling is slow- multithread?
- - Crash when breaking air
+     - problem with global variables- make designated launcher class
+ - Pickling is a bit slow- multithread?
+ - Structures can only be in one chunk
 
 NEEDED FEATURES
 --
@@ -19,8 +19,9 @@ NEEDED FEATURES
      - Spawn midpoint displacement
      - Biomes
          - Ores
-         - Structures (over multiple chunks)
-             - Temple
+         - More structures
+             - Make space be water by default
+             - Improve temple
              - Volcanic pipe- kimberlite, diamond
  - Entities
      - Enemies, friendlies

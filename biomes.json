@@ -11,7 +11,8 @@
 			"peridot"
 		],
 		"structures": [
-			"kelp"
+			"kelp",
+			"temple"
 		]
 	},
 	"ridge": {
@@ -42,7 +43,8 @@
 		
 		],
 		"structures": [
-			"coral"
+			"coral",
+			"temple"
 		]
 	},
 	"forest": {

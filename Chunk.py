@@ -1,5 +1,6 @@
 import random
 import pygame
+import json
 import Game
 import Convert
 import World
@@ -119,13 +120,27 @@ class Chunk(object):
                 structure = World.structures[structure_name]
                 if random.random() < structure["frequency"]:
                     self.generate_structure(structure, x)
-                    break
+                    break #can only have one structure at a given x
     
     def generate_structure(self, structure, x):
         if structure["type"] == "column":
             height = random.randint(structure["minheight"], structure["maxheight"])
             for y in range(self.heights[x] - height, self.heights[x]):
                 self.blocks[y][x] = World.blocks[structure["block"]]
+        elif structure["type"] == "json":
+            structure_file = open(structure["location"])
+            structure_json = json.load(structure_file)
+            curr_y = self.heights[x] - len(structure_json["shape"])
+            for line in structure_json["shape"]:
+                curr_x = Convert.chunk_to_world(x, self)
+                for char in line:
+                    #find the right chunk
+                    chunk = self #world.chunks[Convert.world_to_chunk(x)[1]]- can't really do this...
+                    if x < WIDTH:
+                        chunk.blocks[curr_y][Convert.world_to_chunk(curr_x)[0]] = World.blocks[structure_json["blocks"][char]]
+                    curr_x += 1
+                curr_y += 1
+            structure_file.close()
         elif structure["type"] == "other":
             pass
     

@@ -6,6 +6,7 @@
 	],
 	"blocks": {
 		"O": "basalt",
-		"M": "kelp"
+		"M": "kelp",
+		" ": "water"
 	}
 }
