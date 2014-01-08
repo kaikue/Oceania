@@ -132,13 +132,18 @@ class Chunk(object):
             structure_json = json.load(structure_file)
             curr_y = self.heights[x] - len(structure_json["shape"])
             for line in structure_json["shape"]:
-                curr_x = Convert.chunk_to_world(x, self)
+                curr_world_x = Convert.chunk_to_world(x, self)
                 for char in line:
                     #find the right chunk
                     chunk = self #world.chunks[Convert.world_to_chunk(x)[1]]- can't really do this...
-                    if x < WIDTH:
-                        chunk.blocks[curr_y][Convert.world_to_chunk(curr_x)[0]] = World.blocks[structure_json["blocks"][char]]
-                    curr_x += 1
+                    curr_chunk_x = Convert.world_to_chunk(curr_world_x)[0]
+                    if curr_chunk_x < WIDTH:
+                        if char == " ":
+                            block = "water"
+                        else:
+                            block = structure_json["blocks"][char]
+                        chunk.blocks[curr_y][curr_chunk_x] = World.blocks[block]
+                    curr_world_x += 1
                 curr_y += 1
             structure_file.close()
         elif structure["type"] == "other":

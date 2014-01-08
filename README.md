@@ -20,7 +20,6 @@ NEEDED FEATURES
      - Biomes
          - Ores
          - More structures
-             - Make space be water by default
              - Improve temple
              - Volcanic pipe- kimberlite, diamond
  - Entities
