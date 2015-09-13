@@ -67,10 +67,14 @@ class Entity(object):
         else:
             self.bounding_box.y = Convert.world_to_pixel(self.pos[index])
     
+    def entity_collisions(self, world):
+        pass
+    
     def update(self, world):
         old_pos = [self.pos[0], self.pos[1]]
         self.tentative_move(world, old_pos, 0)
         self.tentative_move(world, old_pos, 1)
+        self.entity_collisions(world)
     
     def render(self, screen, pos):
         screen.blit(self.img, pos)

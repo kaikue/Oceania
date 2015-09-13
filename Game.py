@@ -7,6 +7,7 @@ import Convert
 import Menu
 import World
 import Player
+import InventoryGUI
 
 
 #GLOBAL CONSTANTS
@@ -51,6 +52,8 @@ def start():
     font = pygame.font.SysFont("monospace", 20)
     global menu
     menu = Menu.Menu()
+    global gui
+    gui = None
     run()
 
 def run():
@@ -85,6 +88,13 @@ def update():
         elif event.type == pygame.MOUSEBUTTONUP:
             if gamemode == MENU:
                 menu.mouse_release()
+        elif event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_e]:
+                global gui
+                if gui is None:
+                    gui = InventoryGUI.InventoryGUI(player)
+                else:
+                    gui = None
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_ESCAPE]:
         close()
@@ -94,13 +104,13 @@ def update():
     
     elif gamemode == PLAYING:
         player.dir = [0, 0]
-        if pressed[pygame.K_LEFT]:
+        if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
             player.dir[0] -= 1
-        if pressed[pygame.K_RIGHT]:
+        if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
             player.dir[0] += 1
-        if pressed[pygame.K_UP]:
+        if pressed[pygame.K_UP] or pressed[pygame.K_w]:
             player.dir[1] -= 1
-        if pressed[pygame.K_DOWN]:
+        if pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
             player.dir[1] += 1
         player.update(world)
         viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2 #replace with center
@@ -130,7 +140,10 @@ def render():
             screen.blit(biomeimg, (10, h))
             h += biomeimg.get_height()
         player.render(screen, Convert.world_to_viewport(player.pos, viewport))
-        screen.blit(img_target, world.find_pos(world.find_angle(player, pygame.mouse.get_pos(), viewport), Convert.pixels_to_viewport(player.pixel_pos(), viewport)))
+        if gui is None:
+            screen.blit(img_target, world.find_pos(world.find_angle(player, pygame.mouse.get_pos(), viewport), Convert.pixels_to_viewport(player.pixel_pos(), viewport)))
+        else:
+            gui.render(screen)
     pygame.display.flip()
 
 def close():
@@ -141,8 +154,12 @@ def close():
         world.close()
     sys.exit(0)
 
+def get_font():
+    return font
+
 def main():
     start()
 
 if __name__ == "__main__":
     main()
+
