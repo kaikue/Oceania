@@ -23,7 +23,9 @@ class Entity(object):
         if self.scale != ():
             self.img = pygame.transform.scale(self.img, (self.scale[0], self.scale[1]))
     
-    def pixel_pos(self):
+    def pixel_pos(self, centered=False):
+        if centered:
+            return [self.bounding_box.centerx, self.bounding_box.centery]
         return [self.bounding_box.x, self.bounding_box.y]
     
     def collides(self, block_pos):
@@ -37,7 +39,8 @@ class Entity(object):
                 if check_block["solid"] and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
                     #found a collision! 
                     self.pos[index] = old_pos[index]
-                    return
+                    return True
+        return False
     
     def tentative_move(self, world, old_pos, index):
         self.pos[index] += self.vel[index]
@@ -51,17 +54,21 @@ class Entity(object):
         chunk_right = Convert.world_to_chunk(self.pos[0] + self.width)[1]
         block_top = int(self.pos[1])
         block_bottom = math.ceil(self.pos[1] + self.height)
+        col1 = col2 = col3 = col4 = False
         if chunk_left == chunk_right:
             chunk = world.loaded_chunks.get(chunk_left)
-            self.check_collision(chunk, block_left, block_right, block_top, block_bottom, old_pos, index)
+            col1 = self.check_collision(chunk, block_left, block_right, block_top, block_bottom, old_pos, index)
         else:
+            #need to check from block_left in chunk_left to block_right in chunk_right and all the blocks in any chunks between them
             chunk = world.loaded_chunks.get(chunk_left)
-            self.check_collision(chunk, block_left, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
+            col2 = self.check_collision(chunk, block_left, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
             for c in range(chunk_left + 1, chunk_right):
                 chunk = world.loaded_chunks.get(c)
-                self.check_collision(chunk, 0, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
+                col3 = self.check_collision(chunk, 0, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
             chunk = world.loaded_chunks.get(chunk_right)
-            self.check_collision(chunk, 0, block_right, block_top, block_bottom, old_pos, index)
+            col4 = self.check_collision(chunk, 0, block_right, block_top, block_bottom, old_pos, index)
+        if col1 or col2 or col3 or col4:
+            self.vel[index] = 0 #reset acceleration?
         if index == 0:
             self.bounding_box.x = Convert.world_to_pixel(self.pos[index])
         else:

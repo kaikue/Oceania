@@ -8,7 +8,7 @@
 	},
 	"temple": {
 		"type": "json",
-		"location": "temple.json",
+		"location": "gen/temple.json",
 		"frequency": 0.05
 	},
 	"ridge": {

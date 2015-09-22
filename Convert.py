@@ -1,12 +1,15 @@
 import Game
 import Chunk
 
-def chunk_to_pixel(pos, chunk):
-    return world_to_pixel([chunk_to_world(pos[0], chunk)[0], pos[1]])
+def chunk_to_pixels(pos, chunk):
+    return world_to_pixels([chunk_to_world(pos[0], chunk), pos[1]])
 
 def chunk_to_world(x, chunk):
     #X pos within the chunk (blocks) to x pos within the world (blocks). Enter 0 to convert chunk's coords to world coords (blocks).
     return x + chunk.x * Chunk.WIDTH
+
+def chunk_to_viewport(pos, chunk, viewport):
+    return pixels_to_viewport(chunk_to_pixels(pos, chunk), viewport)
 
 def pixel_to_chunk(p):
     return world_to_chunk(pixel_to_world(p))
@@ -19,7 +22,7 @@ def pixels_to_world(pos):
     return [pixel_to_world(pos[0]), pixel_to_world(pos[1])]
 
 def pixel_to_world(p):
-    return int(p / Game.BLOCK_SIZE) - 1 * (p < 0)
+    return int(p / Game.BLOCK_SIZE / Game.SCALE) - 1 * (p < 0)
 
 def world_to_chunk(x):
     #X pos within the world (blocks) to x pos within some chunk (blocks) and x pos of that chunk (chunks).
@@ -30,7 +33,7 @@ def world_to_pixels(pos):
     return [world_to_pixel(pos[0]), world_to_pixel(pos[1])]
 
 def world_to_pixel(p):
-    return p * Game.BLOCK_SIZE
+    return p * Game.BLOCK_SIZE * Game.SCALE
 
 def world_to_viewport(pos, viewport):
     return pixels_to_viewport(world_to_pixels(pos), viewport)

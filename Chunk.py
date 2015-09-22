@@ -153,17 +153,31 @@ class Chunk(object):
         top = max(Convert.pixel_to_world(viewport.y), 0)
         bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
         for blocky in range(top, bottom):
-            for blockx in range(WIDTH):
-                self.render_block(self.blocks[blocky][blockx], screen, Convert.world_to_viewport([Convert.chunk_to_world(blockx, self), blocky], viewport))
+            leftData = Convert.pixel_to_chunk(viewport.x)
+            rightData = Convert.pixel_to_chunk(viewport.x + viewport.width)
+            if leftData[1] == self.x:
+                for blockx in range(leftData[0], WIDTH):
+                    self.render_block(self.blocks[blocky][blockx], (blockx, blocky), screen, viewport)
+            elif leftData[1] < self.x < rightData[1]:
+                for blockx in range(WIDTH):
+                    self.render_block(self.blocks[blocky][blockx], (blockx, blocky), screen, viewport)
+            elif self.x == rightData[1]:
+                for blockx in range(0, rightData[0] + 1):
+                    self.render_block(self.blocks[blocky][blockx], (blockx, blocky), screen, viewport)
         for entity in self.entities:
             entity.render(screen, Convert.world_to_viewport(entity.pos, viewport))
     
-    def render_block(self, block, screen, pos):
-        if block["id"] != 0:
-            screen.blit(World.block_images[block["id"]], pos)
+    def render_block(self, block, pos, screen, viewport):
+        """#fast render water
+        if block["name"] == "water":
+            screen.blit(World.block_images[block["id"]],
+                        Convert.world_to_viewport([Convert.chunk_to_world(pos[0], self), pos[1]], viewport))"""
+        #don't render air
+        if block["name"] != "air":
+            Game.get_world().render_block(block["id"], [Convert.chunk_to_world(pos[0], self), pos[1]], block["connectedTexture"], screen, viewport)
         if Game.DEBUG:
             #draw bounding box
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(pos[0], pos[1], Game.BLOCK_SIZE, Game.BLOCK_SIZE), 1)
+            pygame.draw.rect(screen, Game.BLACK, pygame.Rect(Convert.chunk_to_viewport(pos, self, viewport), (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)), 1)
     
     def __str__(self):
         return "Chunk at x=" + str(self.x) + " contains entities " + str(self.entities)

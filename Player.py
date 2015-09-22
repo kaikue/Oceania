@@ -3,6 +3,9 @@ import Convert
 from BlockDrop import BlockDrop
 from ItemStack import ItemStack
 
+MAX_STACK_SIZE = 99
+BREAK_DIST = 48
+
 class Player(Entity.Entity):
     
     def __init__(self, pos, imageurl):
@@ -35,7 +38,15 @@ class Player(Entity.Entity):
                 if row[i] is None:
                     row[i] = ItemStack(blocktype)
                     return True
-                elif row[i].itemtype == blocktype:
+                elif row[i].itemtype == blocktype and row[i].count < MAX_STACK_SIZE:
                     row[i].count += 1
                     return True
         return False
+    
+    def get_break_distance(self):
+        #extend with certain items?
+        return BREAK_DIST
+    
+    def render(self, screen, pos):
+        screen.blit(self.img, pos)
+        #render tail
