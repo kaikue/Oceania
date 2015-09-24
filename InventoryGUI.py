@@ -18,7 +18,7 @@ class InventoryGUI(GUI):
                 inv_item = inventory[r][c]
                 if inv_item is not None:
                     #c and r are flipped here so it renders across then down
-                    screen.blit(World.block_images[World.blocks[inv_item.itemtype]["id"]], (left + c * 32, top + r * 32))
+                    screen.blit(World.block_images[World.get_block_id(inv_item.itemtype)], (left + c * 32, top + r * 32))
                     countimg = Game.get_font().render(str(inv_item.count), 0, Game.WHITE)
                     screen.blit(countimg, (left + c * 32, top + r * 32))
                 #TODO make it work for items too

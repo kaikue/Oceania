@@ -17,6 +17,8 @@ TODO
  - Block rendering
 	 - Redo according to Kenney's triangle system? or full CTM
 	 - Mask with solid magenta triangle(s), then set that as transparent
+ - Block ID crash
+   - make solid true by default
 
 NEEDED FEATURES
 --

@@ -38,25 +38,29 @@ def load_structures():
     structures_file.close()
 
 def load_blocks():
+    print("LOADING BLOCKS")
     blocks_file = open("blocks.json", "r")
     global blocks
-    blocks = json.load(blocks_file)
+    blocks = json.load(blocks_file)["blocks"]
     blocks_file.close()
     
     bid = 0
     global block_images
     block_images = {}
-    water_image = pygame.image.load(blocks["water"]["image"]).convert_alpha()
+    global block_mappings
+    block_mappings = {}
+    water_image = pygame.image.load(blocks[1]["image"]).convert_alpha() #have to make water the second one in the file...
     for block in blocks:
         #set some default attributes
-        blocks[block]["name"] = block #add the name to the dictionary so we can look it up only knowing the position
-        if "breakable" not in blocks[block].keys():
-            blocks[block]["breakable"] = True
-        if "connectedTexture" not in blocks[block].keys():
-            blocks[block]["connectedTexture"] = False
+        #blocks[block]["name"] = block #add the name to the dictionary so we can look it up only knowing the position
+        if "breakable" not in block.keys():
+            block["breakable"] = True
+        if "connectedTexture" not in block.keys():
+            block["connectedTexture"] = False
         #add an id to the block
-        blocks[block]["id"] = bid
-        path = blocks[block]["image"]
+        block["id"] = bid
+        block_mappings[block["name"]] = bid
+        path = block["image"]
         if path != "":
             #blit the image onto the water tile so it isn't just empty transparency
             blockimg = pygame.image.load(path)
@@ -70,6 +74,11 @@ def load_blocks():
             block_images[bid] = surf
         bid += 1
 
+def get_block_id(blockname):
+    return block_mappings[blockname]
+
+def get_block(blockname):
+    return blocks[get_block_id(blockname)]
 
 class World(object):
     
@@ -116,7 +125,7 @@ class World(object):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
         block = self.get_block(block_pos)
         if block["breakable"]:
-            chunk.blocks[block_pos[1]][Convert.world_to_chunk(block_pos[0])[0]] = blocks["water"]
+            chunk.blocks[block_pos[1]][Convert.world_to_chunk(block_pos[0])[0]] = get_block("water")
             chunk.entities.append(BlockDrop.BlockDrop(block_pos, block["name"]))
     
     def load_chunks(self, center):
@@ -182,8 +191,7 @@ class World(object):
                                     (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
         else:
             #just render it normally
-            screen.blit(block_images[block_id],
-                        Convert.world_to_viewport(block_pos, viewport))
+            screen.blit(block_images[block_id], Convert.world_to_viewport(block_pos, viewport))
     
     def save_chunk(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")

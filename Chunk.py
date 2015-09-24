@@ -104,14 +104,14 @@ class Chunk(object):
             for x in range(len(self.blocks[y])):
                 surface_depth = self.heights[x] + 2 + random.randrange(4)
                 if y < World.SEA_LEVEL:
-                    self.blocks[y][x] = World.blocks["air"]
+                    self.blocks[y][x] = World.get_block("air")
                 elif y < self.heights[x]:
-                    self.blocks[y][x] = World.blocks["water"]
+                    self.blocks[y][x] = World.get_block("water")
                 elif y < surface_depth:
                     #for some reason this sometimes makes base blocks above surface blocks, but it looks cool so I'll probably leave it
-                    self.blocks[y][x] = World.blocks[self.biome["surface"]]
+                    self.blocks[y][x] = World.get_block(self.biome["surface"])
                 else:
-                    self.blocks[y][x] = World.blocks[self.biome["base"]]
+                    self.blocks[y][x] = World.get_block(self.biome["base"])
         self.decorate()
     
     def decorate(self):
@@ -126,7 +126,7 @@ class Chunk(object):
         if structure["type"] == "column":
             height = random.randint(structure["minheight"], structure["maxheight"])
             for y in range(self.heights[x] - height, self.heights[x]):
-                self.blocks[y][x] = World.blocks[structure["block"]]
+                self.blocks[y][x] = World.get_block(structure["block"])
         elif structure["type"] == "json":
             structure_file = open(structure["location"])
             structure_json = json.load(structure_file)
@@ -142,11 +142,12 @@ class Chunk(object):
                             block = "water"
                         else:
                             block = structure_json["blocks"][char]
-                        chunk.blocks[curr_y][curr_chunk_x] = World.blocks[block]
+                        chunk.blocks[curr_y][curr_chunk_x] = World.get_block(block)
                     curr_world_x += 1
                 curr_y += 1
             structure_file.close()
         elif structure["type"] == "other":
+            #why did I write this?
             pass
     
     def render(self, screen, viewport):
@@ -174,6 +175,7 @@ class Chunk(object):
                         Convert.world_to_viewport([Convert.chunk_to_world(pos[0], self), pos[1]], viewport))"""
         #don't render air
         if block["name"] != "air":
+            #print(block["name"] + " " + str(block["id"]))
             Game.get_world().render_block(block["id"], [Convert.chunk_to_world(pos[0], self), pos[1]], block["connectedTexture"], screen, viewport)
         if Game.DEBUG:
             #draw bounding box
