@@ -38,7 +38,6 @@ def load_structures():
     structures_file.close()
 
 def load_blocks():
-    print("LOADING BLOCKS")
     blocks_file = open("blocks.json", "r")
     global blocks
     blocks = json.load(blocks_file)["blocks"]
@@ -46,24 +45,30 @@ def load_blocks():
     
     bid = 0
     global block_images
-    block_images = {}
+    block_images = {False:{}, True:{}}
     global block_mappings
     block_mappings = {}
-    water_image = pygame.image.load(blocks[1]["image"]).convert_alpha() #have to make water the second one in the file...
+    water_id = 1
+    water_image = pygame.image.load(blocks[water_id]["image"]) #have to make water the second one in the file...
     for block in blocks:
         #set some default attributes
-        #blocks[block]["name"] = block #add the name to the dictionary so we can look it up only knowing the position
         if "breakable" not in block.keys():
             block["breakable"] = True
         if "connectedTexture" not in block.keys():
             block["connectedTexture"] = False
+        if "solid" not in block.keys():
+            block["solid"] = True
         #add an id to the block
         block["id"] = bid
         block_mappings[block["name"]] = bid
         path = block["image"]
         if path != "":
-            #blit the image onto the water tile so it isn't just empty transparency
             blockimg = pygame.image.load(path)
+            normalimg = blockimg.copy().convert_alpha()
+            normalimg = pygame.transform.scale(normalimg, (normalimg.get_width() * Game.SCALE, normalimg.get_height() * Game.SCALE))
+            block_images[False][bid] = normalimg
+            
+            #for background tiles, blit the image onto the water tile so it isn't just empty transparency
             image = blockimg.copy()
             for x in range(image.get_width() // Game.BLOCK_SIZE):
                 for y in range(image.get_height() // Game.BLOCK_SIZE):
@@ -71,8 +76,13 @@ def load_blocks():
             blockimg = blockimg.convert_alpha()
             image.blit(blockimg, (0, 0))
             surf = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
-            block_images[bid] = surf
+            block_images[True][bid] = surf
         bid += 1
+    
+    st_water_image = water_image.copy()
+    st_water_image.set_alpha(128)
+    st_water_image = pygame.transform.scale(st_water_image, (st_water_image.get_width() * Game.SCALE, st_water_image.get_height() * Game.SCALE))
+    block_images[False][water_id] = st_water_image
 
 def get_block_id(blockname):
     return block_mappings[blockname]
@@ -114,18 +124,18 @@ class World(object):
         capped_dist = min(dist, max_dist) 
         return [offset[0] + capped_dist * math.cos(angle), offset[1] + capped_dist * math.sin(angle)]
     
-    def get_block(self, world_pos):
+    def get_block_at(self, world_pos, background):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(world_pos[0])[1])
         x_in_chunk = Convert.world_to_chunk(world_pos[0])[0]
-        return chunk.blocks[world_pos[1]][x_in_chunk]
+        return chunk.get_block_at(x_in_chunk, world_pos[1], background)
     
-    def break_block(self, player, mouse_pos, viewport):
+    def break_block(self, player, mouse_pos, viewport, background):
         angle = self.find_angle(player, mouse_pos, viewport)
         block_pos = Convert.pixels_to_world(self.find_pos(angle, player.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), player.get_break_distance())) #it aint right
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
-        block = self.get_block(block_pos)
+        block = blocks[self.get_block_at(block_pos, background)]
         if block["breakable"]:
-            chunk.blocks[block_pos[1]][Convert.world_to_chunk(block_pos[0])[0]] = get_block("water")
+            chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], get_block("water"), background)
             chunk.entities.append(BlockDrop.BlockDrop(block_pos, block["name"]))
     
     def load_chunks(self, center):
@@ -156,13 +166,13 @@ class World(object):
         for chunk in self.loaded_chunks.elements:
             chunk.render(screen, viewport)
     
-    def render_block(self, block_id, block_pos, connected, screen, viewport):
+    def render_block(self, block_id, block_pos, connected, screen, viewport, background):
         if connected:
             #check adjacent tiles
-            left_block = self.get_block((block_pos[0] - 1, block_pos[1]))["id"]
-            right_block = self.get_block((block_pos[0] + 1, block_pos[1]))["id"]
-            top_block = self.get_block((block_pos[0], block_pos[1] - 1))["id"]
-            bottom_block = self.get_block((block_pos[0], block_pos[1] + 1))["id"]
+            left_block = self.get_block_at((block_pos[0] - 1, block_pos[1]), background)
+            right_block = self.get_block_at((block_pos[0] + 1, block_pos[1]), background)
+            top_block = self.get_block_at((block_pos[0], block_pos[1] - 1), background)
+            bottom_block = self.get_block_at((block_pos[0], block_pos[1] + 1), background)
             tile = ()
             if left_block != block_id:
                 if top_block != block_id:
@@ -185,13 +195,13 @@ class World(object):
             else:
                 tile = (1, 1)
             
-            screen.blit(block_images[block_id],
+            screen.blit(block_images[background][block_id],
                         Convert.world_to_viewport(block_pos, viewport),
                         pygame.Rect((tile[0] * Game.BLOCK_SIZE * Game.SCALE, tile[1] * Game.BLOCK_SIZE * Game.SCALE),
                                     (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
         else:
             #just render it normally
-            screen.blit(block_images[block_id], Convert.world_to_viewport(block_pos, viewport))
+            screen.blit(block_images[background][block_id], Convert.world_to_viewport(block_pos, viewport))
     
     def save_chunk(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")

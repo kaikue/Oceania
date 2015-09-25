@@ -30,7 +30,6 @@ class Player(Entity.Entity):
                 if type(entity) is BlockDrop:
                     if self.pickup(entity.blockname):
                         entities.remove(entity)
-                    print(self.inventory)
     
     def pickup(self, blocktype):
         for row in self.inventory:

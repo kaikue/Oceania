@@ -12,7 +12,8 @@ RIGHT = True
 class Chunk(object):
     def __init__(self):
         self.heights = [0] * WIDTH
-        self.blocks = [[0] * WIDTH for _ in range(World.HEIGHT)]
+        self.foreground_blocks = [[0] * WIDTH for _ in range(World.HEIGHT)]
+        self.background_blocks = [[0] * WIDTH for _ in range(World.HEIGHT)]
         self.entities = []
     
     def generate_spawn(self):
@@ -100,21 +101,22 @@ class Chunk(object):
     
     def populate(self):
         #Fill in blocks based on heights
-        for y in range(len(self.blocks)):
-            for x in range(len(self.blocks[y])):
+        for y in range(len(self.foreground_blocks)):
+            for x in range(len(self.foreground_blocks[y])):
                 surface_depth = self.heights[x] + 2 + random.randrange(4)
                 if y < World.SEA_LEVEL:
-                    self.blocks[y][x] = World.get_block("air")
+                    self.set_blocks_at(x, y, World.get_block("air"))
                 elif y < self.heights[x]:
-                    self.blocks[y][x] = World.get_block("water")
+                    self.set_blocks_at(x, y, World.get_block("water"))
                 elif y < surface_depth:
                     #for some reason this sometimes makes base blocks above surface blocks, but it looks cool so I'll probably leave it
-                    self.blocks[y][x] = World.get_block(self.biome["surface"])
+                    self.set_blocks_at(x, y, World.get_block(self.biome["surface"]))
                 else:
-                    self.blocks[y][x] = World.get_block(self.biome["base"])
+                    self.set_blocks_at(x, y, World.get_block(self.biome["base"]))
         self.decorate()
     
     def decorate(self):
+        #TODO caves, ore
         for x in range(WIDTH):
             for structure_name in self.biome["structures"]:
                 structure = World.structures[structure_name]
@@ -123,10 +125,11 @@ class Chunk(object):
                     break #can only have one structure at a given x
     
     def generate_structure(self, structure, x):
+        #TODO add background blocks defined separately
         if structure["type"] == "column":
             height = random.randint(structure["minheight"], structure["maxheight"])
             for y in range(self.heights[x] - height, self.heights[x]):
-                self.blocks[y][x] = World.get_block(structure["block"])
+                self.set_blocks_at(x, y, World.get_block(structure["block"]))
         elif structure["type"] == "json":
             structure_file = open(structure["location"])
             structure_json = json.load(structure_file)
@@ -142,13 +145,29 @@ class Chunk(object):
                             block = "water"
                         else:
                             block = structure_json["blocks"][char]
-                        chunk.blocks[curr_y][curr_chunk_x] = World.get_block(block)
+                        chunk.set_blocks_at(curr_chunk_x, curr_y, World.get_block(block))
                     curr_world_x += 1
                 curr_y += 1
             structure_file.close()
         elif structure["type"] == "other":
             #why did I write this?
             pass
+    
+    def get_block_at(self, x, y, background):
+        if background:
+            return self.background_blocks[y][x]
+        else:
+            return self.foreground_blocks[y][x]
+    
+    def set_blocks_at(self, x, y, block):
+        self.set_block_at(x, y, block, True)
+        self.set_block_at(x, y, block, False)
+    
+    def set_block_at(self, x, y, block, background):
+        if background:
+            self.background_blocks[y][x] = block["id"]
+        else:
+            self.foreground_blocks[y][x] = block["id"]
     
     def render(self, screen, viewport):
         top = max(Convert.pixel_to_world(viewport.y), 0)
@@ -158,25 +177,25 @@ class Chunk(object):
             rightData = Convert.pixel_to_chunk(viewport.x + viewport.width)
             if leftData[1] == self.x:
                 for blockx in range(leftData[0], WIDTH):
-                    self.render_block(self.blocks[blocky][blockx], (blockx, blocky), screen, viewport)
+                    self.render_blocks(blockx, blocky, screen, viewport)
             elif leftData[1] < self.x < rightData[1]:
                 for blockx in range(WIDTH):
-                    self.render_block(self.blocks[blocky][blockx], (blockx, blocky), screen, viewport)
+                    self.render_blocks(blockx, blocky, screen, viewport)
             elif self.x == rightData[1]:
                 for blockx in range(0, rightData[0] + 1):
-                    self.render_block(self.blocks[blocky][blockx], (blockx, blocky), screen, viewport)
+                    self.render_blocks(blockx, blocky, screen, viewport)
         for entity in self.entities:
             entity.render(screen, Convert.world_to_viewport(entity.pos, viewport))
     
-    def render_block(self, block, pos, screen, viewport):
-        """#fast render water
-        if block["name"] == "water":
-            screen.blit(World.block_images[block["id"]],
-                        Convert.world_to_viewport([Convert.chunk_to_world(pos[0], self), pos[1]], viewport))"""
+    def render_blocks(self, x, y, screen, viewport):
+        #render background first
+        self.render_block(World.blocks[self.background_blocks[y][x]], (x, y), screen, viewport, True)
+        self.render_block(World.blocks[self.foreground_blocks[y][x]], (x, y), screen, viewport, False)
+    
+    def render_block(self, block, pos, screen, viewport, background):
         #don't render air
         if block["name"] != "air":
-            #print(block["name"] + " " + str(block["id"]))
-            Game.get_world().render_block(block["id"], [Convert.chunk_to_world(pos[0], self), pos[1]], block["connectedTexture"], screen, viewport)
+            Game.get_world().render_block(block["id"], [Convert.chunk_to_world(pos[0], self), pos[1]], block["connectedTexture"], screen, viewport, background)
         if Game.DEBUG:
             #draw bounding box
             pygame.draw.rect(screen, Game.BLACK, pygame.Rect(Convert.chunk_to_viewport(pos, self, viewport), (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)), 1)

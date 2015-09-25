@@ -17,8 +17,12 @@ TODO
  - Block rendering
 	 - Redo according to Kenney's triangle system? or full CTM
 	 - Mask with solid magenta triangle(s), then set that as transparent
- - Block ID crash
-   - make solid true by default
+ - Fix connected texture block drops rendering the whole image (just pick the center one) as well as in inventory
+ - Background tiles
+	 - Hold shift to interact with background
+	 - tiles are darkened and overlaid with water image
+   - Can only place/break background tiles if there is no foreground tile there- otherwise shift interact does nothing
+   - Backgrounds in structures- hidden secrets behind some tiles
 
 NEEDED FEATURES
 --
@@ -72,10 +76,8 @@ NEEDED FEATURES
 	 - Multiblocks- have special multiblock interface that checks specific blocks
 		 - Hammer cycles through block variations
  - Lighting
+   - decreases with greater depth
 	 - set brightness per tile? use circlecollector style gradient hacks?
- - Background tiles
-	 - hold shift to interact with background
-	 - tiles are darkened and overlaid with water image
  - Energy
 	- http://iopscience.iop.org/0964-1726/23/8/085023
 	- http://ieeexplore.ieee.org/xpl/articleDetails.jsp?reload=true&arnumber=6220721

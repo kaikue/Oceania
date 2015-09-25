@@ -42,11 +42,14 @@ def start():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #add double buffering flag
     global clock
     clock = pygame.time.Clock()
-    #pygame.mixer.init()
-    #pygame.mixer.music.load("snd/music.wav")
-    #pygame.mixer.music.play(-1, 0.0)
-    #soundObj = pygame.mixer.Sound("snd/music.wav")
-    #soundObj.play()
+    
+    #not putting the music on github yet, just comment out this bit
+    pygame.mixer.init()
+    pygame.mixer.music.load("mus/Seashore Peace - Ambiance.wav")
+    pygame.mixer.music.play(-1, 0.0)
+    soundObj = pygame.mixer.Sound("mus/Seashore Peace - Ambiance.wav")
+    soundObj.play()
+    
     global gamemode
     gamemode = MENU
     global font
@@ -73,7 +76,6 @@ def play():
     player = Player.Player([0, 140], "img/player.png")
     global world
     world = World.World("defaultworld", player)
-    #improve this later
     global img_target
     img_target = pygame.image.load("img/target.png").convert_alpha()
 
@@ -85,7 +87,7 @@ def update():
             if gamemode == MENU:
                 menu.mouse_press()
             if gamemode == PLAYING:
-                world.break_block(player, pygame.mouse.get_pos(), viewport)
+                world.break_block(player, pygame.mouse.get_pos(), viewport, pygame.key.get_pressed()[pygame.K_LSHIFT])
         elif event.type == pygame.MOUSEBUTTONUP:
             if gamemode == MENU:
                 menu.mouse_release()

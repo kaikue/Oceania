@@ -14,13 +14,11 @@
 		},
 		{
 			"name": "dirt",
-			"solid": true,
 			"image": "img/dirt_tiles.png",
 			"connectedTexture": true
 		},
 		{
 			"name": "basalt",
-			"solid": true,
 			"image": "img/basalt.png"
 		},
 		{
@@ -30,7 +28,6 @@
 		},
 		{
 			"name": "basaltBricks",
-			"solid": true,
 			"image": "img/basalt/basalt_bricks_1.png",
 			"connectedTexture": false
 		}
