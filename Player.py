@@ -1,9 +1,12 @@
+import pygame
+import Game
+import World
 import Entity
 import Convert
 from BlockDrop import BlockDrop
 from ItemStack import ItemStack
 
-MAX_STACK_SIZE = 99
+MAX_STACK_SIZE = 100
 BREAK_DIST = 48
 
 class Player(Entity.Entity):
@@ -12,7 +15,7 @@ class Player(Entity.Entity):
         Entity.Entity.__init__(self, pos, imageurl=imageurl)
         self.max_speed = 0.25
         self.acceleration = 0.01 #fiddle with this until it seems good
-        self.inventory = [[None] * 5, [None] * 5, [None] * 5, [None] * 5, [None] * 5] #5 by 5 empty inventory
+        self.inventory = [[None] * 10, [None] * 10, [None] * 10, [None] * 10, [None] * 10] #5 by 10 empty inventory
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -49,3 +52,17 @@ class Player(Entity.Entity):
     def render(self, screen, pos):
         screen.blit(self.img, pos)
         #render tail
+    
+    def render_hotbar(self, screen):
+        width = Game.SCALE * Game.BLOCK_SIZE * len(self.inventory[0])
+        left = (Game.SCREEN_WIDTH - width) / 2
+        top = 16
+        pygame.draw.rect(screen, Game.BLACK, pygame.Rect(left, top, width, Game.SCALE * Game.BLOCK_SIZE), 0)
+        inventory = self.inventory
+        for c in range(len(inventory[0])):
+            inv_item = inventory[0][c]
+            if inv_item is not None:
+                screen.blit(World.block_images[False][World.get_block_id(inv_item.itemtype)], (left + c * 32, top))
+                countimg = Game.get_font().render(str(inv_item.count), 0, Game.WHITE)
+                screen.blit(countimg, (left + c * 32, top))
+            #TODO make it work for items too

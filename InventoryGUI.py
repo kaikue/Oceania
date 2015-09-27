@@ -9,9 +9,11 @@ class InventoryGUI(GUI):
         self.player = player
     
     def render(self, screen):
-        left = (Game.SCREEN_WIDTH - 192) / 2
-        top = (Game.SCREEN_HEIGHT - 192) / 2
-        pygame.draw.rect(screen, Game.BLACK, pygame.Rect(left, top, 192, 192), 0)
+        width = Game.SCALE * Game.BLOCK_SIZE * len(self.player.inventory[0])
+        left = (Game.SCREEN_WIDTH - width) / 2
+        height = Game.SCALE * Game.BLOCK_SIZE * len(self.player.inventory)
+        top = (Game.SCREEN_HEIGHT - height) / 2
+        pygame.draw.rect(screen, Game.BLACK, pygame.Rect(left, top, width, height), 0)
         inventory = self.player.inventory
         for r in range(len(inventory)):
             for c in range(len(inventory[r])):

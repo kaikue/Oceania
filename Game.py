@@ -132,7 +132,7 @@ def render():
         if DEBUG:
             #render debug text
             h = 10
-            fpsimg = font.render("fps: " + str(clock.get_fps()), 0, WHITE)
+            fpsimg = font.render("fps: {0:.2f}".format(clock.get_fps()), 0, WHITE)
             screen.blit(fpsimg, (10, h))
             h += fpsimg.get_height()
             posimg = font.render("pos: [{0:.2f}".format(player.pos[0]) + ", {0:.2f}]".format(player.pos[1]), 0, WHITE)
@@ -152,6 +152,7 @@ def render():
                                         pygame.mouse.get_pos(),
                                         player.get_break_distance())
             screen.blit(img_target, [x - y for x, y in zip(target_pos, [dim / 2 for dim in img_target.get_size()])]) #zoo-wee mama!
+            player.render_hotbar(screen)
         else:
             gui.render(screen)
     pygame.display.flip()
@@ -175,4 +176,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
