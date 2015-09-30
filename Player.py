@@ -16,6 +16,7 @@ class Player(Entity.Entity):
         self.max_speed = 0.25
         self.acceleration = 0.01 #fiddle with this until it seems good
         self.inventory = [[None] * 10, [None] * 10, [None] * 10, [None] * 10, [None] * 10] #5 by 10 empty inventory
+        self.selected_slot = 0
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -66,3 +67,15 @@ class Player(Entity.Entity):
                 countimg = Game.get_font().render(str(inv_item.count), 0, Game.WHITE)
                 screen.blit(countimg, (left + c * 32, top))
             #TODO make it work for items too
+        #highlight selected item
+        pygame.draw.rect(screen, Game.WHITE, pygame.Rect(left + Game.SCALE * Game.BLOCK_SIZE * self.selected_slot, top, Game.SCALE * Game.BLOCK_SIZE, Game.SCALE * Game.BLOCK_SIZE), 2)
+    
+    def change_slot(self, direction):
+        if direction:
+            self.selected_slot += 1
+            if self.selected_slot >= len(self.inventory[0]):
+                self.selected_slot -= len(self.inventory[0])
+        else:
+            self.selected_slot -= 1
+            if self.selected_slot < 0:
+                self.selected_slot += len(self.inventory[0])

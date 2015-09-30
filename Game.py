@@ -87,20 +87,56 @@ def update():
             if gamemode == MENU:
                 menu.mouse_press()
             if gamemode == PLAYING:
-                world.break_block(player, pygame.mouse.get_pos(), viewport, pygame.key.get_pressed()[pygame.K_LSHIFT])
+                if event.button == 1:
+                    #left click
+                    world.break_block(player, pygame.mouse.get_pos(), viewport, pygame.key.get_pressed()[pygame.K_LSHIFT])
+                elif event.button == 2:
+                    #scroll wheel click
+                    pass
+                elif event.button == 3:
+                    #right click
+                    pass
+                elif event.button == 4:
+                    #scroll wheel up
+                    player.change_slot(False)
+                elif event.button == 5:
+                    #scroll wheel down
+                    player.change_slot(True)
         elif event.type == pygame.MOUSEBUTTONUP:
             if gamemode == MENU:
                 menu.mouse_release()
         elif event.type == pygame.KEYDOWN:
-            if pygame.key.get_pressed()[pygame.K_e]:
-                global gui
-                if gui is None:
-                    gui = InventoryGUI.InventoryGUI(player)
-                else:
-                    gui = None
-            if pygame.key.get_pressed()[pygame.K_F3]:
-                global DEBUG
-                DEBUG = not DEBUG
+            #typed a key
+            if gamemode == PLAYING:
+                if pygame.key.get_pressed()[pygame.K_e]:
+                    global gui
+                    if gui is None:
+                        gui = InventoryGUI.InventoryGUI(player)
+                    else:
+                        gui = None
+                if pygame.key.get_pressed()[pygame.K_F3]:
+                    global DEBUG
+                    DEBUG = not DEBUG
+                if pygame.key.get_pressed()[pygame.K_1]:
+                    player.selected_slot = 0
+                if pygame.key.get_pressed()[pygame.K_2]:
+                    player.selected_slot = 1
+                if pygame.key.get_pressed()[pygame.K_3]:
+                    player.selected_slot = 2
+                if pygame.key.get_pressed()[pygame.K_4]:
+                    player.selected_slot = 3
+                if pygame.key.get_pressed()[pygame.K_5]:
+                    player.selected_slot = 4
+                if pygame.key.get_pressed()[pygame.K_6]:
+                    player.selected_slot = 5
+                if pygame.key.get_pressed()[pygame.K_7]:
+                    player.selected_slot = 6
+                if pygame.key.get_pressed()[pygame.K_8]:
+                    player.selected_slot = 7
+                if pygame.key.get_pressed()[pygame.K_9]:
+                    player.selected_slot = 8
+                if pygame.key.get_pressed()[pygame.K_0]:
+                    player.selected_slot = 9
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_ESCAPE]:
         close()

@@ -35,7 +35,7 @@ NEEDED FEATURES
     - Biomes
     - Rock types
         - Basalt
-        - Chalk (used for quicklime- limelight)
+        - Chalk (makes quicklime in lime kiln- limelight)
         - Gabbro
     - Ores
         - Manganese nodules-  manganese (27-30%), iron (6%), nickel (1.4%), copper (1-1.3%), cobalt (0.25%)
@@ -45,6 +45,7 @@ NEEDED FEATURES
     - More structures
         - Improve temple
         - Volcanic pipe- kimberlite, diamond
+        - Treasures- "starter packs" of blocks, tool improvement items, anything that will prompt further gameplay
 - GUI work
     - Inventory
 - Entities
@@ -89,6 +90,7 @@ NEEDED FEATURES
     - crafting
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
+    - https://i.imgur.com/jgcLPXi.jpg
 - DEEPEST LORE
 
 - Progression:
