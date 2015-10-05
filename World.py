@@ -129,6 +129,11 @@ class World(object):
         x_in_chunk = Convert.world_to_chunk(world_pos[0])[0]
         return chunk.get_block_at(x_in_chunk, world_pos[1], background)
     
+    def set_block_at(self, world_pos, block, background):
+        chunk = self.loaded_chunks.get(Convert.world_to_chunk(world_pos[0])[1])
+        x_in_chunk = Convert.world_to_chunk(world_pos[0])[0]
+        chunk.set_block_at(x_in_chunk, world_pos[1], block, background)
+    
     def break_block(self, player, mouse_pos, viewport, background):
         angle = self.find_angle(player, mouse_pos, viewport)
         block_pos = Convert.pixels_to_world(self.find_pos(angle, player.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), player.get_break_distance())) #it aint right

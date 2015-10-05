@@ -95,7 +95,7 @@ def update():
                     pass
                 elif event.button == 3:
                     #right click
-                    pass
+                    player.use_held_item(Convert.viewport_to_world(pygame.mouse.get_pos(), viewport), pygame.key.get_pressed()[pygame.K_LSHIFT], world)
                 elif event.button == 4:
                     #scroll wheel up
                     player.change_slot(False)

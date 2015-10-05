@@ -39,12 +39,20 @@ class Player(Entity.Entity):
         for row in self.inventory:
             for i in range(len(row)):
                 if row[i] is None:
-                    row[i] = ItemStack(blocktype)
+                    row[i] = ItemStack(blocktype, True)
                     return True
                 elif row[i].itemtype == blocktype and row[i].count < MAX_STACK_SIZE:
                     row[i].count += 1
                     return True
         return False
+    
+    def use_held_item(self, pos, shift, world):
+        item = self.inventory[0][self.selected_slot]
+        if item.can_place:
+            world.set_block_at(pos, World.get_block(item.itemtype), shift)
+            item.count -= 1
+            if item.count == 0:
+                self.inventory[0][self.selected_slot] = None
     
     def get_break_distance(self):
         #extend with certain items?
