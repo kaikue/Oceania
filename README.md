@@ -9,8 +9,6 @@ TODO
 - Button does not function correctly when run from Game.py
     - problem with global variables- make designated launcher class
 - Structures can only be in one chunk (and overwrite each other all the time)
-- Check for entity collisions in nearby chunks (all loaded?)
-    - Pick up items across chunk border
 - Pause game when opening GUIs
     - Pause game at all
 - Figure out why spawn chunks don't save
@@ -18,11 +16,10 @@ TODO
     - Redo according to Kenney's triangle system? or full CTM
     - Mask with solid magenta triangle(s), then set that as transparent
 - Fix connected texture block drops rendering the whole image (just pick the center one) as well as in inventory
+- Fix player can place blocks on top of entities
 - Background tiles
-    - Hold shift to interact with background
+    - should shift left click break foreground block?
     - tiles are darkened and overlaid with water image
-    - Can only place/break background tiles if there is no foreground tile there- otherwise shift interact does nothing
-    - Backgrounds in structures- hidden secrets behind some tiles
 
 NEEDED FEATURES
 --
@@ -46,6 +43,7 @@ NEEDED FEATURES
         - Improve temple
         - Volcanic pipe- kimberlite, diamond
         - Treasures- "starter packs" of blocks, tool improvement items, anything that will prompt further gameplay
+        - Backgrounds in structures- hidden secrets behind some tiles
 - GUI work
     - Inventory
 - Entities

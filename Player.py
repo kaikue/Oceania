@@ -1,4 +1,5 @@
 import pygame
+import math
 import Game
 import World
 import Entity
@@ -28,12 +29,14 @@ class Player(Entity.Entity):
         if new_chunk != old_chunk:
             world.load_chunks(new_chunk)
         
-        entities = world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1]).entities
+        entities = list(world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1]).entities)
+        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] - 1).entities
+        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
         for entity in entities:
             if(self.bounding_box.colliderect(entity.bounding_box)):
                 if type(entity) is BlockDrop:
                     if self.pickup(entity.blockname):
-                        entities.remove(entity)
+                        world.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def pickup(self, blocktype):
         for row in self.inventory:
@@ -48,7 +51,7 @@ class Player(Entity.Entity):
     
     def use_held_item(self, pos, shift, world):
         item = self.inventory[0][self.selected_slot]
-        if item.can_place:
+        if item is not None and item.can_place and World.blocks[world.get_block_at(pos, False)]["name"] == "water" and (not shift or World.blocks[world.get_block_at(pos, True)]["name"] == "water"):
             world.set_block_at(pos, World.get_block(item.itemtype), shift)
             item.count -= 1
             if item.count == 0:
@@ -57,6 +60,32 @@ class Player(Entity.Entity):
     def get_break_distance(self):
         #extend with certain items?
         return BREAK_DIST
+    
+    def find_angle(self, mouse_pos, viewport):
+        #find nearest breakable block based on angle from player pos to mouse pos (raycasting?)
+        x_diff = Convert.viewport_to_pixel(mouse_pos[0], viewport, 0) - self.bounding_box.centerx
+        y_diff = Convert.viewport_to_pixel(mouse_pos[1], viewport, 1) - self.bounding_box.centery
+        angle = math.atan2(y_diff, x_diff)
+        return angle
+    
+    def find_pos(self, angle, offset, close_pos, max_dist):
+        #in pixels
+        dist = math.hypot(close_pos[0] - offset[0], close_pos[1] - offset[1])
+        capped_dist = min(dist, max_dist) 
+        return [offset[0] + capped_dist * math.cos(angle), offset[1] + capped_dist * math.sin(angle)]
+    
+    def break_block(self, world, mouse_pos, viewport, background):
+        angle = self.find_angle(mouse_pos, viewport)
+        block_pos = Convert.pixels_to_world(self.find_pos(angle, self.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), self.get_break_distance()))
+        chunk = world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
+        #if there's a foreground block covering the background, don't break anything
+        if background and World.blocks[world.get_block_at(block_pos, False)]["name"] != "water":
+            return
+        block = World.blocks[world.get_block_at(block_pos, background)]
+        if block["breakable"]:
+            chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
+            chunk.entities.append(BlockDrop(block_pos, block["name"]))
+    
     
     def render(self, screen, pos):
         screen.blit(self.img, pos)

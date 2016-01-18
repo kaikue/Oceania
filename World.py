@@ -1,5 +1,4 @@
 import os
-import math
 import random
 import pickle
 import json
@@ -8,7 +7,6 @@ import Game
 import Convert
 import Chunk
 import TwoWayList
-import BlockDrop
 
 HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
@@ -107,22 +105,9 @@ class World(object):
             for entity in chunk.entities:
                 entity.update(self)
                 if Convert.world_to_chunk(entity.pos[0])[1] != chunk.x:
-                    print("Moving", entity, entity.pos)
+                    print("Moving", entity, entity.pos, "from", chunk)
                     chunk.entities.remove(entity)
                     self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
-    
-    def find_angle(self, player, mouse_pos, viewport):
-        #find nearest breakable block based on angle from player pos to mouse pos (raycasting?)
-        x_diff = Convert.viewport_to_pixel(mouse_pos[0], viewport, 0) - player.bounding_box.centerx
-        y_diff = Convert.viewport_to_pixel(mouse_pos[1], viewport, 1) - player.bounding_box.centery
-        angle = math.atan2(y_diff, x_diff)
-        return angle
-    
-    def find_pos(self, angle, offset, close_pos, max_dist):
-        #in pixels
-        dist = math.hypot(close_pos[0] - offset[0], close_pos[1] - offset[1])
-        capped_dist = min(dist, max_dist) 
-        return [offset[0] + capped_dist * math.cos(angle), offset[1] + capped_dist * math.sin(angle)]
     
     def get_block_at(self, world_pos, background):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(world_pos[0])[1])
@@ -133,15 +118,6 @@ class World(object):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(world_pos[0])[1])
         x_in_chunk = Convert.world_to_chunk(world_pos[0])[0]
         chunk.set_block_at(x_in_chunk, world_pos[1], block, background)
-    
-    def break_block(self, player, mouse_pos, viewport, background):
-        angle = self.find_angle(player, mouse_pos, viewport)
-        block_pos = Convert.pixels_to_world(self.find_pos(angle, player.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), player.get_break_distance())) #it aint right
-        chunk = self.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
-        block = blocks[self.get_block_at(block_pos, background)]
-        if block["breakable"]:
-            chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], get_block("water"), background)
-            chunk.entities.append(BlockDrop.BlockDrop(block_pos, block["name"]))
     
     def load_chunks(self, center):
         #unload and serialize unneeded chunks

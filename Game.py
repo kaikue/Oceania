@@ -87,15 +87,16 @@ def update():
             if gamemode == MENU:
                 menu.mouse_press()
             if gamemode == PLAYING:
+                shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
                 if event.button == 1:
                     #left click
-                    world.break_block(player, pygame.mouse.get_pos(), viewport, pygame.key.get_pressed()[pygame.K_LSHIFT])
+                    player.break_block(world, pygame.mouse.get_pos(), viewport, shift)
                 elif event.button == 2:
                     #scroll wheel click
                     pass
                 elif event.button == 3:
                     #right click
-                    player.use_held_item(Convert.viewport_to_world(pygame.mouse.get_pos(), viewport), pygame.key.get_pressed()[pygame.K_LSHIFT], world)
+                    player.use_held_item(Convert.viewport_to_world(pygame.mouse.get_pos(), viewport), shift, world)
                 elif event.button == 4:
                     #scroll wheel up
                     player.change_slot(False)
@@ -155,7 +156,7 @@ def update():
         if pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
             player.dir[1] += 1
         player.update(world)
-        viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2 #replace with center
+        viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2
         viewport.y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2
         world.update()
 
@@ -183,7 +184,7 @@ def render():
             h += biomeimg.get_height()
         player.render(screen, Convert.world_to_viewport(player.pos, viewport))
         if gui is None:
-            target_pos = world.find_pos(world.find_angle(player, pygame.mouse.get_pos(), viewport), 
+            target_pos = player.find_pos(player.find_angle(pygame.mouse.get_pos(), viewport), 
                                         Convert.pixels_to_viewport(player.pixel_pos(True), viewport), 
                                         pygame.mouse.get_pos(),
                                         player.get_break_distance())

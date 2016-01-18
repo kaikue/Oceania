@@ -29,6 +29,9 @@ class Entity(object):
             return [self.bounding_box.centerx, self.bounding_box.centery]
         return [self.bounding_box.x, self.bounding_box.y]
     
+    def get_chunk(self):
+        return Convert.world_to_chunk(self.pos[0])[1] #should be accurate
+    
     def collides(self, block_pos):
         return self.bounding_box.colliderect(pygame.Rect(Convert.world_to_pixel(block_pos[0]), Convert.world_to_pixel(block_pos[1]), Convert.world_to_pixel(1), Convert.world_to_pixel(1)))
     
