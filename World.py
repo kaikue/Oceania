@@ -56,6 +56,8 @@ def load_blocks():
             block["connectedTexture"] = False
         if "solid" not in block.keys():
             block["solid"] = True
+        if "entity" not in block.keys():
+            block["entity"] = None
         #add an id to the block
         block["id"] = bid
         block_mappings[block["name"]] = bid

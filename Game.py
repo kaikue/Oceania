@@ -8,6 +8,7 @@ import Menu
 import World
 import Player
 import InventoryGUI
+from HotbarGUI import HotbarGUI
 
 
 #GLOBAL CONSTANTS
@@ -28,6 +29,7 @@ TRANSPARENT = (0, 0, 0, 0)
 SKY = (128, 128, 255)
 
 DEBUG = True #displays fps, coords, grid, etc. but impacts performance.
+MUSIC = False #play background music
 
 
 #GAME FUNCTIONS
@@ -43,12 +45,13 @@ def start():
     global clock
     clock = pygame.time.Clock()
     
-    #not putting the music on github yet, just comment out this bit
-    pygame.mixer.init()
-    pygame.mixer.music.load("mus/Seashore Peace - Ambiance.wav")
-    pygame.mixer.music.play(-1, 0.0)
-    soundObj = pygame.mixer.Sound("mus/Seashore Peace - Ambiance.wav")
-    soundObj.play()
+    #not putting the music on github yet
+    if MUSIC:
+        pygame.mixer.init()
+        pygame.mixer.music.load("mus/Seashore Peace - Ambiance.wav")
+        pygame.mixer.music.play(-1, 0.0)
+        #soundObj = pygame.mixer.Sound("mus/Seashore Peace - Ambiance.wav")
+        #soundObj.play()
     
     global gamemode
     gamemode = MENU
@@ -78,6 +81,8 @@ def play():
     world = World.World("defaultworld", player)
     global img_target
     img_target = pygame.image.load("img/target.png").convert_alpha()
+    global hotbarGui
+    hotbarGui = HotbarGUI(player, "img/gui/hotbar.png")
 
 def update():
     for event in pygame.event.get():
@@ -112,7 +117,7 @@ def update():
                 if pygame.key.get_pressed()[pygame.K_e]:
                     global gui
                     if gui is None:
-                        gui = InventoryGUI.InventoryGUI(player)
+                        gui = InventoryGUI.InventoryGUI(player, "img/gui/inventory.png")
                     else:
                         gui = None
                 if pygame.key.get_pressed()[pygame.K_F3]:
@@ -189,7 +194,7 @@ def render():
                                         pygame.mouse.get_pos(),
                                         player.get_break_distance())
             screen.blit(img_target, [x - y for x, y in zip(target_pos, [dim / 2 for dim in img_target.get_size()])]) #zoo-wee mama!
-            player.render_hotbar(screen)
+            hotbarGui.render(screen)
         else:
             gui.render(screen)
     pygame.display.flip()

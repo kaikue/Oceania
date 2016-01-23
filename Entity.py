@@ -13,16 +13,24 @@ class Entity(object):
         self.scale = scale
         self.load_image()
         #bounding box is in pixels because it can only have ints
-        self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), self.img.get_width(), self.img.get_height())
-        self.width = Convert.pixel_to_world(self.img.get_width()) + 1
-        self.height = Convert.pixel_to_world(self.img.get_height()) + 1
+        if self.img is None:
+            self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), Game.BLOCK_SIZE, Game.BLOCK_SIZE)
+            self.width = 1
+            self.height = 1
+        else:
+            self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), self.img.get_width(), self.img.get_height())
+            self.width = Convert.pixel_to_world(self.img.get_width()) + 1
+            self.height = Convert.pixel_to_world(self.img.get_height()) + 1
         self.dir = [0, 0] #direction: -1, 0, 1
         self.vel = [0, 0] #speeds: any numbers
     
     def load_image(self):
-        self.img = pygame.image.load(self.imageurl).convert_alpha()
-        if self.scale != ():
-            self.img = pygame.transform.scale(self.img, (self.scale[0], self.scale[1]))
+        if self.imageurl is "":
+            self.img = None
+        else:
+            self.img = pygame.image.load(self.imageurl).convert_alpha()
+            if self.scale != ():
+                self.img = pygame.transform.scale(self.img, (self.scale[0], self.scale[1]))
     
     def pixel_pos(self, centered=False):
         if centered:
@@ -81,6 +89,10 @@ class Entity(object):
     def entity_collisions(self, world):
         pass
     
+    def interact(self, item):
+        #Used for when the player right-clicks the entity with a block.
+        pass
+    
     def update(self, world):
         old_pos = [self.pos[0], self.pos[1]]
         self.tentative_move(world, old_pos, 0)
@@ -88,7 +100,8 @@ class Entity(object):
         self.entity_collisions(world)
     
     def render(self, screen, pos):
-        screen.blit(self.img, pos)
+        if self.img is not None:
+            screen.blit(self.img, pos)
 
 if __name__ == "__main__":
     Game.main()

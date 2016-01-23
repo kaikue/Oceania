@@ -28,8 +28,12 @@
 		},
 		{
 			"name": "basaltBricks",
-			"image": "img/basalt/basalt_bricks_1.png",
-			"connectedTexture": false
+			"image": "img/basalt/basalt_bricks_1.png"
+		},
+		{
+			"name": "chest",
+			"image": "img/chest/chest.png",
+			"entity": "EntityChest"
 		}
 	]
 }

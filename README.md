@@ -17,9 +17,19 @@ TODO
     - Mask with solid magenta triangle(s), then set that as transparent
 - Fix connected texture block drops rendering the whole image (just pick the center one) as well as in inventory
 - Fix player can place blocks on top of entities
+    - should be fixed now
+- Chests
+    - break entity when breaking chest- keep it associated with itemstack
+        - chests shouldn't stack to more than 1
+    - place entity with itemstack when player places block
+    - generate entity only once (when block is crafted/generated) then keep it attached to item
 - Background tiles
-    - should shift left click break foreground block?
     - tiles are darkened and overlaid with water image
+- Inventory
+    - Mouse movement of items
+    - Make it look nicer
+- Armor
+    - Necklace has special effects
 
 NEEDED FEATURES
 --

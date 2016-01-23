@@ -1,3 +1,4 @@
+import importlib
 import random
 import pygame
 import json
@@ -164,6 +165,12 @@ class Chunk(object):
         self.set_block_at(x, y, block, False)
     
     def set_block_at(self, x, y, block, background):
+        if block["entity"] is not None:
+            #TODO only make the entity when it's being generated or crafted, not when a player places it
+            EntityClass = getattr(importlib.import_module(block["entity"]), block["entity"])
+            instance = EntityClass([x, y], "")
+            self.entities.append(instance)
+        
         if background:
             self.background_blocks[y][x] = block["id"]
         else:

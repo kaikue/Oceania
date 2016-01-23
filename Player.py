@@ -1,6 +1,4 @@
-import pygame
 import math
-import Game
 import World
 import Entity
 import Convert
@@ -29,14 +27,18 @@ class Player(Entity.Entity):
         if new_chunk != old_chunk:
             world.load_chunks(new_chunk)
         
-        entities = list(world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1]).entities)
-        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] - 1).entities
-        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
+        entities = self.get_nearby_entities(world)
         for entity in entities:
             if(self.bounding_box.colliderect(entity.bounding_box)):
                 if type(entity) is BlockDrop:
                     if self.pickup(entity.blockname):
                         world.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
+    
+    def get_nearby_entities(self, world):
+        entities = list(world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1]).entities)
+        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] - 1).entities
+        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
+        return entities
     
     def pickup(self, blocktype):
         for row in self.inventory:
@@ -51,6 +53,12 @@ class Player(Entity.Entity):
     
     def use_held_item(self, pos, shift, world):
         item = self.inventory[0][self.selected_slot]
+        entities = self.get_nearby_entities(world)
+        for entity in entities:
+            if entity.collides(pos):
+                entity.interact(item)
+                return #don't want to place a block over an entity
+        
         if item is not None and item.can_place and World.blocks[world.get_block_at(pos, False)]["name"] == "water" and (not shift or World.blocks[world.get_block_at(pos, True)]["name"] == "water"):
             world.set_block_at(pos, World.get_block(item.itemtype), shift)
             item.count -= 1
@@ -86,26 +94,9 @@ class Player(Entity.Entity):
             chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
             chunk.entities.append(BlockDrop(block_pos, block["name"]))
     
-    
     def render(self, screen, pos):
         screen.blit(self.img, pos)
         #render tail
-    
-    def render_hotbar(self, screen):
-        width = Game.SCALE * Game.BLOCK_SIZE * len(self.inventory[0])
-        left = (Game.SCREEN_WIDTH - width) / 2
-        top = 16
-        pygame.draw.rect(screen, Game.BLACK, pygame.Rect(left, top, width, Game.SCALE * Game.BLOCK_SIZE), 0)
-        inventory = self.inventory
-        for c in range(len(inventory[0])):
-            inv_item = inventory[0][c]
-            if inv_item is not None:
-                screen.blit(World.block_images[False][World.get_block_id(inv_item.itemtype)], (left + c * 32, top))
-                countimg = Game.get_font().render(str(inv_item.count), 0, Game.WHITE)
-                screen.blit(countimg, (left + c * 32, top))
-            #TODO make it work for items too
-        #highlight selected item
-        pygame.draw.rect(screen, Game.WHITE, pygame.Rect(left + Game.SCALE * Game.BLOCK_SIZE * self.selected_slot, top, Game.SCALE * Game.BLOCK_SIZE, Game.SCALE * Game.BLOCK_SIZE), 2)
     
     def change_slot(self, direction):
         if direction:
