@@ -68,7 +68,14 @@ class Player(Entity.Entity):
                     entity.interact(item)
                     return #don't want to place a block over an entity
         
-        if item is not None and item.can_place and World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
+        if item is None or not item.can_place:
+            return
+        
+        #don't place blocks with entities in the background
+        if item.blockentity is not None and background:
+            return
+        
+        if World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
             (not background or World.blocks[world.get_block_at(block_pos, True)]["name"] == "water"):
             world.set_block_at(block_pos, World.get_block(item.itemtype), background)
             if item.blockentity is not None:
@@ -108,8 +115,6 @@ class Player(Entity.Entity):
             blockentity = None
             if block["entity"] is not "":
                 for entity in chunk.entities:
-                    print(type(entity).__name__, block["entity"], [int(entity.pos[0]), int(entity.pos[1])], block_pos, 
-                          (type(entity).__name__ == block["entity"]), ([int(entity.pos[0]), int(entity.pos[1])] == block_pos))
                     if type(entity).__name__ == block["entity"] and [int(entity.pos[0]), int(entity.pos[1])] == block_pos:
                         chunk.entities.remove(entity)
                         blockentity = entity
