@@ -2,7 +2,7 @@ Oceania
 ==
 A procedurally generated 2D sandbox game set underwater.
 Written in Pygame.
-Created by Kai Kuehner, 2013-2015.
+Created by Kai Kuehner, 2013-2016.
 
 TODO
 --
@@ -23,12 +23,9 @@ TODO
         - chests shouldn't stack to more than 1
     - place entity with itemstack when player places block
     - generate entity only once (when block is crafted/generated) then keep it attached to item
-- Background tiles
-    - tiles are darkened and overlaid with water image
 - Inventory
     - Mouse movement of items
 - Find a real basalt texture
-- Firgure out why water doesn't show background anymore (make image alpha?)
 
 NEEDED FEATURES
 --
