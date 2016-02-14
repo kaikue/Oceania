@@ -33,7 +33,7 @@ class Player(Entity.Entity):
         for entity in entities:
             if(self.bounding_box.colliderect(entity.bounding_box)):
                 if type(entity) is BlockDrop:
-                    if self.pickup(entity.blockname):
+                    if self.pickup(entity):
                         world.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def get_nearby_entities(self, world):
@@ -42,13 +42,15 @@ class Player(Entity.Entity):
         entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
         return entities
     
-    def pickup(self, blocktype):
+    def pickup(self, block):
+        #TODO make this work for items as well
         for row in self.inventory:
             for i in range(len(row)):
                 if row[i] is None:
-                    row[i] = ItemStack(blocktype, True)
+                    row[i] = ItemStack(block.blockname, True, block.blockentity)
                     return True
-                elif row[i].itemtype == blocktype and row[i].count < MAX_STACK_SIZE:
+                elif row[i].itemtype == block.blockname and row[i].count < MAX_STACK_SIZE and block.blockentity is None:
+                    #can't stack blocks with entities like chests
                     row[i].count += 1
                     return True
         return False
@@ -56,18 +58,22 @@ class Player(Entity.Entity):
     def use_held_item(self, world, mouse_pos, viewport, background):
         angle = self.find_angle(mouse_pos, viewport)
         block_pos = Convert.pixels_to_world(self.find_pos(angle, self.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), self.get_break_distance()))
-        
         item = self.inventory[0][self.selected_slot]
-        entities = self.get_nearby_entities(world)
-        entities.append(self) #check against player too
-        for entity in entities:
-            if entity.collides(block_pos):
-                entity.interact(item)
-                return #don't want to place a block over an entity
+        
+        if not background:
+            entities = self.get_nearby_entities(world)
+            entities.append(self) #check against player too
+            for entity in entities:
+                if entity.collides(block_pos):
+                    entity.interact(item)
+                    return #don't want to place a block over an entity
         
         if item is not None and item.can_place and World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
             (not background or World.blocks[world.get_block_at(block_pos, True)]["name"] == "water"):
             world.set_block_at(block_pos, World.get_block(item.itemtype), background)
+            if item.blockentity is not None:
+                item.blockentity.pos = block_pos
+                world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1]).entities.append(item.blockentity)
             item.count -= 1
             if item.count == 0:
                 self.inventory[0][self.selected_slot] = None
@@ -99,7 +105,16 @@ class Player(Entity.Entity):
         block = World.blocks[world.get_block_at(block_pos, background)]
         if block["breakable"]:
             chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
-            chunk.entities.append(BlockDrop(block_pos, block["name"]))
+            blockentity = None
+            if block["entity"] is not "":
+                for entity in chunk.entities:
+                    print(type(entity).__name__, block["entity"], [int(entity.pos[0]), int(entity.pos[1])], block_pos, 
+                          (type(entity).__name__ == block["entity"]), ([int(entity.pos[0]), int(entity.pos[1])] == block_pos))
+                    if type(entity).__name__ == block["entity"] and [int(entity.pos[0]), int(entity.pos[1])] == block_pos:
+                        chunk.entities.remove(entity)
+                        blockentity = entity
+                        break
+            chunk.entities.append(BlockDrop(block_pos, block["name"], blockentity))
     
     def render(self, screen, pos):
         screen.blit(self.img, pos)

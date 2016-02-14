@@ -143,10 +143,15 @@ class Chunk(object):
                     curr_chunk_x = Convert.world_to_chunk(curr_world_x)[0]
                     if curr_chunk_x < WIDTH:
                         if char == " ":
-                            block = "water"
+                            block_name = "water"
                         else:
-                            block = structure_json["blocks"][char]
-                        chunk.set_blocks_at(curr_chunk_x, curr_y, World.get_block(block))
+                            block_name = structure_json["blocks"][char]
+                        block = World.get_block(block_name)
+                        chunk.set_blocks_at(curr_chunk_x, curr_y, block)
+                        if block["entity"] is not "":
+                            EntityClass = getattr(importlib.import_module(block["entity"]), block["entity"])
+                            instance = EntityClass([curr_world_x, curr_y], "")
+                            chunk.entities.append(instance)
                     curr_world_x += 1
                 curr_y += 1
             structure_file.close()
@@ -165,12 +170,6 @@ class Chunk(object):
         self.set_block_at(x, y, block, False)
     
     def set_block_at(self, x, y, block, background):
-        if block["entity"] is not None:
-            #TODO only make the entity when it's being generated or crafted, not when a player places it
-            EntityClass = getattr(importlib.import_module(block["entity"]), block["entity"])
-            instance = EntityClass([x, y], "")
-            self.entities.append(instance)
-        
         if background:
             self.background_blocks[y][x] = block["id"]
         else:

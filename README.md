@@ -16,13 +16,9 @@ TODO
     - Redo according to Kenney's triangle system? or full CTM
     - Mask with solid magenta triangle(s), then set that as transparent
 - Fix connected texture block drops rendering the whole image (just pick the center one) as well as in inventory
-- Fix player can place blocks on top of entities
-    - should be fixed now
 - Chests
-    - break entity when breaking chest- keep it associated with itemstack
-        - chests shouldn't stack to more than 1
-    - place entity with itemstack when player places block
-    - generate entity only once (when block is crafted/generated) then keep it attached to item
+    - generate entity when crafting item
+    - don't place or generate chests in background due to entity overlap
 - Inventory
     - Mouse movement of items
 - Find a real basalt texture
@@ -59,6 +55,7 @@ NEEDED FEATURES
 - Crafting
     - Larger crafting tables- 2x2 (from some item in world), 3x3, 4x4, 5x5, 9x9
     - Slot for crafting tool- hammer for metal work, etc.
+    - Generate blockentity when crafting chests etc.
 - Ore processing
     - https://i.imgur.com/jYvaxQ1.jpg
     - T0: Flint

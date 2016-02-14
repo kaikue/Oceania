@@ -57,7 +57,7 @@ def load_blocks():
         if "solid" not in block.keys():
             block["solid"] = True
         if "entity" not in block.keys():
-            block["entity"] = None
+            block["entity"] = ""
         #add an id to the block
         block["id"] = bid
         block_mappings[block["name"]] = bid
