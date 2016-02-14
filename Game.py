@@ -79,8 +79,6 @@ def play():
     player = Player.Player([0, 140], "img/player.png")
     global world
     world = World.World("defaultworld", player)
-    global img_target
-    img_target = pygame.image.load("img/target.png").convert_alpha()
     global hotbarGui
     hotbarGui = HotbarGUI(player, "img/gui/hotbar.png")
 
@@ -101,7 +99,7 @@ def update():
                     pass
                 elif event.button == 3:
                     #right click
-                    player.use_held_item(Convert.viewport_to_world(pygame.mouse.get_pos(), viewport), shift, world)
+                    player.use_held_item(world, pygame.mouse.get_pos(), viewport, shift)
                 elif event.button == 4:
                     #scroll wheel up
                     player.change_slot(False)
@@ -173,7 +171,7 @@ def render():
         world.render(screen, viewport)
         if DEBUG:
             #render debug text
-            h = 10
+            h = 360
             fpsimg = font.render("fps: {0:.2f}".format(clock.get_fps()), 0, WHITE)
             screen.blit(fpsimg, (10, h))
             h += fpsimg.get_height()
@@ -193,7 +191,13 @@ def render():
                                         Convert.pixels_to_viewport(player.pixel_pos(True), viewport), 
                                         pygame.mouse.get_pos(),
                                         player.get_break_distance())
-            screen.blit(img_target, [x - y for x, y in zip(target_pos, [dim / 2 for dim in img_target.get_size()])]) #zoo-wee mama!
+            target_x = int(target_pos[0])
+            target_y = int(target_pos[1])
+            crosshair_size = 8
+            for x in range(target_x - crosshair_size, target_x + crosshair_size):
+                for y in range(target_y - crosshair_size + abs(x - target_x), target_y + crosshair_size - abs(x - target_x)):
+                    pixelColor = screen.get_at((x, y))
+                    screen.set_at((x, y), pygame.Color(255 - pixelColor.r, 255 - pixelColor.g, 255 - pixelColor.b, 255))
             hotbarGui.render(screen)
         else:
             gui.render(screen)

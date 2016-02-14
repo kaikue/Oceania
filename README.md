@@ -27,9 +27,8 @@ TODO
     - tiles are darkened and overlaid with water image
 - Inventory
     - Mouse movement of items
-    - Make it look nicer
-- Armor
-    - Necklace has special effects
+- Find a real basalt texture
+- Firgure out why water doesn't show background anymore (make image alpha?)
 
 NEEDED FEATURES
 --
@@ -77,6 +76,8 @@ NEEDED FEATURES
     - Get input from user to name world
     - Pause, save & quit, options
 - Combat
+    - Armor
+    - Weapons
 - Sound
     - freesound.org
 - Block placement & destruction
@@ -94,6 +95,7 @@ NEEDED FEATURES
 - Titans
     - drop automation materials
 - Automation
+    - Pipes
     - ore processing
     - crafting
 - Water suit + island

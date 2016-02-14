@@ -21,3 +21,7 @@ class GUI(object):
         left = (Game.SCREEN_WIDTH - self.width) // 2
         top = (Game.SCREEN_HEIGHT - self.height) // 2
         screen.blit(self.img, (left, top))
+    
+    def load_extra_image(self, imageurl):
+        extra_img = pygame.image.load(imageurl).convert_alpha()
+        return pygame.transform.scale(extra_img, (Game.SCALE * extra_img.get_width(), Game.SCALE * extra_img.get_height()))

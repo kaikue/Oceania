@@ -10,6 +10,8 @@ class HotbarGUI(GUI):
     def __init__(self, player, imageurl):
         self.player = player
         super(HotbarGUI, self).__init__(imageurl)
+        self.img_heart_full = self.load_extra_image("img/gui/heart.png")
+        self.img_heart_empty = self.load_extra_image("img/gui/heart_empty.png")
     
     def render(self, screen):
         left = (Game.SCREEN_WIDTH - self.width) // 2
@@ -25,3 +27,9 @@ class HotbarGUI(GUI):
             #TODO make it work for items too
         #highlight selected item
         pygame.draw.rect(screen, Game.WHITE, pygame.Rect(left + GUI.SCALING * self.player.selected_slot, top, GUI.SCALING, GUI.SCALING), 2)
+        
+        #draw the hearts
+        for i in range(self.player.health):
+            screen.blit(self.img_heart_full, (left + i * GUI.SCALING / 2, GUI.SCALING + top * 3 / 2))
+        for i in range(self.player.health, self.player.max_health):
+            screen.blit(self.img_heart_empty, (left + i * GUI.SCALING / 2, GUI.SCALING + top * 3 / 2))

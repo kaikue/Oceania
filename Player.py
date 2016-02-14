@@ -12,6 +12,8 @@ class Player(Entity.Entity):
     
     def __init__(self, pos, imageurl):
         Entity.Entity.__init__(self, pos, imageurl=imageurl)
+        self.max_health = 20
+        self.health = 18
         self.max_speed = 0.25
         self.acceleration = 0.01 #fiddle with this until it seems good
         self.inventory = [[None] * 10, [None] * 10, [None] * 10, [None] * 10, [None] * 10] #5 by 10 empty inventory
@@ -51,16 +53,21 @@ class Player(Entity.Entity):
                     return True
         return False
     
-    def use_held_item(self, pos, shift, world):
+    def use_held_item(self, world, mouse_pos, viewport, background):
+        angle = self.find_angle(mouse_pos, viewport)
+        block_pos = Convert.pixels_to_world(self.find_pos(angle, self.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), self.get_break_distance()))
+        
         item = self.inventory[0][self.selected_slot]
         entities = self.get_nearby_entities(world)
+        entities.append(self) #check against player too
         for entity in entities:
-            if entity.collides(pos):
+            if entity.collides(block_pos):
                 entity.interact(item)
                 return #don't want to place a block over an entity
         
-        if item is not None and item.can_place and World.blocks[world.get_block_at(pos, False)]["name"] == "water" and (not shift or World.blocks[world.get_block_at(pos, True)]["name"] == "water"):
-            world.set_block_at(pos, World.get_block(item.itemtype), shift)
+        if item is not None and item.can_place and World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
+            (not background or World.blocks[world.get_block_at(block_pos, True)]["name"] == "water"):
+            world.set_block_at(block_pos, World.get_block(item.itemtype), background)
             item.count -= 1
             if item.count == 0:
                 self.inventory[0][self.selected_slot] = None
