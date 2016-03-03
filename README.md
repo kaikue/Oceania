@@ -52,6 +52,7 @@ NEEDED FEATURES
     - Enemies, friendlies
 - Player
     - Animation
+    - Customization- name, colors, hair
 - Crafting
     - Larger crafting tables- 2x2 (from some item in world), 3x3, 4x4, 5x5, 9x9
     - Slot for crafting tool- hammer for metal work, etc.

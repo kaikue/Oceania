@@ -1,4 +1,4 @@
-#import Game
+import Game
 import Entity
 
 class EntityChest(Entity.Entity):
@@ -6,6 +6,7 @@ class EntityChest(Entity.Entity):
         #TODO open a chest gui
         pass
     
-    #def render(self, screen, pos):
-    #    txt = Game.font.render("this is a chest", 0, Game.WHITE)
-    #    screen.blit(txt, pos)
+    def render(self, screen, pos):
+        #this is temporary, until I fix the structure generation
+        txt = Game.font.render("*", 0, Game.WHITE)
+        screen.blit(txt, pos)

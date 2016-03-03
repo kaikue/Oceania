@@ -30,7 +30,7 @@ class Entity(object):
         else:
             self.img = pygame.image.load(self.imageurl).convert_alpha()
             if self.scale != ():
-                self.img = pygame.transform.scale(self.img, (self.scale[0], self.scale[1]))
+                self.img = pygame.transform.scale(self.img, (self.img.get_width() * self.scale[0], self.img.get_height() * self.scale[1]))
     
     def pixel_pos(self, centered=False):
         if centered:

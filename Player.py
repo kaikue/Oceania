@@ -11,7 +11,7 @@ BREAK_DIST = 48
 class Player(Entity.Entity):
     
     def __init__(self, pos, imageurl):
-        Entity.Entity.__init__(self, pos, imageurl=imageurl)
+        Entity.Entity.__init__(self, pos, imageurl=imageurl, scale=(2, 2))
         self.max_health = 20
         self.health = 18
         self.max_speed = 0.25
@@ -49,7 +49,7 @@ class Player(Entity.Entity):
                 if row[i] is None:
                     row[i] = ItemStack(block.blockname, True, block.blockentity)
                     return True
-                elif row[i].itemtype == block.blockname and row[i].count < MAX_STACK_SIZE and block.blockentity is None:
+                elif row[i].itemtype == block.blockname and row[i].count < MAX_STACK_SIZE and block.blockentity is None and row[i].blockentity is None:
                     #can't stack blocks with entities like chests
                     row[i].count += 1
                     return True

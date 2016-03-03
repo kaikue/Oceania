@@ -24,7 +24,7 @@
 		{
 			"name": "kelp",
 			"solid": false,
-			"image": "img/kelp.png"
+			"image": "img/kelp/kelp.png"
 		},
 		{
 			"name": "basaltBricks",

@@ -157,23 +157,23 @@ class World(object):
             top_block = self.get_block_at((block_pos[0], block_pos[1] - 1), background)
             bottom_block = self.get_block_at((block_pos[0], block_pos[1] + 1), background)
             tile = ()
-            if left_block != block_id:
-                if top_block != block_id:
+            if left_block == get_block_id("water"):
+                if top_block == get_block_id("water"):
                     tile = (0, 0)
-                elif bottom_block != block_id:
+                elif bottom_block == get_block_id("water"):
                     tile = (0, 2)
                 else:
                     tile = (0, 1)
-            if right_block != block_id:
-                if top_block != block_id:
+            if right_block == get_block_id("water"):
+                if top_block == get_block_id("water"):
                     tile = (2, 0)
-                elif bottom_block != block_id:
+                elif bottom_block == get_block_id("water"):
                     tile = (2, 2)
                 else:
                     tile = (2, 1)
-            if top_block != block_id:
+            if top_block == get_block_id("water"):
                 tile = (1, 0)
-            elif bottom_block != block_id:
+            elif bottom_block == get_block_id("water"):
                 tile = (1, 2)
             else:
                 tile = (1, 1)
