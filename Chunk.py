@@ -202,9 +202,9 @@ class Chunk(object):
         #don't render air
         if block["name"] != "air":
             Game.get_world().render_block(block["id"], [Convert.chunk_to_world(pos[0], self), pos[1]], block["connectedTexture"], screen, viewport, background)
-        if Game.DEBUG:
-            #draw bounding box
-            pygame.draw.rect(screen, Game.BLACK, pygame.Rect(Convert.chunk_to_viewport(pos, self, viewport), (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)), 1)
+        #if Game.DEBUG:
+            #draw bounding box- this is really slow for some reason
+        #    pygame.draw.rect(screen, Game.BLACK, pygame.Rect(Convert.chunk_to_viewport(pos, self, viewport), (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)), 1)
     
     def __str__(self):
         return "Chunk at x=" + str(self.x) + " contains entities " + str(self.entities)

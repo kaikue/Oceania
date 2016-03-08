@@ -1,6 +1,7 @@
 #IMPORTS
 
 import pygame
+from pygame.locals import DOUBLEBUF
 import os
 import sys
 import Convert
@@ -40,8 +41,9 @@ def start():
     os.environ["SDL_VIDEO_CENTERED"] = "1"
     pygame.init()
     pygame.display.set_caption("Oceania")
+    flags = DOUBLEBUF # | FULLSCREEN
     global screen
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #add double buffering flag
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), flags)
     global clock
     clock = pygame.time.Clock()
     
@@ -193,7 +195,7 @@ def render():
                                         player.get_break_distance())
             target_x = int(target_pos[0])
             target_y = int(target_pos[1])
-            crosshair_size = 8
+            crosshair_size = 4
             for x in range(target_x - crosshair_size, target_x + crosshair_size):
                 for y in range(target_y - crosshair_size + abs(x - target_x), target_y + crosshair_size - abs(x - target_x)):
                     pixelColor = screen.get_at((x, y))
