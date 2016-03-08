@@ -7,4 +7,4 @@ class BlockDrop(Entity.Entity):
         self.blockname = blockname
         self.blockentity = blockentity
         pos = [pos[0] + 0.25, pos[1] + 0.25]
-        Entity.Entity.__init__(self, pos, World.get_block(blockname)["image"])
+        Entity.Entity.__init__(self, pos, loadedimage=World.block_icons[False][World.get_block_id(blockname)])

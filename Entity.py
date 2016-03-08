@@ -7,11 +7,15 @@ import World
 
 class Entity(object):
     
-    def __init__(self, pos, imageurl, scale=()):
+    def __init__(self, pos, imageurl="", scale=(), loadedimage=None):
         self.pos = pos
         self.imageurl = imageurl
         self.scale = scale
-        self.load_image()
+        if loadedimage is None:
+            self.load_image()
+        else:
+            self.img = loadedimage
+        self.scale_image()
         #bounding box is in pixels because it can only have ints
         if self.img is None:
             self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), Game.BLOCK_SIZE, Game.BLOCK_SIZE)
@@ -29,8 +33,10 @@ class Entity(object):
             self.img = None
         else:
             self.img = pygame.image.load(self.imageurl).convert_alpha()
-            if self.scale != ():
-                self.img = pygame.transform.scale(self.img, (self.img.get_width() * self.scale[0], self.img.get_height() * self.scale[1]))
+    
+    def scale_image(self):
+        if self.scale != ():
+            self.img = pygame.transform.scale(self.img, (self.img.get_width() * self.scale[0], self.img.get_height() * self.scale[1]))
     
     def pixel_pos(self, centered=False):
         if centered:

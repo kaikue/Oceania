@@ -9,16 +9,15 @@ TODO
 - Button does not function correctly when run from Game.py
     - problem with global variables- make designated launcher class
 - Structures can only be in one chunk (and overwrite each other all the time)
-- Pause game when opening GUIs
+- Pause game when opening GUIs (like inventory)
     - Pause game at all
 - Figure out why spawn chunks don't save
-- Block rendering
-    - Redo according to Kenney's triangle system? or full CTM
-    - Mask with solid magenta triangle(s), then set that as transparent
-- Fix connected texture block drops rendering the whole image (just pick the center one) as well as in inventory
+- Visualize blocks when trying to place (ghost image- red if can't place, white if can)
+	- Remove crosshair, highlight block that would be broken
+- Player animation
 - Chests
     - generate entity when crafting item
-    - don't place or generate chests in background due to entity overlap
+    - don't place or generate chests in background due to entity overlap- or add layer to entity?
 - Inventory
     - Mouse movement of items
 - Find a real basalt texture
@@ -93,6 +92,7 @@ NEEDED FEATURES
     - Pipes
     - ore processing
     - crafting
+- Waves
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg

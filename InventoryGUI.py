@@ -24,7 +24,7 @@ class InventoryGUI(GUI):
                     drawY = GUI.SCALING * 2 / 3 + top + r * GUI.SCALING
                     if r > 0:
                         drawY += GUI.SCALING / 8
-                    screen.blit(World.block_images[False][World.get_block_id(inv_item.itemtype)], (drawX, drawY))
+                    screen.blit(World.block_icons[True][World.get_block_id(inv_item.itemtype)], (drawX, drawY))
                     countimg = Game.get_font().render(str(inv_item.count), 0, Game.WHITE)
                     screen.blit(countimg, (drawX, drawY))
                 #TODO make it work for items too

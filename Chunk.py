@@ -1,6 +1,5 @@
 import importlib
 import random
-import pygame
 import json
 import Game
 import Convert
