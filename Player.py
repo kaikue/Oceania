@@ -54,7 +54,7 @@ class Player(Entity):
         for row in self.inventory:
             for i in range(len(row)):
                 if row[i] is None:
-                    row[i] = ItemStack(itemdrop.itemtype, itemdrop.img, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
+                    row[i] = ItemStack(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
                     return True
                 elif row[i].can_stack(itemdrop):
                     row[i].count += 1
@@ -151,7 +151,7 @@ class Player(Entity):
                         chunk.entities.remove(entity)
                         blockentity = entity
                         break
-            chunk.entities.append(ItemDrop(block_pos, block["name"], World.block_icons[False][World.get_block_id(block["name"])], True, True, blockentity))
+            chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], True, True, blockentity))
     
     def render(self, screen, pos):
         #TODO fancy animations here

@@ -109,7 +109,6 @@ class Chunk(object):
                 elif y < self.heights[x]:
                     self.set_blocks_at(x, y, World.get_block("water"))
                 elif y < surface_depth:
-                    #for some reason this sometimes makes base blocks above surface blocks, but it looks cool so I'll probably leave it
                     self.set_blocks_at(x, y, World.get_block(self.biome["surface"]))
                 else:
                     self.set_blocks_at(x, y, World.get_block(self.biome["base"]))

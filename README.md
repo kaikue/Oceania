@@ -17,11 +17,13 @@ TODO
 - Some kind of delay on item right click usage
 - Don't render giant blocks in player's hand- use smaller ones
 	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
+	- need to manually draw smaller versions because naturally scaling them looks bad
 - Visualize blocks when trying to place (ghost image- red if can't place, white if can)
 	- Remove crosshair, highlight block that would be broken
 - Finish magic staff
 - Make the items json actually do something
 - Player animation
+- Block breaking particles
 - Chests
     - generate entity when crafting item
     - don't place or generate chests in background due to entity overlap- or add layer to entity?

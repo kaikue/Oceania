@@ -7,14 +7,11 @@ import World
 
 class Entity(object):
     
-    def __init__(self, pos, imageurl="", scale=(), loadedimage=None):
+    def __init__(self, pos, imageurl, scale=()):
         self.pos = pos
         self.imageurl = imageurl
         self.scale = scale
-        if loadedimage is None:
-            self.load_image()
-        else:
-            self.img = loadedimage
+        self.load_image()
         self.scale_image()
         #bounding box is in pixels because it can only have ints
         if self.img is None:
