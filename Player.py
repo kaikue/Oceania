@@ -1,23 +1,31 @@
 import math
-import World
-import Entity
+import pygame
 import Convert
-from BlockDrop import BlockDrop
+import Game
+from Entity import Entity
+from ItemDrop import ItemDrop
 from ItemStack import ItemStack
+from ToolMagicStaff import ToolMagicStaff
+from ToolPickaxe import ToolPickaxe
+import World
 
-MAX_STACK_SIZE = 100
+
 BREAK_DIST = 48
 
-class Player(Entity.Entity):
+class Player(Entity):
     
     def __init__(self, pos, imageurl):
-        Entity.Entity.__init__(self, pos, imageurl=imageurl, scale=(2, 2))
+        Entity.__init__(self, pos, imageurl=imageurl, scale=(2, 2))
         self.max_health = 20
         self.health = 18
         self.max_speed = 0.25
         self.acceleration = 0.01 #fiddle with this until it seems good
         self.inventory = [[None] * 10, [None] * 10, [None] * 10, [None] * 10, [None] * 10] #5 by 10 empty inventory
         self.selected_slot = 0
+        
+        #Temp items for testing
+        self.inventory[0][0] = ToolMagicStaff("staff", "img/staff.png")
+        self.inventory[0][1] = ToolPickaxe("pickaxe", "img/pickaxe.png")
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -32,7 +40,7 @@ class Player(Entity.Entity):
         entities = self.get_nearby_entities(world)
         for entity in entities:
             if(self.bounding_box.colliderect(entity.bounding_box)):
-                if type(entity) is BlockDrop:
+                if isinstance(entity, ItemDrop):
                     if self.pickup(entity):
                         world.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
@@ -42,15 +50,13 @@ class Player(Entity.Entity):
         entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
         return entities
     
-    def pickup(self, block):
-        #TODO make this work for items as well
+    def pickup(self, itemdrop):
         for row in self.inventory:
             for i in range(len(row)):
                 if row[i] is None:
-                    row[i] = ItemStack(block.blockname, True, block.blockentity)
+                    row[i] = ItemStack(itemdrop.itemtype, itemdrop.img, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
                     return True
-                elif row[i].itemtype == block.blockname and row[i].count < MAX_STACK_SIZE and block.blockentity is None and row[i].blockentity is None:
-                    #can't stack blocks with entities like chests
+                elif row[i].can_stack(itemdrop):
                     row[i].count += 1
                     return True
         return False
@@ -68,22 +74,28 @@ class Player(Entity.Entity):
                     entity.interact(item)
                     return #don't want to place a block over an entity
         
-        if item is None or not item.can_place:
+        if item is None:
             return
         
-        #don't place blocks with entities in the background
-        if item.blockentity is not None and background:
-            return
+        item.use(pygame.mouse.get_pos())
         
-        if World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
-            (not background or World.blocks[world.get_block_at(block_pos, True)]["name"] == "water"):
-            world.set_block_at(block_pos, World.get_block(item.itemtype), background)
-            if item.blockentity is not None:
-                item.blockentity.pos = block_pos
-                world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1]).entities.append(item.blockentity)
-            item.count -= 1
-            if item.count == 0:
-                self.inventory[0][self.selected_slot] = None
+        if item.can_place:
+            #try to place the block
+            
+            #don't place blocks with entities in the background
+            blockentity = item.itemdata
+            if blockentity is not None and background:
+                return
+            
+            if World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
+                (not background or World.blocks[world.get_block_at(block_pos, True)]["name"] == "water"):
+                world.set_block_at(block_pos, World.get_block(item.itemtype), background)
+                if blockentity is not None:
+                    blockentity.pos = block_pos
+                    world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1]).entities.append(blockentity)
+                item.count -= 1
+                if item.count == 0:
+                    self.inventory[0][self.selected_slot] = None
     
     def get_break_distance(self):
         #extend with certain items?
@@ -114,16 +126,20 @@ class Player(Entity.Entity):
             chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
             blockentity = None
             if block["entity"] is not "":
+                    #remove the associated entity
                 for entity in chunk.entities:
                     if type(entity).__name__ == block["entity"] and [int(entity.pos[0]), int(entity.pos[1])] == block_pos:
                         chunk.entities.remove(entity)
                         blockentity = entity
                         break
-            chunk.entities.append(BlockDrop(block_pos, block["name"], blockentity))
+            chunk.entities.append(ItemDrop(block_pos, block["name"], World.block_icons[False][World.get_block_id(block["name"])], True, True, blockentity))
     
     def render(self, screen, pos):
+        #TODO fancy animations here
         screen.blit(self.img, pos)
-        #render tail
+        item = self.inventory[0][self.selected_slot]
+        if item is not None:
+            screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.SCALE * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.SCALE / 16)])
     
     def change_slot(self, direction):
         if direction:

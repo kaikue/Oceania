@@ -12,8 +12,14 @@ TODO
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
 - Figure out why spawn chunks don't save
+- Slowly break blocks- use mining speed of current item or 1 for none
+	- also harvest levels
+- Don't render giant blocks in player's hand- use smaller ones
+- Make dirt tiles a bit wider so corners don't look weird
 - Visualize blocks when trying to place (ghost image- red if can't place, white if can)
 	- Remove crosshair, highlight block that would be broken
+- Finish magic staff
+- Make the items json actually do something
 - Player animation
 - Chests
     - generate entity when crafting item
@@ -92,12 +98,24 @@ NEEDED FEATURES
     - Pipes
     - ore processing
     - crafting
+- Spellcasting
+	- Shoot bolt of energy from wand
+	- Basic elements
+		- Heat- large wave instead of projectile
+		- Earth- pass through enemies to attack others behind
+		- Electric- sends bolt of lightning between nearby enemies on hit
+	- Combine spell components to modify bolt
+		- Splitting (bolt splits into 4 after a bit)
+		- Homing
+		- Orbit (revolves around player)
 - Waves
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg
 - DEEPEST LORE
 
-- Progression:
+Progression:
     - Spawn in world
-    - Dig dirt, pick up flint
+    - Dig dirt, pick up flint (does this drop from dirt or spawn separately?)
+    - Right click flint, opens 1x1 crafting interface (place 1 flint inside to make Sharpened Flint
+    

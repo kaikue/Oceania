@@ -1,0 +1,9 @@
+{
+    "tools": [
+		{
+			"name": "staff",
+            "image": "img/staff.png",
+            "class": "ToolMagicStaff"
+        }
+    ]
+}

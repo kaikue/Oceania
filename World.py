@@ -49,11 +49,11 @@ def load_blocks():
     block_icons = {False:{}, True:{}}
     global block_mappings
     block_mappings = {}
-    water_id = 1
-    water_image = pygame.image.load(blocks[water_id]["image"]) #have to make water the second one in the file...
+    water_image = pygame.image.load("img/water.png")
     st_water_image = water_image.copy()
     st_water_image.set_alpha(128)
-    #st_water_image = pygame.transform.scale(st_water_image, (st_water_image.get_width() * Game.SCALE, st_water_image.get_height() * Game.SCALE))
+    pygame.transform.scale(water_image, (24, 24))
+    pygame.display.set_icon(water_image)
     
     for block in blocks:
         #set some default attributes
@@ -81,16 +81,9 @@ def load_blocks():
             #blockicons[False] is the unscaled version for blockdrops, [True] is scaled up for inventory rendering
             block_icons[False][bid] = icon
             block_icons[True][bid] = pygame.transform.scale(icon, (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE))
-            #blit the image onto the water tile so it isn't just empty transparency
-            image = blockimg.copy()
-            #for x in range(image.get_width() // Game.BLOCK_SIZE):
-            #    for y in range(image.get_height() // Game.BLOCK_SIZE):
-            #        image.blit(st_water_image, (x * Game.BLOCK_SIZE, y * Game.BLOCK_SIZE))
-            image.blit(blockimg, (0, 0))
-            surf = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
+            surf = pygame.transform.scale(blockimg, (blockimg.get_width() * Game.SCALE, blockimg.get_height() * Game.SCALE))
             block_images[False][bid] = surf
-            
-            #background- opaque water image
+            #blit the image onto the water tile so it isn't just empty transparency
             image = blockimg.copy()
             for x in range(image.get_width() // Game.BLOCK_SIZE):
                 for y in range(image.get_height() // Game.BLOCK_SIZE):
@@ -102,7 +95,7 @@ def load_blocks():
             surf = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
             block_images[True][bid] = surf
         bid += 1
-    block_images[False][water_id] = pygame.Surface((Game.BLOCK_SIZE, Game.BLOCK_SIZE), pygame.SRCALPHA, 32)
+    block_images[False][get_block_id("water")] = pygame.Surface((Game.BLOCK_SIZE, Game.BLOCK_SIZE), pygame.SRCALPHA, 32)
 
 def get_block_id(blockname):
     return block_mappings[blockname]
