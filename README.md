@@ -12,10 +12,11 @@ TODO
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
 - Figure out why spawn chunks don't save
-- Slowly break blocks- use mining speed of current item or 1 for none
-	- also harvest levels
+- Entities become None when player moves between chunks
+- Confine block breaking to the nontransparent pixels
+- Some kind of delay on item right click usage
 - Don't render giant blocks in player's hand- use smaller ones
-- Make dirt tiles a bit wider so corners don't look weird
+	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
 - Visualize blocks when trying to place (ghost image- red if can't place, white if can)
 	- Remove crosshair, highlight block that would be broken
 - Finish magic staff
@@ -26,7 +27,12 @@ TODO
     - don't place or generate chests in background due to entity overlap- or add layer to entity?
 - Inventory
     - Mouse movement of items
-- Find a real basalt texture
+- Texture improvements:
+	- Basalt
+	- Game icon
+	- Block breaking animation
+	- Kelp border
+	- Make dirt tiles a bit wider so corners don't look weird
 
 NEEDED FEATURES
 --

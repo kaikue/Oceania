@@ -12,12 +12,14 @@ HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
 SEA_FLOOR = HEIGHT * 3 / 4
 CHUNKS_TO_SIDE = 2
+BREAK_LENGTH = 4 #should be the same as the number of break images
 
 biomes = {}
 structures = {}
 blocks = {}
 block_images = {}
 block_icons = {}
+break_images = [] #should really find a better place for this
 
 def load_data():
     load_biomes()
@@ -42,6 +44,12 @@ def load_blocks():
     blocks = json.load(blocks_file)["blocks"]
     blocks_file.close()
     
+    water_image = pygame.image.load("img/water.png")
+    st_water_image = water_image.copy()
+    st_water_image.set_alpha(128)
+    pygame.transform.scale(water_image, (24, 24))
+    pygame.display.set_icon(water_image) #TODO change the icon to something better
+    
     bid = 0
     global block_images
     block_images = {False:{}, True:{}}
@@ -49,12 +57,6 @@ def load_blocks():
     block_icons = {False:{}, True:{}}
     global block_mappings
     block_mappings = {}
-    water_image = pygame.image.load("img/water.png")
-    st_water_image = water_image.copy()
-    st_water_image.set_alpha(128)
-    pygame.transform.scale(water_image, (24, 24))
-    pygame.display.set_icon(water_image)
-    
     for block in blocks:
         #set some default attributes
         if "breakable" not in block.keys():
@@ -65,6 +67,10 @@ def load_blocks():
             block["solid"] = True
         if "entity" not in block.keys():
             block["entity"] = ""
+        if "harvestlevel" not in block.keys():
+            block["harvestlevel"] = 0
+        if "breaktime" not in block.keys():
+            block["breaktime"] = 100
         #add an id to the block
         block["id"] = bid
         block_mappings[block["name"]] = bid
@@ -113,6 +119,11 @@ class World(object):
         random.seed(self.name)
         self.generate_spawn()
         self.player = player
+        self.breaking_blocks = []
+        for i in range(BREAK_LENGTH):
+            img = pygame.image.load("img/break_" + str(i) + ".png").convert_alpha()
+            global break_images
+            break_images.append(pygame.transform.scale(img, (img.get_width() * Game.SCALE, img.get_height() * Game.SCALE)))
     
     def update(self):
         for x in range(self.loaded_chunks.first, self.loaded_chunks.end):
@@ -123,6 +134,13 @@ class World(object):
                     print("Moving", entity, entity.pos, "from", chunk)
                     chunk.entities.remove(entity)
                     self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
+        blocks_to_remove = []
+        for breaking_block in self.breaking_blocks:
+            breaking_block["progress"] -= 1
+            if breaking_block["progress"] <= 0:
+                blocks_to_remove.append(breaking_block)
+        for b in blocks_to_remove:
+            self.breaking_blocks.remove(b)
     
     def get_block_at(self, world_pos, background):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(world_pos[0])[1])
@@ -161,6 +179,10 @@ class World(object):
     def render(self, screen, viewport):
         for chunk in self.loaded_chunks.elements:
             chunk.render(screen, viewport)
+        for breaking_block in self.breaking_blocks:
+            break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * BREAK_LENGTH)
+            img = break_images[break_index]
+            screen.blit(img, Convert.world_to_viewport(breaking_block["pos"], viewport))
     
     def render_block(self, block_id, block_pos, connected, screen, viewport, background):
         if connected:

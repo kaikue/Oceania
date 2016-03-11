@@ -85,6 +85,8 @@ def play():
     hotbarGui = HotbarGUI(player, "img/gui/hotbar.png")
 
 def update():
+    shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             close()
@@ -92,16 +94,15 @@ def update():
             if gamemode == MENU:
                 menu.mouse_press()
             if gamemode == PLAYING:
-                shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
                 if event.button == 1:
                     #left click
-                    player.break_block(world, pygame.mouse.get_pos(), viewport, shift)
+                    pass
                 elif event.button == 2:
                     #scroll wheel click
                     pass
                 elif event.button == 3:
                     #right click
-                    player.use_held_item(world, pygame.mouse.get_pos(), viewport, shift)
+                    pass
                 elif event.button == 4:
                     #scroll wheel up
                     player.change_slot(False)
@@ -160,6 +161,11 @@ def update():
             player.dir[1] -= 1
         if pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
             player.dir[1] += 1
+        mousebuttons = pygame.mouse.get_pressed()
+        if mousebuttons[0]:
+            player.break_block(world, pygame.mouse.get_pos(), viewport, shift)
+        if mousebuttons[2]:
+            player.use_held_item(world, pygame.mouse.get_pos(), viewport, shift)
         player.update(world)
         viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2
         viewport.y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2

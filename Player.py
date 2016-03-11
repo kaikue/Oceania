@@ -24,8 +24,8 @@ class Player(Entity):
         self.selected_slot = 0
         
         #Temp items for testing
-        self.inventory[0][0] = ToolMagicStaff("staff", "img/staff.png")
-        self.inventory[0][1] = ToolPickaxe("pickaxe", "img/pickaxe.png")
+        self.inventory[0][0] = ToolMagicStaff("staff", "img/tools/staff.png")
+        self.inventory[0][1] = ToolPickaxe("pickaxe", "img/tools/pickaxe.png")
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -122,7 +122,26 @@ class Player(Entity):
         if background and World.blocks[world.get_block_at(block_pos, False)]["name"] != "water":
             return
         block = World.blocks[world.get_block_at(block_pos, background)]
-        if block["breakable"]:
+        held_item = self.inventory[0][self.selected_slot]
+        if held_item is None:
+            harvest_level = 0
+            break_speed = 1
+        else:
+            harvest_level = held_item.get_harvest_level()
+            break_speed = held_item.get_break_speed()
+        if (not block["breakable"]) or (block["harvestlevel"] > harvest_level):
+            return
+        block_to_break = None
+        for breaking_block in world.breaking_blocks:
+            if breaking_block["pos"] == block_pos:
+                block_to_break = breaking_block
+        if block_to_break is None:
+            block_to_break = {"pos": block_pos, "progress": 0, "breaktime": block["breaktime"]}
+            world.breaking_blocks.append(block_to_break)
+        block_to_break["progress"] += 2 * break_speed
+        if block_to_break["progress"] >= block_to_break["breaktime"]:
+            #remove the block
+            world.breaking_blocks.remove(block_to_break)
             chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
             blockentity = None
             if block["entity"] is not "":

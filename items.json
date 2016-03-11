@@ -2,7 +2,7 @@
     "tools": [
 		{
 			"name": "staff",
-            "image": "img/staff.png",
+            "image": "img/tools/staff.png",
             "class": "ToolMagicStaff"
         }
     ]
