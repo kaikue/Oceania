@@ -12,7 +12,6 @@ TODO
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
 - Figure out why spawn chunks don't save
-- Entities become None when player moves between chunks
 - Confine block breaking to the nontransparent pixels
 - Some kind of delay on item right click usage
 - Don't render giant blocks in player's hand- use smaller ones
