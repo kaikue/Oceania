@@ -12,7 +12,8 @@
 		],
 		"structures": [
 			"kelp",
-			"temple"
+			"temple",
+			"flint"
 		]
 	},
 	"ridge": {
@@ -59,7 +60,8 @@
 		
 		],
 		"structures": [
-			"kelp"
+			"kelp",
+			"flint"
 		]
 	}
 }

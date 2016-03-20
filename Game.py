@@ -99,7 +99,7 @@ def update():
                     pass
                 elif event.button == 2:
                     #scroll wheel click
-                    pass
+                    player.right_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
                 elif event.button == 3:
                     #right click
                     pass
@@ -165,7 +165,7 @@ def update():
         if mousebuttons[0]:
             player.break_block(world, pygame.mouse.get_pos(), viewport, shift)
         if mousebuttons[2]:
-            player.use_held_item(world, pygame.mouse.get_pos(), viewport, shift)
+            player.right_click_continuous(world, pygame.mouse.get_pos(), viewport, shift)
         player.update(world)
         viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2
         viewport.y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2
@@ -195,7 +195,7 @@ def render():
             h += biomeimg.get_height()
         player.render(screen, Convert.world_to_viewport(player.pos, viewport))
         if gui is None:
-            target_pos = player.find_pos(player.find_angle(pygame.mouse.get_pos(), viewport), 
+            """target_pos = player.find_pos(player.find_angle(pygame.mouse.get_pos(), viewport), 
                                         Convert.pixels_to_viewport(player.pixel_pos(True), viewport), 
                                         pygame.mouse.get_pos(),
                                         player.get_break_distance())
@@ -205,10 +205,13 @@ def render():
             for x in range(target_x - crosshair_size, target_x + crosshair_size):
                 for y in range(target_y - crosshair_size + abs(x - target_x), target_y + crosshair_size - abs(x - target_x)):
                     pixelColor = screen.get_at((x, y))
-                    screen.set_at((x, y), pygame.Color(255 - pixelColor.r, 255 - pixelColor.g, 255 - pixelColor.b, 255))
+                    screen.set_at((x, y), pygame.Color(255 - pixelColor.r, 255 - pixelColor.g, 255 - pixelColor.b, 255))"""
+            shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
+            player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
             hotbarGui.render(screen)
         else:
             gui.render(screen)
+        world.render_breaks(screen, viewport)
     pygame.display.flip()
 
 def close():

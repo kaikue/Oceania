@@ -61,23 +61,21 @@ class Player(Entity):
                     return True
         return False
     
-    def use_held_item(self, world, mouse_pos, viewport, background):
-        angle = self.find_angle(mouse_pos, viewport)
-        block_pos = Convert.pixels_to_world(self.find_pos(angle, self.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), self.get_break_distance()))
+    def right_click_continuous(self, world, mouse_pos, viewport, background):
         item = self.inventory[0][self.selected_slot]
+        block_pos = self.find_angle_pos(mouse_pos, viewport)
         
         if not background:
             entities = self.get_nearby_entities(world)
             entities.append(self) #check against player too
             for entity in entities:
                 if entity.collides(block_pos):
-                    entity.interact(item)
                     return #don't want to place a block over an entity
         
         if item is None:
             return
         
-        item.use(pygame.mouse.get_pos())
+        item.use_continuous(pygame.mouse.get_pos())
         
         if item.can_place:
             #try to place the block
@@ -97,6 +95,20 @@ class Player(Entity):
                 if item.count == 0:
                     self.inventory[0][self.selected_slot] = None
     
+    def right_click_discrete(self, world, mouse_pos, viewport, background):
+        item = self.inventory[0][self.selected_slot]
+        block_pos = self.find_angle_pos(mouse_pos, viewport)
+        
+        entities = self.get_nearby_entities(world)
+        for entity in entities:
+            if entity.collides(block_pos):
+                entity.interact(item)
+        
+        if item is None:
+            return
+        
+        item.use_discrete(pygame.mouse.get_pos())
+    
     def get_break_distance(self):
         #extend with certain items?
         return BREAK_DIST
@@ -114,9 +126,12 @@ class Player(Entity):
         capped_dist = min(dist, max_dist) 
         return [offset[0] + capped_dist * math.cos(angle), offset[1] + capped_dist * math.sin(angle)]
     
-    def break_block(self, world, mouse_pos, viewport, background):
+    def find_angle_pos(self, mouse_pos, viewport):
         angle = self.find_angle(mouse_pos, viewport)
-        block_pos = Convert.pixels_to_world(self.find_pos(angle, self.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), self.get_break_distance()))
+        return Convert.pixels_to_world(self.find_pos(angle, self.pixel_pos(True), Convert.viewport_to_pixels(mouse_pos, viewport), self.get_break_distance()))
+    
+    def break_block(self, world, mouse_pos, viewport, background):
+        block_pos = self.find_angle_pos(mouse_pos, viewport)
         chunk = world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
         #if there's a foreground block covering the background, don't break anything
         if background and World.blocks[world.get_block_at(block_pos, False)]["name"] != "water":
@@ -136,7 +151,7 @@ class Player(Entity):
             if breaking_block["pos"] == block_pos:
                 block_to_break = breaking_block
         if block_to_break is None:
-            block_to_break = {"pos": block_pos, "progress": 0, "breaktime": block["breaktime"]}
+            block_to_break = {"pos": block_pos, "name": block["name"], "progress": 0, "breaktime": block["breaktime"]}
             world.breaking_blocks.append(block_to_break)
         block_to_break["progress"] += 2 * break_speed
         if block_to_break["progress"] >= block_to_break["breaktime"]:
@@ -152,6 +167,70 @@ class Player(Entity):
                         blockentity = entity
                         break
             chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], True, True, blockentity))
+    
+    def draw_block_highlight(self, world, mouse_pos, viewport, screen, shift):
+        #if player can break the foreground block at the position, highlight it
+        #if player is holding a block and can place it in the foreground, render a preview
+        #repeat for background
+        block_pos = self.find_angle_pos(mouse_pos, viewport)
+        held_item = self.inventory[0][self.selected_slot]
+        if held_item is None:
+            harvest_level = 0
+        else:
+            harvest_level = held_item.get_harvest_level()
+        
+        block = World.blocks[world.get_block_at(block_pos, False)]
+        if not shift and block["breakable"] and block["harvestlevel"] <= harvest_level:
+            blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], False).copy()
+            mask = pygame.mask.from_surface(blockimg)
+            olist = mask.outline()
+            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+            pygame.draw.polygon(polysurface, (255, 255, 255, 128), olist, 0)
+            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
+            return
+        if not shift and held_item is not None and held_item.can_place and block["name"] == "water":
+            held_block = World.get_block(held_item.itemtype)
+            blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], False).copy()
+            mask = pygame.mask.from_surface(blockimg)
+            olist = mask.outline()
+            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
+            collides = False
+            entities = self.get_nearby_entities(world)
+            entities.append(self)
+            for entity in entities:
+                if entity.collides(block_pos):
+                    collides = True
+            if collides:
+                pygame.draw.polygon(polysurface, (255, 0, 0, 128), olist, 0)
+            else:
+                pygame.draw.polygon(polysurface, (255, 255, 255, 128), olist, 0)
+            blockimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+            screen.blit(blockimg, Convert.world_to_viewport(block_pos, viewport))
+            return
+        
+        fgwater = block["name"] == "water"
+        block = World.blocks[world.get_block_at(block_pos, True)]
+        if shift and block["breakable"] and block["harvestlevel"] <= harvest_level and fgwater:
+            blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], True, True).copy()
+            mask = pygame.mask.from_surface(blockimg)
+            olist = mask.outline()
+            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+            pygame.draw.polygon(polysurface, (192, 192, 192, 128), olist, 0)
+            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
+            return
+        if shift and held_item is not None and held_item.can_place and block["name"] == "water":
+            held_block = World.get_block(held_item.itemtype)
+            blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], True, True).copy()
+            mask = pygame.mask.from_surface(blockimg)
+            olist = mask.outline()
+            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
+            #check for background entities?
+            pygame.draw.polygon(polysurface, (192, 192, 192, 128), olist, 0)
+            blockimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+            screen.blit(blockimg, Convert.world_to_viewport(block_pos, viewport))
+            return
     
     def render(self, screen, pos):
         #TODO fancy animations here

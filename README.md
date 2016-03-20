@@ -12,17 +12,19 @@ TODO
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
 - Figure out why spawn chunks don't save
-- Confine block breaking to the nontransparent pixels
-- Some kind of delay on item right click usage
 - Don't render giant blocks in player's hand- use smaller ones
 	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
 	- need to manually draw smaller versions because naturally scaling them looks bad
-- Visualize blocks when trying to place (ghost image- red if can't place, white if can)
-	- Remove crosshair, highlight block that would be broken
+	- could also just crop out a center piece of the tile
+- Right-click flint with flint to knap it a couple times to make basic pick
 - Finish magic staff
 - Make the items json actually do something
 - Player animation
 - Block breaking particles
+- Block preview visualization is a bit off- probably due to use of outline
+- Rendering layers
+	- Block breaking animation in background underneath water
+	- Render block highlight, breaking animation under player
 - Chests
     - generate entity when crafting item
     - don't place or generate chests in background due to entity overlap- or add layer to entity?
@@ -87,12 +89,8 @@ NEEDED FEATURES
     - Weapons
 - Sound
     - freesound.org
-- Block placement & destruction
-    - Make block breaking take time
-    - Make target only show when pointing at block within range???
-        - could remove target entirely, highlight selected block/space?
-    - Multiblocks- have special multiblock interface that checks specific blocks
-        - Hammer cycles through block variations
+- Multiblocks- have special multiblock interface that checks specific blocks
+    - Hammer cycles through block variations
 - Lighting
   - decreases with greater depth
     - set brightness per tile? use circlecollector style gradient hacks?

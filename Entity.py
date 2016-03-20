@@ -58,6 +58,9 @@ class Entity(object):
         return False
     
     def tentative_move(self, world, old_pos, index):
+        if self.vel[index] == 0:
+            #don't do all this if you don't have to- this "fixes" a chunkloading bug
+            return
         self.pos[index] += self.vel[index]
         if index == 0:
             self.bounding_box.x = Convert.world_to_pixel(self.pos[index])

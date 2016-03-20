@@ -1,4 +1,9 @@
 {
+	"flint": {
+		"type": "singleblock",
+		"block": "flint",
+		"frequency": 0.2
+	},
 	"kelp": {
 		"type": "column",
 		"block": "kelp",

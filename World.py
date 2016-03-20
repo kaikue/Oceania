@@ -179,12 +179,20 @@ class World(object):
     def render(self, screen, viewport):
         for chunk in self.loaded_chunks.elements:
             chunk.render(screen, viewport)
+    
+    def render_breaks(self, screen, viewport):
         for breaking_block in self.breaking_blocks:
             break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * BREAK_LENGTH)
-            img = break_images[break_index]
-            screen.blit(img, Convert.world_to_viewport(breaking_block["pos"], viewport))
+            breakimg = break_images[break_index].copy()
+            blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO make this support CTM
+            mask = pygame.mask.from_surface(blockimg)
+            olist = mask.outline()
+            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+            pygame.draw.polygon(polysurface, Game.WHITE, olist, 0)
+            breakimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+            screen.blit(breakimg, Convert.world_to_viewport(breaking_block["pos"], viewport))
     
-    def render_block(self, block_id, block_pos, connected, screen, viewport, background):
+    def get_block_render(self, block_id, block_pos, connected, background, backgroundCTM=False):
         if connected:
             #check adjacent tiles
             left_block = blocks[self.get_block_at((block_pos[0] - 1, block_pos[1]), background)]["solid"]
@@ -225,13 +233,17 @@ class World(object):
                 tile = (3, 2)
             if left_block and not right_block and top_block and not bottom_block:
                 tile = (3, 3)
-            screen.blit(block_images[background][block_id],
-                        Convert.world_to_viewport(block_pos, viewport),
+            surf = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)).convert_alpha()
+            surf.fill((0, 0, 0, 0))
+            surf.blit(block_images[background and not backgroundCTM][block_id], (0, 0),
                         pygame.Rect((tile[0] * Game.BLOCK_SIZE * Game.SCALE, tile[1] * Game.BLOCK_SIZE * Game.SCALE),
                                     (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
+            return surf
         else:
-            #just render it normally
-            screen.blit(block_images[background][block_id], Convert.world_to_viewport(block_pos, viewport))
+            return block_images[background][block_id] 
+    
+    def render_block(self, block_id, block_pos, connected, screen, viewport, background):
+        screen.blit(self.get_block_render(block_id, block_pos, connected, background), Convert.world_to_viewport(block_pos, viewport))
     
     def save_chunk(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")

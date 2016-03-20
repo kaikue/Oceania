@@ -28,7 +28,10 @@ class ItemStack(object):
     def get_harvest_level(self):
         return 0
     
-    def use(self, mouse_pos):
+    def use_continuous(self, mouse_pos):
+        pass
+    
+    def use_discrete(self, mouse_pos):
         pass
     
     def __str__(self):

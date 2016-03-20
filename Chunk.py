@@ -128,7 +128,7 @@ class Chunk(object):
         if structure["type"] == "column":
             height = random.randint(structure["minheight"], structure["maxheight"])
             for y in range(self.heights[x] - height, self.heights[x]):
-                self.set_blocks_at(x, y, World.get_block(structure["block"]))
+                self.set_block_at(x, y, World.get_block(structure["block"]), False)
         elif structure["type"] == "json":
             structure_file = open(structure["location"])
             structure_json = json.load(structure_file)
@@ -145,7 +145,8 @@ class Chunk(object):
                         else:
                             block_name = structure_json["blocks"][char]
                         block = World.get_block(block_name)
-                        chunk.set_blocks_at(curr_chunk_x, curr_y, block)
+                        #TODO add background
+                        chunk.set_block_at(curr_chunk_x, curr_y, block, False)
                         if block["entity"] is not "":
                             EntityClass = getattr(importlib.import_module(block["entity"]), block["entity"])
                             instance = EntityClass([curr_world_x, curr_y], "")
@@ -153,9 +154,8 @@ class Chunk(object):
                     curr_world_x += 1
                 curr_y += 1
             structure_file.close()
-        elif structure["type"] == "other":
-            #why did I write this?
-            pass
+        elif structure["type"] == "singleblock":
+            self.set_block_at(x, self.heights[x] - 1, World.get_block(structure["block"]), False)
     
     def get_block_at(self, x, y, background):
         if background:

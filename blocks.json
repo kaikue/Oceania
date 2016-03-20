@@ -38,6 +38,12 @@
 			"name": "chest",
 			"image": "img/chest/chest.png",
 			"entity": "EntityChest"
+		},
+		{
+			"name": "flint",
+			"solid": false,
+			"image": "img/flint/flint.png",
+            "breaktime": 20
 		}
 	]
 }
