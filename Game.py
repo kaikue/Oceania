@@ -174,9 +174,21 @@ def update():
 def render():
     if gamemode == MENU:
         menu.render(screen)
+        
     elif gamemode == PLAYING:
         screen.fill(SKY)
-        world.render(screen, viewport)
+        world.render(screen, viewport, True)
+        #draw background highlight
+        world.render(screen, viewport, False)
+        if gui is None:
+            shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
+            player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
+            hotbarGui.render(screen)
+        else:
+            gui.render(screen)
+        world.render_breaks(screen, viewport)
+        player.render(screen, Convert.world_to_viewport(player.pos, viewport))
+        
         if DEBUG:
             #render debug text
             h = 360
@@ -193,25 +205,6 @@ def render():
             biomeimg = font.render("biome: " + str(chunk.biome["name"]), 0, WHITE)
             screen.blit(biomeimg, (10, h))
             h += biomeimg.get_height()
-        player.render(screen, Convert.world_to_viewport(player.pos, viewport))
-        if gui is None:
-            """target_pos = player.find_pos(player.find_angle(pygame.mouse.get_pos(), viewport), 
-                                        Convert.pixels_to_viewport(player.pixel_pos(True), viewport), 
-                                        pygame.mouse.get_pos(),
-                                        player.get_break_distance())
-            target_x = int(target_pos[0])
-            target_y = int(target_pos[1])
-            crosshair_size = 4
-            for x in range(target_x - crosshair_size, target_x + crosshair_size):
-                for y in range(target_y - crosshair_size + abs(x - target_x), target_y + crosshair_size - abs(x - target_x)):
-                    pixelColor = screen.get_at((x, y))
-                    screen.set_at((x, y), pygame.Color(255 - pixelColor.r, 255 - pixelColor.g, 255 - pixelColor.b, 255))"""
-            shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
-            player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
-            hotbarGui.render(screen)
-        else:
-            gui.render(screen)
-        world.render_breaks(screen, viewport)
     pygame.display.flip()
 
 def close():

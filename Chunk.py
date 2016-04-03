@@ -173,7 +173,7 @@ class Chunk(object):
         else:
             self.foreground_blocks[y][x] = block["id"]
     
-    def render(self, screen, viewport):
+    def render(self, screen, viewport, background):
         top = max(Convert.pixel_to_world(viewport.y), 0)
         bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
         for blocky in range(top, bottom):
@@ -181,25 +181,29 @@ class Chunk(object):
             rightData = Convert.pixel_to_chunk(viewport.x + viewport.width)
             if leftData[1] == self.x:
                 for blockx in range(leftData[0], WIDTH):
-                    self.render_blocks(blockx, blocky, screen, viewport)
+                    self.render_block(blockx, blocky, screen, viewport, background)
             elif leftData[1] < self.x < rightData[1]:
                 for blockx in range(WIDTH):
-                    self.render_blocks(blockx, blocky, screen, viewport)
+                    self.render_block(blockx, blocky, screen, viewport, background)
             elif self.x == rightData[1]:
                 for blockx in range(0, rightData[0] + 1):
-                    self.render_blocks(blockx, blocky, screen, viewport)
+                    self.render_block(blockx, blocky, screen, viewport, background)
         for entity in self.entities:
             entity.render(screen, Convert.world_to_viewport(entity.pos, viewport))
     
-    def render_blocks(self, x, y, screen, viewport):
+    #def render_blocks(self, x, y, screen, viewport):
         #render background first
-        self.render_block(World.blocks[self.background_blocks[y][x]], (x, y), screen, viewport, True)
-        self.render_block(World.blocks[self.foreground_blocks[y][x]], (x, y), screen, viewport, False)
+    #    self.render_block(World.blocks[self.background_blocks[y][x]], (x, y), screen, viewport, True)
+    #    self.render_block(World.blocks[self.foreground_blocks[y][x]], (x, y), screen, viewport, False)
     
-    def render_block(self, block, pos, screen, viewport, background):
+    def render_block(self, x, y, screen, viewport, background):
         #don't render air
+        if background:
+            block = World.blocks[self.background_blocks[y][x]]
+        else:
+            block = World.blocks[self.foreground_blocks[y][x]]
         if block["name"] != "air":
-            Game.get_world().render_block(block["id"], [Convert.chunk_to_world(pos[0], self), pos[1]], block["connectedTexture"], screen, viewport, background)
+            Game.get_world().render_block(block["id"], [Convert.chunk_to_world(x, self), y], block["connectedTexture"], screen, viewport, background)
         #if Game.DEBUG:
             #draw bounding box- this is really slow for some reason
         #    pygame.draw.rect(screen, Game.BLACK, pygame.Rect(Convert.chunk_to_viewport(pos, self, viewport), (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)), 1)

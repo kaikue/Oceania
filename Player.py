@@ -65,13 +65,6 @@ class Player(Entity):
         item = self.inventory[0][self.selected_slot]
         block_pos = self.find_angle_pos(mouse_pos, viewport)
         
-        if not background:
-            entities = self.get_nearby_entities(world)
-            entities.append(self) #check against player too
-            for entity in entities:
-                if entity.collides(block_pos):
-                    return #don't want to place a block over an entity
-        
         if item is None:
             return
         
@@ -79,6 +72,14 @@ class Player(Entity):
         
         if item.can_place:
             #try to place the block
+            
+            #don't want to place a solid block over an entity
+            if not background:
+                entities = self.get_nearby_entities(world)
+                entities.append(self) #check against player too
+                for entity in entities:
+                    if entity.collides(block_pos) and World.get_block(item.itemtype)["solid"]:
+                        return
             
             #don't place blocks with entities in the background
             blockentity = item.itemdata
@@ -201,7 +202,7 @@ class Player(Entity):
             for entity in entities:
                 if entity.collides(block_pos):
                     collides = True
-            if collides:
+            if collides and World.get_block(held_block["name"])["solid"]:
                 pygame.draw.polygon(polysurface, (255, 0, 0, 128), olist, 0)
             else:
                 pygame.draw.polygon(polysurface, (255, 255, 255, 128), olist, 0)

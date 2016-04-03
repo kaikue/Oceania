@@ -17,14 +17,23 @@ TODO
 	- need to manually draw smaller versions because naturally scaling them looks bad
 	- could also just crop out a center piece of the tile
 - Right-click flint with flint to knap it a couple times to make basic pick
+	- Blocks defined in json drop items with special classes
+	- Multiple blocks (stages of knapping) drop the same item (unknapped flint)
+	- or data values?
 - Finish magic staff
 - Make the items json actually do something
 - Player animation
 - Block breaking particles
 - Block preview visualization is a bit off- probably due to use of outline
+- Let player place non-solid blocks over top of entities
 - Rendering layers
-	- Block breaking animation in background underneath water
-	- Render block highlight, breaking animation under player
+	- Layers:
+		- Background blocks
+		- Background highlight- break animation, selected block, preview
+		- (Background entities?)
+		- Foreground blocks
+		- Foreground highlight
+		- Foreground entities
 - Chests
     - generate entity when crafting item
     - don't place or generate chests in background due to entity overlap- or add layer to entity?

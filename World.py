@@ -176,9 +176,9 @@ class World(object):
             self.loaded_chunks.append(chunk)
         self.loaded_chunks.update_start(-leftchunk)
     
-    def render(self, screen, viewport):
+    def render(self, screen, viewport, background):
         for chunk in self.loaded_chunks.elements:
-            chunk.render(screen, viewport)
+            chunk.render(screen, viewport, background)
     
     def render_breaks(self, screen, viewport):
         for breaking_block in self.breaking_blocks:
