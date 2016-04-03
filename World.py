@@ -119,7 +119,7 @@ class World(object):
         random.seed(self.name)
         self.generate_spawn()
         self.player = player
-        self.breaking_blocks = []
+        self.breaking_blocks = {True: [], False: []}
         for i in range(BREAK_LENGTH):
             img = pygame.image.load("img/break_" + str(i) + ".png").convert_alpha()
             global break_images
@@ -134,13 +134,14 @@ class World(object):
                     print("Moving", entity, entity.pos, "from", chunk)
                     chunk.entities.remove(entity)
                     self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
-        blocks_to_remove = []
-        for breaking_block in self.breaking_blocks:
-            breaking_block["progress"] -= 1
-            if breaking_block["progress"] <= 0:
-                blocks_to_remove.append(breaking_block)
-        for b in blocks_to_remove:
-            self.breaking_blocks.remove(b)
+        for layer in [True, False]:
+            blocks_to_remove = []
+            for breaking_block in self.breaking_blocks[layer]:
+                breaking_block["progress"] -= 1
+                if breaking_block["progress"] <= 0:
+                    blocks_to_remove.append(breaking_block)
+            for b in blocks_to_remove:
+                self.breaking_blocks[layer].remove(b)
     
     def get_block_at(self, world_pos, background):
         chunk = self.loaded_chunks.get(Convert.world_to_chunk(world_pos[0])[1])
@@ -178,10 +179,12 @@ class World(object):
     
     def render(self, screen, viewport, background):
         for chunk in self.loaded_chunks.elements:
-            chunk.render(screen, viewport, background)
+            chunk.render_blocks(screen, viewport, background)
+            if not background:
+                chunk.render_entities(screen, viewport, background)
     
-    def render_breaks(self, screen, viewport):
-        for breaking_block in self.breaking_blocks:
+    def render_breaks(self, screen, viewport, background):
+        for breaking_block in self.breaking_blocks[background]:
             break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * BREAK_LENGTH)
             breakimg = break_images[break_index].copy()
             blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO make this support CTM

@@ -26,14 +26,7 @@ TODO
 - Block breaking particles
 - Block preview visualization is a bit off- probably due to use of outline
 - Let player place non-solid blocks over top of entities
-- Rendering layers
-	- Layers:
-		- Background blocks
-		- Background highlight- break animation, selected block, preview
-		- (Background entities?)
-		- Foreground blocks
-		- Foreground highlight
-		- Foreground entities
+- Possibly render foreground water as semitransparent (so it goes over block breaking image)
 - Chests
     - generate entity when crafting item
     - don't place or generate chests in background due to entity overlap- or add layer to entity?

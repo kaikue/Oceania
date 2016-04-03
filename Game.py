@@ -176,17 +176,24 @@ def render():
         menu.render(screen)
         
     elif gamemode == PLAYING:
+        shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
         screen.fill(SKY)
+        
+        #background
         world.render(screen, viewport, True)
-        #draw background highlight
+        if gui is None and shift:
+            player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
+        world.render_breaks(screen, viewport, True)
+        
+        #foreground
         world.render(screen, viewport, False)
         if gui is None:
-            shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
-            player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
+            if not shift:
+                player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
             hotbarGui.render(screen)
         else:
             gui.render(screen)
-        world.render_breaks(screen, viewport)
+        world.render_breaks(screen, viewport, False)
         player.render(screen, Convert.world_to_viewport(player.pos, viewport))
         
         if DEBUG:

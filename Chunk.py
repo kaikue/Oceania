@@ -173,7 +173,7 @@ class Chunk(object):
         else:
             self.foreground_blocks[y][x] = block["id"]
     
-    def render(self, screen, viewport, background):
+    def render_blocks(self, screen, viewport, background):
         top = max(Convert.pixel_to_world(viewport.y), 0)
         bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
         for blocky in range(top, bottom):
@@ -188,13 +188,10 @@ class Chunk(object):
             elif self.x == rightData[1]:
                 for blockx in range(0, rightData[0] + 1):
                     self.render_block(blockx, blocky, screen, viewport, background)
+    
+    def render_entities(self, screen, viewport, background):
         for entity in self.entities:
             entity.render(screen, Convert.world_to_viewport(entity.pos, viewport))
-    
-    #def render_blocks(self, x, y, screen, viewport):
-        #render background first
-    #    self.render_block(World.blocks[self.background_blocks[y][x]], (x, y), screen, viewport, True)
-    #    self.render_block(World.blocks[self.foreground_blocks[y][x]], (x, y), screen, viewport, False)
     
     def render_block(self, x, y, screen, viewport, background):
         #don't render air

@@ -148,16 +148,16 @@ class Player(Entity):
         if (not block["breakable"]) or (block["harvestlevel"] > harvest_level):
             return
         block_to_break = None
-        for breaking_block in world.breaking_blocks:
+        for breaking_block in world.breaking_blocks[background]:
             if breaking_block["pos"] == block_pos:
                 block_to_break = breaking_block
         if block_to_break is None:
             block_to_break = {"pos": block_pos, "name": block["name"], "progress": 0, "breaktime": block["breaktime"]}
-            world.breaking_blocks.append(block_to_break)
+            world.breaking_blocks[background].append(block_to_break)
         block_to_break["progress"] += 2 * break_speed
         if block_to_break["progress"] >= block_to_break["breaktime"]:
             #remove the block
-            world.breaking_blocks.remove(block_to_break)
+            world.breaking_blocks[background].remove(block_to_break)
             chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
             blockentity = None
             if block["entity"] is not "":
