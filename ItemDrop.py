@@ -4,8 +4,9 @@ from Entity import Entity
 
 class ItemDrop(Entity):
     
-    def __init__(self, pos, itemtype, imageurl, stackable, can_place, itemdata = None):
+    def __init__(self, pos, itemtype, imageurl, itemclass, stackable, can_place, itemdata = None):
         self.itemtype = itemtype
+        self.itemclass = itemclass
         self.stackable = stackable
         self.can_place = can_place
         self.itemdata = itemdata

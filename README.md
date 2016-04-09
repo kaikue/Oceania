@@ -11,22 +11,17 @@ TODO
 - Structures can only be in one chunk (and overwrite each other all the time)
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
-- Figure out why spawn chunks don't save
 - Don't render giant blocks in player's hand- use smaller ones
 	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
 	- need to manually draw smaller versions because naturally scaling them looks bad
 	- could also just crop out a center piece of the tile
-- Right-click flint with flint to knap it a couple times to make basic pick
-	- Blocks defined in json drop items with special classes
-	- Multiple blocks (stages of knapping) drop the same item (unknapped flint)
-	- or data values?
 - Finish magic staff
 - Make the items json actually do something
 - Player animation
 - Block breaking particles
 - Block preview visualization is a bit off- probably due to use of outline
-- Let player place non-solid blocks over top of entities
 - Possibly render foreground water as semitransparent (so it goes over block breaking image)
+- Make sharpened flint more effective on kelp
 - Chests
     - generate entity when crafting item
     - don't place or generate chests in background due to entity overlap- or add layer to entity?
@@ -36,7 +31,7 @@ TODO
 	- Basalt
 	- Game icon
 	- Block breaking animation
-	- Kelp border
+	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
 
 NEEDED FEATURES
@@ -124,5 +119,9 @@ NEEDED FEATURES
 Progression:
     - Spawn in world
     - Dig dirt, pick up flint (does this drop from dirt or spawn separately?)
-    - Right click flint, opens 1x1 crafting interface (place 1 flint inside to make Sharpened Flint
+    - Right click flint with it several times to make Sharpened Flint
+    - Right click Sharpened Flint on bone (from killing something or skeleton in world) to make basic pick
+    - Collect ?
+    - Cold forging (copper)
+    - Crucible
     

@@ -67,6 +67,8 @@ def load_blocks():
             block["solid"] = True
         if "entity" not in block.keys():
             block["entity"] = ""
+        if "item" not in block.keys():
+            block["item"] = ""
         if "harvestlevel" not in block.keys():
             block["harvestlevel"] = 0
         if "breaktime" not in block.keys():
@@ -116,9 +118,18 @@ class World(object):
         self.dir = "dat/" + self.name
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
-        random.seed(self.name)
-        self.generate_spawn()
         self.player = player
+        try:
+            savefile = open(self.dir + "/state", "rb")
+            save_data = pickle.load(savefile)
+            savefile.close()
+            player.set_pos(save_data["player_pos"])
+            player_chunk = Convert.world_to_chunk(player.pos[0])[1]
+            self.loaded_chunks = TwoWayList.TwoWayList()
+            self.load_chunks(player_chunk)
+        except:
+            random.seed(self.name)
+            self.generate_spawn()
         self.breaking_blocks = {True: [], False: []}
         for i in range(BREAK_LENGTH):
             img = pygame.image.load("img/break_" + str(i) + ".png").convert_alpha()
@@ -130,7 +141,7 @@ class World(object):
             chunk = self.loaded_chunks.get(x)
             for entity in chunk.entities:
                 entity.update(self)
-                if Convert.world_to_chunk(entity.pos[0])[1] != chunk.x:
+                if Convert.world_to_chunk(entity.pos[0])[1] != chunk.x and self.loaded_chunks.contains_index(Convert.world_to_chunk(entity.pos[0])[1]):
                     print("Moving", entity, entity.pos, "from", chunk)
                     chunk.entities.remove(entity)
                     self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
@@ -158,7 +169,6 @@ class World(object):
         old_chunks = self.loaded_chunks.clone()
         for chunk in old_chunks.elements:
             self.save_chunk(chunk)
-        
         self.loaded_chunks = TwoWayList.TwoWayList()
         leftchunk = center - CHUNKS_TO_SIDE
         rightchunk = center + CHUNKS_TO_SIDE + 1
@@ -256,6 +266,14 @@ class World(object):
     def save_all(self):
         for chunk in self.loaded_chunks.elements:
             self.save_chunk(chunk)
+        self.save_state()
+    
+    def save_state(self):
+        save_data = {"player_pos": self.player.pos}
+        #more game state data
+        savefile = open(self.dir + "/state", "wb")
+        pickle.dump(save_data, savefile)
+        savefile.close()
     
     def get_chunk_file(self, index):
         return self.dir + "/chunk" + str(index) + "data"

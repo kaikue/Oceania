@@ -43,7 +43,36 @@
 			"name": "flint",
 			"solid": false,
 			"image": "img/flint/flint.png",
-            "breaktime": 20
+            "breaktime": 20,
+            "item": "ItemFlint"
+		},
+		{
+			"name": "flint_knapped_1",
+			"solid": false,
+			"image": "img/flint/flint_knapped_1.png",
+            "breaktime": 20,
+            "item": "ItemFlint"
+		},
+		{
+			"name": "flint_knapped_2",
+			"solid": false,
+			"image": "img/flint/flint_knapped_2.png",
+            "breaktime": 20,
+            "item": "ItemFlint"
+		},
+		{
+			"name": "flint_knapped_3",
+			"solid": false,
+			"image": "img/flint/flint_knapped_3.png",
+            "breaktime": 20,
+            "item": "ItemFlint"
+		},
+		{
+			"name": "flint_knapped_4",
+			"solid": false,
+			"image": "img/flint/flint_knapped_4.png",
+            "breaktime": 20,
+            "item": "ItemSharpFlint"
 		}
 	]
 }

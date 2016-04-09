@@ -5,8 +5,8 @@ MAX_STACK_SIZE = 100
 
 class ItemStack(object):
     
-    def __init__(self, itemtype, imageurl, can_place, stackable = True, itemdata = None):
-        self.itemtype = itemtype
+    def __init__(self, itemname, imageurl, can_place, stackable = True, itemdata = None):
+        self.itemname = itemname
         img = pygame.image.load(imageurl).convert_alpha()
         img = pygame.transform.scale(img, (img.get_width() * Game.SCALE, img.get_height() * Game.SCALE))
         self.img = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA, 32).convert_alpha()
@@ -18,7 +18,7 @@ class ItemStack(object):
     
     def can_stack(self, itemstack):
         return self.count < MAX_STACK_SIZE and \
-            itemstack.itemtype == self.itemtype and \
+            itemstack.itemtype == self.itemname and \
             self.stackable and \
             itemstack.itemdata == self.itemdata
     
@@ -28,11 +28,11 @@ class ItemStack(object):
     def get_harvest_level(self):
         return 0
     
-    def use_continuous(self, mouse_pos):
+    def use_continuous(self, world, player, mouse_pos, viewport):
         pass
     
-    def use_discrete(self, mouse_pos):
+    def use_discrete(self, world, player, mouse_pos, viewport):
         pass
     
     def __str__(self):
-        return str(self.count) + "x " + self.itemtype
+        return str(self.count) + "x " + self.itemname

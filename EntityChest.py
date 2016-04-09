@@ -8,5 +8,5 @@ class EntityChest(Entity.Entity):
     
     def render(self, screen, pos):
         #this is temporary, until I fix the structure generation
-        txt = Game.font.render("*", 0, Game.WHITE)
+        txt = Game.get_font().render("*", 0, Game.WHITE)
         screen.blit(txt, pos)

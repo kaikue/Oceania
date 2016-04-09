@@ -99,10 +99,10 @@ def update():
                     pass
                 elif event.button == 2:
                     #scroll wheel click
-                    player.right_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
+                    pass
                 elif event.button == 3:
                     #right click
-                    pass
+                    player.right_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
                 elif event.button == 4:
                     #scroll wheel up
                     player.change_slot(False)
@@ -181,20 +181,21 @@ def render():
         
         #background
         world.render(screen, viewport, True)
-        if gui is None and shift:
+        if shift:
             player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
         world.render_breaks(screen, viewport, True)
         
         #foreground
         world.render(screen, viewport, False)
+        if not shift:
+            player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
+        world.render_breaks(screen, viewport, False)
+        player.render(screen, Convert.world_to_viewport(player.pos, viewport))
+        
         if gui is None:
-            if not shift:
-                player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
             hotbarGui.render(screen)
         else:
             gui.render(screen)
-        world.render_breaks(screen, viewport, False)
-        player.render(screen, Convert.world_to_viewport(player.pos, viewport))
         
         if DEBUG:
             #render debug text
@@ -218,7 +219,7 @@ def close():
     if gamemode == MENU:
         pass
     elif gamemode == PLAYING:
-        #pickle loaded chunks
+        #pickle loaded chunks and other game state data
         world.close()
     sys.exit(0)
 
@@ -227,6 +228,10 @@ def get_font():
 
 def get_world():
     return world
+
+def play_sound(sound):
+    soundObj = pygame.mixer.Sound(sound)
+    soundObj.play()
 
 def main():
     start()

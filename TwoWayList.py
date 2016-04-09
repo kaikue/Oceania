@@ -26,6 +26,10 @@ class TwoWayList(object):
     def set(self, index, element):
         self.elements[index + self.start] = element
     
+    def contains_index(self, index):
+        print(self.first, self.end)
+        return self.first <= index and index < self.end
+    
     def update_start(self, start):
         self.start = start
         self.first = -start
@@ -56,3 +60,8 @@ if __name__ == "__main__":
     print(l.get(1))
     l.set(-1, "Negative Point Five")
     print(l.elements)
+    print(l.contains_index(0))
+    print(l.contains_index(-1))
+    print(l.contains_index(1))
+    print(l.contains_index(-2))
+    print(l.contains_index(2))

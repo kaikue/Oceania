@@ -1,4 +1,5 @@
 import math
+import importlib
 import pygame
 import Convert
 import Game
@@ -54,7 +55,12 @@ class Player(Entity):
         for row in self.inventory:
             for i in range(len(row)):
                 if row[i] is None:
-                    row[i] = ItemStack(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
+                    if itemdrop.itemclass == "":
+                        item = ItemStack(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
+                    else:
+                        EntityClass = getattr(importlib.import_module(itemdrop.itemclass), itemdrop.itemclass)
+                        item = EntityClass(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
+                    row[i] = item
                     return True
                 elif row[i].can_stack(itemdrop):
                     row[i].count += 1
@@ -68,7 +74,7 @@ class Player(Entity):
         if item is None:
             return
         
-        item.use_continuous(pygame.mouse.get_pos())
+        item.use_continuous(world, self, mouse_pos, viewport)
         
         if item.can_place:
             #try to place the block
@@ -78,7 +84,7 @@ class Player(Entity):
                 entities = self.get_nearby_entities(world)
                 entities.append(self) #check against player too
                 for entity in entities:
-                    if entity.collides(block_pos) and World.get_block(item.itemtype)["solid"]:
+                    if entity.collides(block_pos) and World.get_block(item.itemname)["solid"]:
                         return
             
             #don't place blocks with entities in the background
@@ -88,7 +94,7 @@ class Player(Entity):
             
             if World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
                 (not background or World.blocks[world.get_block_at(block_pos, True)]["name"] == "water"):
-                world.set_block_at(block_pos, World.get_block(item.itemtype), background)
+                world.set_block_at(block_pos, World.get_block(item.itemname), background)
                 if blockentity is not None:
                     blockentity.pos = block_pos
                     world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1]).entities.append(blockentity)
@@ -99,7 +105,6 @@ class Player(Entity):
     def right_click_discrete(self, world, mouse_pos, viewport, background):
         item = self.inventory[0][self.selected_slot]
         block_pos = self.find_angle_pos(mouse_pos, viewport)
-        
         entities = self.get_nearby_entities(world)
         for entity in entities:
             if entity.collides(block_pos):
@@ -108,7 +113,7 @@ class Player(Entity):
         if item is None:
             return
         
-        item.use_discrete(pygame.mouse.get_pos())
+        item.use_discrete(world, self, mouse_pos, viewport)
     
     def get_break_distance(self):
         #extend with certain items?
@@ -167,7 +172,7 @@ class Player(Entity):
                         chunk.entities.remove(entity)
                         blockentity = entity
                         break
-            chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], True, True, blockentity))
+            chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], block["item"], True, True, blockentity))
     
     def draw_block_highlight(self, world, mouse_pos, viewport, screen, shift):
         #if player can break the foreground block at the position, highlight it
@@ -190,7 +195,7 @@ class Player(Entity):
             screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
             return
         if not shift and held_item is not None and held_item.can_place and block["name"] == "water":
-            held_block = World.get_block(held_item.itemtype)
+            held_block = World.get_block(held_item.itemname)
             blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], False).copy()
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()
@@ -220,8 +225,8 @@ class Player(Entity):
             pygame.draw.polygon(polysurface, (192, 192, 192, 128), olist, 0)
             screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
             return
-        if shift and held_item is not None and held_item.can_place and block["name"] == "water":
-            held_block = World.get_block(held_item.itemtype)
+        if shift and held_item is not None and held_item.can_place and block["name"] == "water" and fgwater:
+            held_block = World.get_block(held_item.itemname)
             blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], True, True).copy()
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()
