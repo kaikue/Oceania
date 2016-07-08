@@ -5,6 +5,7 @@
 		"minelevation": 144,
 		"slope": 8,
 		"displacement": 1,
+		"size": 0.2,
 		"surface": "dirt",
 		"base": "basalt",
 		"ores": [
@@ -22,6 +23,7 @@
 		"minelevation": 192,
 		"slope": 32,
 		"displacement": 4,
+		"size": 0.7,
 		"surface": "basalt",
 		"base": "basalt",
 		"ores": [
@@ -38,6 +40,7 @@
 		"minelevation": 96,
 		"slope": 16,
 		"displacement": 3,
+		"size": 0.3,
 		"surface": "sand",
 		"base": "basalt",
 		"ores": [
@@ -54,6 +57,7 @@
 		"minelevation": 96,
 		"slope": 16,
 		"displacement": 2,
+		"size": 0.6,
 		"surface": "basalt",
 		"base": "basalt",
 		"ores": [

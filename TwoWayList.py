@@ -27,7 +27,6 @@ class TwoWayList(object):
         self.elements[index + self.start] = element
     
     def contains_index(self, index):
-        print(self.first, self.end)
         return self.first <= index and index < self.end
     
     def update_start(self, start):

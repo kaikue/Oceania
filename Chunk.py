@@ -32,17 +32,14 @@ class Chunk(object):
         else:
             self.x = chunk.x - 1
             sideheight = chunk.heights[0]
-        if random.random() < 0.5: #can fiddle with this- maybe based on previous chunk's biome
+        if random.random() > chunk.biome["size"]:
             biomes_wanted = []
-            #print(sideheight)
             for biome in World.biomes:
-                #print(World.biomes[biome]["maxelevation"], World.biomes[biome]["minelevation"])
                 if World.biomes[biome]["maxelevation"] <= sideheight <= World.biomes[biome]["minelevation"]:
                     biomes_wanted.append(World.biomes[biome])
             self.biome = biomes_wanted[random.randrange(len(biomes_wanted))] #select random from biomes_wanted
         else:
             self.biome = chunk.biome
-        #print("Chunk", self.x, "is biome", self.biome)
         self.generate_heights_from_chunk(chunk, sidegenerated)
         self.populate()
     

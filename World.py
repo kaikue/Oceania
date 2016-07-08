@@ -19,6 +19,7 @@ structures = {}
 blocks = {}
 block_images = {}
 block_icons = {}
+items = {}
 break_images = [] #should really find a better place for this
 
 def load_data():

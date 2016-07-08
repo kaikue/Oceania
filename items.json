@@ -1,9 +1,11 @@
 {
     "tools": [
 		{
-			"name": "staff",
+			"name": "magicStaff",
+			"displayName": "Magic Staff",
             "image": "img/tools/staff.png",
-            "class": "ToolMagicStaff"
+            "class": "ToolMagicStaff",
+            "description": ["An ancient staff imbued with untold power."]
         }
     ]
 }

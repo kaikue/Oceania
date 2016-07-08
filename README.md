@@ -11,6 +11,7 @@ TODO
 - Structures can only be in one chunk (and overwrite each other all the time)
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
+- Save player inventory in state file
 - Don't render giant blocks in player's hand- use smaller ones
 	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
 	- need to manually draw smaller versions because naturally scaling them looks bad
@@ -25,6 +26,8 @@ TODO
 - Chests
     - generate entity when crafting item
     - don't place or generate chests in background due to entity overlap- or add layer to entity?
+    - make them open a GUI
+    - remove * rendering
 - Inventory
     - Mouse movement of items
 - Texture improvements:
@@ -33,6 +36,8 @@ TODO
 	- Block breaking animation
 	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
+- Tooltips
+	- Load from items/block json
 
 NEEDED FEATURES
 --
