@@ -19,12 +19,15 @@ structures = {}
 blocks = {}
 block_images = {}
 block_icons = {}
+block_mappings = {}
+id_mappings = {}
 items = {}
 break_images = [] #should really find a better place for this
 
 def load_data():
     load_biomes()
     load_structures()
+    load_items()
     load_blocks()
 
 def load_biomes():
@@ -38,6 +41,12 @@ def load_structures():
     global structures
     structures = json.load(structures_file)
     structures_file.close()
+
+def load_items():
+    items_file = open("items.json", "r")
+    global items
+    items = json.load(items_file)
+    items_file.close()
 
 def load_blocks():
     blocks_file = open("blocks.json", "r")
@@ -56,8 +65,6 @@ def load_blocks():
     block_images = {False:{}, True:{}}
     global block_icons
     block_icons = {False:{}, True:{}}
-    global block_mappings
-    block_mappings = {}
     for block in blocks:
         #set some default attributes
         if "breakable" not in block.keys():
@@ -70,13 +77,19 @@ def load_blocks():
             block["entity"] = ""
         if "item" not in block.keys():
             block["item"] = ""
+        if "description" not in block.keys():
+            block["description"] = ""
         if "harvestlevel" not in block.keys():
             block["harvestlevel"] = 0
         if "breaktime" not in block.keys():
             block["breaktime"] = 100
         #add an id to the block
         block["id"] = bid
+        global block_mappings
         block_mappings[block["name"]] = bid
+        global id_mappings
+        id_mappings[bid] = block["name"]
+        
         #load the block image
         path = block["image"]
         if path != "":
@@ -103,14 +116,26 @@ def load_blocks():
                     image.blit(st_water_image, (x * Game.BLOCK_SIZE, y * Game.BLOCK_SIZE))
             surf = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
             block_images[True][bid] = surf
+        #make the corresponding item
+        items[block["name"]] = {"displayName": block["displayName"],
+                                "image": block["image"],
+                                "class": block["item"],
+                                "description": block["description"]}
         bid += 1
     block_images[False][get_block_id("water")] = pygame.Surface((Game.BLOCK_SIZE, Game.BLOCK_SIZE), pygame.SRCALPHA, 32)
+    print(block_mappings)
 
 def get_block_id(blockname):
     return block_mappings[blockname]
 
+def get_id_name(blockid):
+    return id_mappings[blockid]
+
 def get_block(blockname):
     return blocks[get_block_id(blockname)]
+
+def get_block_from_id(blockid):
+    return blocks[blockid]
 
 class World(object):
     
@@ -209,10 +234,10 @@ class World(object):
     def get_block_render(self, block_id, block_pos, connected, background, backgroundCTM=False):
         if connected:
             #check adjacent tiles
-            left_block = blocks[self.get_block_at((block_pos[0] - 1, block_pos[1]), background)]["solid"]
-            right_block = blocks[self.get_block_at((block_pos[0] + 1, block_pos[1]), background)]["solid"]
-            top_block = blocks[self.get_block_at((block_pos[0], block_pos[1] - 1), background)]["solid"]
-            bottom_block = blocks[self.get_block_at((block_pos[0], block_pos[1] + 1), background)]["solid"]
+            left_block = get_block(self.get_block_at((block_pos[0] - 1, block_pos[1]), background))["solid"]
+            right_block = get_block(self.get_block_at((block_pos[0] + 1, block_pos[1]), background))["solid"]
+            top_block = get_block(self.get_block_at((block_pos[0], block_pos[1] - 1), background))["solid"]
+            bottom_block = get_block(self.get_block_at((block_pos[0], block_pos[1] + 1), background))["solid"]
             tile = ()
             #there must be some better way to do this
             if not left_block and not right_block and not top_block and not bottom_block:

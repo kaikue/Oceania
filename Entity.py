@@ -40,9 +40,8 @@ class Entity(object):
     def check_collision(self, chunk, left, right, top, bottom, old_pos, index):
         for block_x in range(left, right):
             for block_y in range(top, bottom):
-                check_block = chunk.get_block_at(block_x, block_y, False) #only check the foreground
-                #if check_block.is_solid() and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
-                if World.blocks[check_block]["solid"] and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
+                check_block = World.get_block(chunk.get_block_at(block_x, block_y, False)) #only check the foreground
+                if check_block["solid"] and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
                     #found a collision! 
                     self.pos[index] = old_pos[index]
                     return True

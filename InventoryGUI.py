@@ -1,5 +1,6 @@
 import pygame
 import Game
+import World
 from GUI import GUI
 
 class InventoryGUI(GUI):
@@ -35,4 +36,4 @@ class InventoryGUI(GUI):
         #TODO draw armor
         
         if tooltip_item is not None:
-            print(tooltip_item.itemname)
+            print(World.items[tooltip_item.itemname]["displayName"])

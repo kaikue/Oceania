@@ -17,7 +17,6 @@ TODO
 	- need to manually draw smaller versions because naturally scaling them looks bad
 	- could also just crop out a center piece of the tile
 - Finish magic staff
-- Make the items json actually do something
 - Player animation
 - Block breaking particles
 - Block preview visualization is a bit off- probably due to use of outline
@@ -36,8 +35,8 @@ TODO
 	- Block breaking animation
 	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
-- Tooltips
-	- Load from items/block json
+- Tooltip rendering
+- Make ItemStack take in info from World.items (test by replacing player's starter items)
 
 NEEDED FEATURES
 --

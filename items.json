@@ -1,11 +1,15 @@
 {
-    "tools": [
-		{
-			"name": "magicStaff",
-			"displayName": "Magic Staff",
-            "image": "img/tools/staff.png",
-            "class": "ToolMagicStaff",
-            "description": ["An ancient staff imbued with untold power."]
-        }
-    ]
+	"magicStaff": {
+		"displayName": "Magic Staff",
+		"image": "img/tools/staff.png",
+		"class": "ToolMagicStaff",
+		"description": "An ancient staff imbued with untold power."
+	},
+	
+	"pickaxe": {
+		"displayName": "Pickaxe",
+		"image": "img/tools/pickaxe.png",
+		"class": "ToolPickaxe",
+		"description": "Miney miney."
+	}
 }

@@ -156,9 +156,9 @@ class Chunk(object):
     
     def get_block_at(self, x, y, background):
         if background:
-            return self.background_blocks[y][x]
+            return World.get_id_name(self.background_blocks[y][x])
         else:
-            return self.foreground_blocks[y][x]
+            return World.get_id_name(self.foreground_blocks[y][x])
     
     def set_blocks_at(self, x, y, block):
         self.set_block_at(x, y, block, True)
@@ -193,9 +193,9 @@ class Chunk(object):
     def render_block(self, x, y, screen, viewport, background):
         #don't render air
         if background:
-            block = World.blocks[self.background_blocks[y][x]]
+            block = World.get_block_from_id(self.background_blocks[y][x])
         else:
-            block = World.blocks[self.foreground_blocks[y][x]]
+            block = World.get_block_from_id(self.foreground_blocks[y][x])
         if block["name"] != "air":
             Game.get_world().render_block(block["id"], [Convert.chunk_to_world(x, self), y], block["connectedTexture"], screen, viewport, background)
         #if Game.DEBUG:

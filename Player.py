@@ -26,7 +26,7 @@ class Player(Entity):
         
         #Temp items for testing
         self.inventory[0][0] = ToolMagicStaff("magicStaff", "img/tools/staff.png")
-        self.inventory[0][1] = ToolPickaxe("developerPickaxe", "img/tools/pickaxe.png")
+        self.inventory[0][1] = ToolPickaxe("pickaxe", "img/tools/pickaxe.png")
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -92,8 +92,8 @@ class Player(Entity):
             if blockentity is not None and background:
                 return
             
-            if World.blocks[world.get_block_at(block_pos, False)]["name"] == "water" and \
-                (not background or World.blocks[world.get_block_at(block_pos, True)]["name"] == "water"):
+            if world.get_block_at(block_pos, False) == "water" and \
+                (not background or world.get_block_at(block_pos, True) == "water"):
                 world.set_block_at(block_pos, World.get_block(item.itemname), background)
                 if blockentity is not None:
                     blockentity.pos = block_pos
@@ -140,9 +140,9 @@ class Player(Entity):
         block_pos = self.find_angle_pos(mouse_pos, viewport)
         chunk = world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
         #if there's a foreground block covering the background, don't break anything
-        if background and World.blocks[world.get_block_at(block_pos, False)]["name"] != "water":
+        if background and world.get_block_at(block_pos, False) != "water":
             return
-        block = World.blocks[world.get_block_at(block_pos, background)]
+        block = World.get_block(world.get_block_at(block_pos, background))
         held_item = self.inventory[0][self.selected_slot]
         if held_item is None:
             harvest_level = 0
@@ -185,7 +185,7 @@ class Player(Entity):
         else:
             harvest_level = held_item.get_harvest_level()
         
-        block = World.blocks[world.get_block_at(block_pos, False)]
+        block = World.get_block(world.get_block_at(block_pos, False))
         if not shift and block["breakable"] and block["harvestlevel"] <= harvest_level:
             blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], False).copy()
             mask = pygame.mask.from_surface(blockimg)
@@ -216,7 +216,7 @@ class Player(Entity):
             return
         
         fgwater = block["name"] == "water"
-        block = World.blocks[world.get_block_at(block_pos, True)]
+        block = World.get_block(world.get_block_at(block_pos, True))
         if shift and block["breakable"] and block["harvestlevel"] <= harvest_level and fgwater:
             blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], True, True).copy()
             mask = pygame.mask.from_surface(blockimg)
