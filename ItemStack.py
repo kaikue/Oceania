@@ -1,26 +1,35 @@
 import pygame
 import Game
+import World
+import importlib
+
 
 MAX_STACK_SIZE = 100
 
+def itemstack_from_itemname(itemname):
+    item = World.items[itemname]
+    item_class = getattr(importlib.import_module(item["class"]), item["class"])
+    return item_class(itemname)
+
 class ItemStack(object):
     
-    def __init__(self, itemname, imageurl, can_place, stackable = True, itemdata = None):
+    def __init__(self, itemname, stackable = True, data = None):
         self.itemname = itemname
+        imageurl = World.items[itemname]["image"]
         img = pygame.image.load(imageurl).convert_alpha()
         img = pygame.transform.scale(img, (img.get_width() * Game.SCALE, img.get_height() * Game.SCALE))
         self.img = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA, 32).convert_alpha()
         self.img.blit(img, (0, 0))
-        self.can_place = can_place
+        self.can_place = World.items[itemname]["can_place"]
         self.count = 1
         self.stackable = stackable
-        self.itemdata = itemdata
+        self.data = data
     
     def can_stack(self, itemstack):
         return self.count < MAX_STACK_SIZE and \
             itemstack.itemtype == self.itemname and \
             self.stackable and \
-            itemstack.itemdata == self.itemdata
+            itemstack.data == self.data
     
     def get_break_speed(self):
         return 1

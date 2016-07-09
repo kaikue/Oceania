@@ -1,13 +1,10 @@
 import math
-import importlib
 import pygame
 import Convert
 import Game
 from Entity import Entity
 from ItemDrop import ItemDrop
-from ItemStack import ItemStack
-from ToolMagicStaff import ToolMagicStaff
-from ToolPickaxe import ToolPickaxe
+import ItemStack
 import World
 
 
@@ -25,8 +22,8 @@ class Player(Entity):
         self.selected_slot = 0
         
         #Temp items for testing
-        self.inventory[0][0] = ToolMagicStaff("magicStaff", "img/tools/staff.png")
-        self.inventory[0][1] = ToolPickaxe("pickaxe", "img/tools/pickaxe.png")
+        self.inventory[0][0] = ItemStack.itemstack_from_itemname("magicStaff")#ToolMagicStaff("magicStaff", "img/tools/staff.png")
+        self.inventory[0][1] = ItemStack.itemstack_from_itemname("pickaxe")#ToolPickaxe("pickaxe", "img/tools/pickaxe.png")
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -55,11 +52,13 @@ class Player(Entity):
         for row in self.inventory:
             for i in range(len(row)):
                 if row[i] is None:
-                    if itemdrop.itemclass == "":
+                    item = ItemStack.itemstack_from_itemname(itemdrop.itemtype)
+                    item.data = itemdrop.data
+                    """if itemdrop.itemclass == "":
                         item = ItemStack(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
                     else:
                         EntityClass = getattr(importlib.import_module(itemdrop.itemclass), itemdrop.itemclass)
-                        item = EntityClass(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
+                        item = EntityClass(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)"""
                     row[i] = item
                     return True
                 elif row[i].can_stack(itemdrop):
@@ -88,7 +87,7 @@ class Player(Entity):
                         return
             
             #don't place blocks with entities in the background
-            blockentity = item.itemdata
+            blockentity = item.data
             if blockentity is not None and background:
                 return
             
@@ -172,7 +171,7 @@ class Player(Entity):
                         chunk.entities.remove(entity)
                         blockentity = entity
                         break
-            chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], block["item"], True, True, blockentity))
+            chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], blockentity))
     
     def draw_block_highlight(self, world, mouse_pos, viewport, screen, shift):
         #if player can break the foreground block at the position, highlight it

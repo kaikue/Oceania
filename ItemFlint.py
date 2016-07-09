@@ -5,9 +5,6 @@ from ItemStack import ItemStack
 
 class ItemFlint(ItemStack):
     
-    def __init__(self, itemname, imageurl, can_place, stackable = True, itemdata = None):
-        ItemStack.__init__(self, itemname, imageurl, can_place, stackable, itemdata)
-    
     def use_discrete(self, world, player, mouse_pos, viewport):
         pos = player.find_angle_pos(mouse_pos, viewport)
         block = world.get_block_at(pos, False)

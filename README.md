@@ -36,12 +36,13 @@ TODO
 	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
 - Tooltip rendering
-- Make ItemStack take in info from World.items (test by replacing player's starter items)
+- Make ItemStack property names better
 
 NEEDED FEATURES
 --
 - World generation
     - Caves
+    	- Perlin Worms
         - Lava tubes
         - Air pockets?
     - Hydrothermal vents

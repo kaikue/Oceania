@@ -47,6 +47,11 @@ def load_items():
     global items
     items = json.load(items_file)
     items_file.close()
+    for itemname in items.keys():
+        item = items[itemname]
+        item["can_place"] = False
+        if "class" not in item.keys():
+            item["class"] = "ItemStack"
 
 def load_blocks():
     blocks_file = open("blocks.json", "r")
@@ -76,7 +81,7 @@ def load_blocks():
         if "entity" not in block.keys():
             block["entity"] = ""
         if "item" not in block.keys():
-            block["item"] = ""
+            block["item"] = "ItemStack"
         if "description" not in block.keys():
             block["description"] = ""
         if "harvestlevel" not in block.keys():
@@ -120,7 +125,8 @@ def load_blocks():
         items[block["name"]] = {"displayName": block["displayName"],
                                 "image": block["image"],
                                 "class": block["item"],
-                                "description": block["description"]}
+                                "description": block["description"],
+                                "can_place": True}
         bid += 1
     block_images[False][get_block_id("water")] = pygame.Surface((Game.BLOCK_SIZE, Game.BLOCK_SIZE), pygame.SRCALPHA, 32)
     print(block_mappings)

@@ -1,10 +1,7 @@
-from ItemStack import ItemStack
+import ItemTool
 
 
-class ToolPickaxe(ItemStack):
-    
-    def __init__(self, itemname, imageurl):
-        ItemStack.__init__(self, itemname, imageurl, False, stackable = False, itemdata = None)
+class ToolPickaxe(ItemTool.ItemTool):
     
     def get_break_speed(self):
         return 2
