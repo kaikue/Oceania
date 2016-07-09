@@ -6,16 +6,15 @@ class GUI(object):
     
     def __init__(self, imageurl):
         self.imageurl = imageurl
-        self.load_image()
+        self.img = self.load_imageurl(imageurl)
         self.width = self.img.get_width()
         self.height = self.img.get_height()
     
-    def load_image(self):
-        if self.imageurl is "":
-            self.img = None
-        else:
-            self.img = pygame.image.load(self.imageurl).convert_alpha()
-            self.img = pygame.transform.scale(self.img, (Game.SCALE * self.img.get_width(), Game.SCALE * self.img.get_height()))
+    def load_imageurl(self, imageurl):
+        if imageurl is "":
+            return None
+        img = pygame.image.load(imageurl).convert_alpha()
+        return pygame.transform.scale(img, (Game.SCALE * img.get_width(), Game.SCALE * img.get_height()))
     
     def render(self, screen):
         left = (Game.SCREEN_WIDTH - self.width) // 2
