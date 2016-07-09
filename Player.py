@@ -22,8 +22,8 @@ class Player(Entity):
         self.selected_slot = 0
         
         #Temp items for testing
-        self.inventory[0][0] = ItemStack.itemstack_from_itemname("magicStaff")#ToolMagicStaff("magicStaff", "img/tools/staff.png")
-        self.inventory[0][1] = ItemStack.itemstack_from_itemname("pickaxe")#ToolPickaxe("pickaxe", "img/tools/pickaxe.png")
+        self.inventory[0][0] = ItemStack.itemstack_from_name("magicStaff")#ToolMagicStaff("magicStaff", "img/tools/staff.png")
+        self.inventory[0][1] = ItemStack.itemstack_from_name("pickaxe")#ToolPickaxe("pickaxe", "img/tools/pickaxe.png")
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -52,13 +52,8 @@ class Player(Entity):
         for row in self.inventory:
             for i in range(len(row)):
                 if row[i] is None:
-                    item = ItemStack.itemstack_from_itemname(itemdrop.itemtype)
+                    item = ItemStack.itemstack_from_name(itemdrop.name)
                     item.data = itemdrop.data
-                    """if itemdrop.itemclass == "":
-                        item = ItemStack(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)
-                    else:
-                        EntityClass = getattr(importlib.import_module(itemdrop.itemclass), itemdrop.itemclass)
-                        item = EntityClass(itemdrop.itemtype, itemdrop.imageurl, itemdrop.can_place, stackable = itemdrop.stackable, itemdata = itemdrop.itemdata)"""
                     row[i] = item
                     return True
                 elif row[i].can_stack(itemdrop):
@@ -83,7 +78,7 @@ class Player(Entity):
                 entities = self.get_nearby_entities(world)
                 entities.append(self) #check against player too
                 for entity in entities:
-                    if entity.collides(block_pos) and World.get_block(item.itemname)["solid"]:
+                    if entity.collides(block_pos) and World.get_block(item.name)["solid"]:
                         return
             
             #don't place blocks with entities in the background
@@ -93,7 +88,7 @@ class Player(Entity):
             
             if world.get_block_at(block_pos, False) == "water" and \
                 (not background or world.get_block_at(block_pos, True) == "water"):
-                world.set_block_at(block_pos, World.get_block(item.itemname), background)
+                world.set_block_at(block_pos, World.get_block(item.name), background)
                 if blockentity is not None:
                     blockentity.pos = block_pos
                     world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1]).entities.append(blockentity)
@@ -152,16 +147,17 @@ class Player(Entity):
         if (not block["breakable"]) or (block["harvestlevel"] > harvest_level):
             return
         block_to_break = None
-        for breaking_block in world.breaking_blocks[background]:
+        breaking_blocks = world.breaking_blocks[background]
+        for breaking_block in breaking_blocks:
             if breaking_block["pos"] == block_pos:
                 block_to_break = breaking_block
         if block_to_break is None:
             block_to_break = {"pos": block_pos, "name": block["name"], "progress": 0, "breaktime": block["breaktime"]}
-            world.breaking_blocks[background].append(block_to_break)
+            breaking_blocks.append(block_to_break)
         block_to_break["progress"] += 2 * break_speed
         if block_to_break["progress"] >= block_to_break["breaktime"]:
             #remove the block
-            world.breaking_blocks[background].remove(block_to_break)
+            breaking_blocks.remove(block_to_break)
             chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
             blockentity = None
             if block["entity"] is not "":
@@ -194,7 +190,7 @@ class Player(Entity):
             screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
             return
         if not shift and held_item is not None and held_item.can_place and block["name"] == "water":
-            held_block = World.get_block(held_item.itemname)
+            held_block = World.get_block(held_item.name)
             blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], False).copy()
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()
@@ -225,7 +221,7 @@ class Player(Entity):
             screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
             return
         if shift and held_item is not None and held_item.can_place and block["name"] == "water" and fgwater:
-            held_block = World.get_block(held_item.itemname)
+            held_block = World.get_block(held_item.name)
             blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], True, True).copy()
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()

@@ -4,8 +4,8 @@ from Entity import Entity
 
 class ItemDrop(Entity):
     
-    def __init__(self, pos, itemtype, imageurl, data = None):
-        self.itemtype = itemtype
+    def __init__(self, pos, name, imageurl, data = None):
+        self.name = name
         self.data = data
         #center the position in the block
         pos = [pos[0] + 0.25, pos[1] + 0.25]
