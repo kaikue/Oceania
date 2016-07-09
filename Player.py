@@ -169,10 +169,44 @@ class Player(Entity):
                         break
             chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], blockentity))
     
+    def get_color(self, background):
+        if background:
+            return (192, 192, 192, 128)
+        else:
+            return (255, 255, 255, 128)
+    
+    def render_break_preview(self, background, world, block, block_pos, screen, viewport):
+        blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], background, background).copy()
+        mask = pygame.mask.from_surface(blockimg)
+        olist = mask.outline()
+        polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+        color = self.get_color(background)
+        pygame.draw.polygon(polysurface, color, olist, 0)
+        screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
+    
+    def render_block_preview(self, background, held_item, world, block_pos, screen, viewport):
+        held_block = World.get_block(held_item.name)
+        blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], background, background).copy()
+        mask = pygame.mask.from_surface(blockimg)
+        olist = mask.outline()
+        polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+        screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
+        collides = False
+        entities = self.get_nearby_entities(world)
+        entities.append(self)
+        for entity in entities:
+            if entity.collides(block_pos) and entity.background == background:
+                collides = True
+        color = self.get_color(background)
+        if collides and World.get_block(held_block["name"])["solid"]:
+            color = (color[0], 0, 0, color[3])
+        pygame.draw.polygon(polysurface, color, olist, 0)
+        blockimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+        screen.blit(blockimg, Convert.world_to_viewport(block_pos, viewport))
+    
     def draw_block_highlight(self, world, mouse_pos, viewport, screen, shift):
-        #if player can break the foreground block at the position, highlight it
-        #if player is holding a block and can place it in the foreground, render a preview
-        #repeat for background
+        #if player can break the block at the position, highlight it
+        #if player is holding a block and can place it, render a preview
         block_pos = self.find_angle_pos(mouse_pos, viewport)
         held_item = self.inventory[0][self.selected_slot]
         if held_item is None:
@@ -180,58 +214,13 @@ class Player(Entity):
         else:
             harvest_level = held_item.get_harvest_level()
         
-        block = World.get_block(world.get_block_at(block_pos, False))
-        if not shift and block["breakable"] and block["harvestlevel"] <= harvest_level:
-            blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], False).copy()
-            mask = pygame.mask.from_surface(blockimg)
-            olist = mask.outline()
-            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
-            pygame.draw.polygon(polysurface, (255, 255, 255, 128), olist, 0)
-            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
-            return
-        if not shift and held_item is not None and held_item.can_place and block["name"] == "water":
-            held_block = World.get_block(held_item.name)
-            blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], False).copy()
-            mask = pygame.mask.from_surface(blockimg)
-            olist = mask.outline()
-            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
-            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
-            collides = False
-            entities = self.get_nearby_entities(world)
-            entities.append(self)
-            for entity in entities:
-                if entity.collides(block_pos):
-                    collides = True
-            if collides and World.get_block(held_block["name"])["solid"]:
-                pygame.draw.polygon(polysurface, (255, 0, 0, 128), olist, 0)
-            else:
-                pygame.draw.polygon(polysurface, (255, 255, 255, 128), olist, 0)
-            blockimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
-            screen.blit(blockimg, Convert.world_to_viewport(block_pos, viewport))
-            return
-        
-        fgwater = block["name"] == "water"
-        block = World.get_block(world.get_block_at(block_pos, True))
-        if shift and block["breakable"] and block["harvestlevel"] <= harvest_level and fgwater:
-            blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], True, True).copy()
-            mask = pygame.mask.from_surface(blockimg)
-            olist = mask.outline()
-            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
-            pygame.draw.polygon(polysurface, (192, 192, 192, 128), olist, 0)
-            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
-            return
-        if shift and held_item is not None and held_item.can_place and block["name"] == "water" and fgwater:
-            held_block = World.get_block(held_item.name)
-            blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], True, True).copy()
-            mask = pygame.mask.from_surface(blockimg)
-            olist = mask.outline()
-            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
-            screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
-            #check for background entities?
-            pygame.draw.polygon(polysurface, (192, 192, 192, 128), olist, 0)
-            blockimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
-            screen.blit(blockimg, Convert.world_to_viewport(block_pos, viewport))
-            return
+        block = World.get_block(world.get_block_at(block_pos, shift))
+        samewater = block["name"] == "water"
+        fgwater = World.get_block(world.get_block_at(block_pos, False))["name"] == "water"
+        if block["breakable"] and block["harvestlevel"] <= harvest_level and (not shift or fgwater):
+            self.render_break_preview(shift, world, block, block_pos, screen, viewport)
+        elif held_item is not None and held_item.can_place and samewater:
+            self.render_block_preview(shift, held_item, world, block_pos, screen, viewport)
     
     def render(self, screen, pos):
         #TODO fancy animations here

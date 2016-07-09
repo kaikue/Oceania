@@ -129,7 +129,6 @@ def load_blocks():
                                 "can_place": True}
         bid += 1
     block_images[False][get_block_id("water")] = pygame.Surface((Game.BLOCK_SIZE, Game.BLOCK_SIZE), pygame.SRCALPHA, 32)
-    print(block_mappings)
 
 def get_block_id(blockname):
     return block_mappings[blockname]

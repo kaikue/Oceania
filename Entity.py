@@ -7,7 +7,7 @@ import World
 
 class Entity(object):
     
-    def __init__(self, pos, imageurl, scale=()):
+    def __init__(self, pos, imageurl, scale=(), background=False):
         self.imageurl = imageurl
         self.scale = scale
         self.load_image()
@@ -15,6 +15,7 @@ class Entity(object):
         self.set_pos(pos)
         self.dir = [0, 0] #direction: -1, 0, 1
         self.vel = [0, 0] #speeds: any numbers
+        self.background = background
     
     def load_image(self):
         if self.imageurl is "":
@@ -40,7 +41,7 @@ class Entity(object):
     def check_collision(self, chunk, left, right, top, bottom, old_pos, index):
         for block_x in range(left, right):
             for block_y in range(top, bottom):
-                check_block = World.get_block(chunk.get_block_at(block_x, block_y, False)) #only check the foreground
+                check_block = World.get_block(chunk.get_block_at(block_x, block_y, self.background))
                 if check_block["solid"] and self.collides([Convert.chunk_to_world(block_x, chunk), block_y]):
                     #found a collision! 
                     self.pos[index] = old_pos[index]

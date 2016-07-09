@@ -24,9 +24,8 @@ TODO
 - Make sharpened flint more effective on kelp
 - Chests
     - generate entity when crafting item
-    - don't place or generate chests in background due to entity overlap- or add layer to entity?
     - make them open a GUI
-    - remove * rendering
+    - remove * rendering (after entity generation is fixed)
 - Inventory
     - Mouse movement of items
 - Texture improvements:
@@ -36,7 +35,6 @@ TODO
 	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
 - Tooltip rendering
-- Make ItemStack property names better
 
 NEEDED FEATURES
 --
