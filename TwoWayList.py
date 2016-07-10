@@ -48,6 +48,9 @@ class TwoWayList(object):
         s = s[:len(s) - 2]
         s += "]"
         return s
+    
+    def __len__(self):
+        return len(self.elements)
 
 if __name__ == "__main__":
     l = TwoWayList()

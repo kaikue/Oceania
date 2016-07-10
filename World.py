@@ -1,4 +1,5 @@
 import os
+import threading
 import random
 import pickle
 import json
@@ -208,6 +209,10 @@ class World(object):
             self.loaded_chunks.append(chunk)
         self.loaded_chunks.update_start(-leftchunk)
     
+    #def load_chunks(self, center):
+    #    t = threading.Thread(target=self.load_chunks_in_background, args=[center])
+    #    t.start()
+    
     def render(self, screen, viewport, background):
         for chunk in self.loaded_chunks.elements:
             chunk.render_blocks(screen, viewport, background)
@@ -279,10 +284,14 @@ class World(object):
     def render_block(self, block_id, block_pos, connected, screen, viewport, background):
         screen.blit(self.get_block_render(block_id, block_pos, connected, background), Convert.world_to_viewport(block_pos, viewport))
     
-    def save_chunk(self, chunk):
+    def save_chunk_in_background(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")
         pickle.dump(chunk, chunkfile)
         chunkfile.close()
+    
+    def save_chunk(self, chunk):
+        t = threading.Thread(target=self.save_chunk_in_background, args=[chunk])
+        t.start()
     
     def save_all(self):
         for chunk in self.loaded_chunks.elements:

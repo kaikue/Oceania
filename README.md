@@ -12,9 +12,6 @@ TODO
 	- also messes up entity generation
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
-- Don't render giant blocks in player's hand- use smaller ones
-	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
-	- might need to manually draw smaller versions because naturally scaling them looks bad
 - Finish magic staff
 - Player animation
 - Block breaking particles
@@ -24,6 +21,7 @@ TODO
 - Chests
     - make them open a GUI
     - remove * rendering (after entity generation is fixed)
+    - Stack with same data, or not at all
 - Inventory
     - Armor
 - Texture improvements:
@@ -37,6 +35,7 @@ TODO
 - Folder for item .py files
 	- need to change how they are imported
 - Make image loading only happen once ever (for itemdrops especially)
+	- Don't render giant blocks in player's hand- use BlockDrop versions
 
 NEEDED FEATURES
 --
@@ -122,6 +121,7 @@ NEEDED FEATURES
 - DEEPEST LORE
 
 Progression:
+
     - Spawn in world
     - Dig dirt, pick up flint (does this drop from dirt or spawn separately?)
     - Right click flint with it several times to make Sharpened Flint
