@@ -35,7 +35,6 @@ TODO
 	- Block breaking animation
 	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
-- Tooltip flip to other side if too long
 
 NEEDED FEATURES
 --

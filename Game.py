@@ -8,6 +8,7 @@ import Convert
 import Menu
 import World
 import Player
+import GUI
 import InventoryGUI
 from HotbarGUI import HotbarGUI
 
@@ -115,38 +116,39 @@ def update():
         elif event.type == pygame.KEYDOWN:
             #typed a key
             if gamemode == PLAYING:
-                if pygame.key.get_pressed()[pygame.K_e]:
+                if event.key == pygame.K_e:
                     global gui
                     if gui is None:
                         gui = InventoryGUI.InventoryGUI(player, "img/gui/inventory.png")
                     else:
                         gui = None
-                if pygame.key.get_pressed()[pygame.K_F3]:
+                if event.key == pygame.K_F3:
                     global DEBUG
                     DEBUG = not DEBUG
-                if pygame.key.get_pressed()[pygame.K_1]:
+                if event.key == pygame.K_1:
                     player.selected_slot = 0
-                if pygame.key.get_pressed()[pygame.K_2]:
+                if event.key == pygame.K_2:
                     player.selected_slot = 1
-                if pygame.key.get_pressed()[pygame.K_3]:
+                if event.key == pygame.K_3:
                     player.selected_slot = 2
-                if pygame.key.get_pressed()[pygame.K_4]:
+                if event.key == pygame.K_4:
                     player.selected_slot = 3
-                if pygame.key.get_pressed()[pygame.K_5]:
+                if event.key == pygame.K_5:
                     player.selected_slot = 4
-                if pygame.key.get_pressed()[pygame.K_6]:
+                if event.key == pygame.K_6:
                     player.selected_slot = 5
-                if pygame.key.get_pressed()[pygame.K_7]:
+                if event.key == pygame.K_7:
                     player.selected_slot = 6
-                if pygame.key.get_pressed()[pygame.K_8]:
+                if event.key == pygame.K_8:
                     player.selected_slot = 7
-                if pygame.key.get_pressed()[pygame.K_9]:
+                if event.key == pygame.K_9:
                     player.selected_slot = 8
-                if pygame.key.get_pressed()[pygame.K_0]:
+                if event.key == pygame.K_0:
                     player.selected_slot = 9
+                if event.key == pygame.K_ESCAPE:
+                    close()
+    
     pressed = pygame.key.get_pressed()
-    if pressed[pygame.K_ESCAPE]:
-        close()
     
     if gamemode == MENU:
         menu.update()
@@ -199,20 +201,14 @@ def render():
         
         if DEBUG:
             #render debug text
-            h = 360
-            fpsimg = font.render("fps: {0:.2f}".format(clock.get_fps()), 0, WHITE)
-            screen.blit(fpsimg, (10, h))
-            h += fpsimg.get_height()
-            posimg = font.render("pos: [{0:.2f}".format(player.pos[0]) + ", {0:.2f}]".format(player.pos[1]), 0, WHITE)
-            screen.blit(posimg, (10, h))
-            h += posimg.get_height()
             chunk = world.loaded_chunks.get(Convert.world_to_chunk(player.pos[0])[1])
-            chunkimg = font.render("chunk: " + str(chunk.x), 0, WHITE)
-            screen.blit(chunkimg, (10, h))
-            h += chunkimg.get_height()
-            biomeimg = font.render("biome: " + str(chunk.biome["name"]), 0, WHITE)
-            screen.blit(biomeimg, (10, h))
-            h += biomeimg.get_height()
+            debugtext = ["fps: {0:.2f}".format(clock.get_fps()),
+                        "pos: [{0:.2f}".format(player.pos[0]) + ", {0:.2f}]".format(player.pos[1]),
+                        "chunk: " + str(chunk.x),
+                        "biome: " + str(chunk.biome["name"])]
+            debugimg = GUI.render_string_array(debugtext, font, 0, WHITE)
+            h = SCREEN_HEIGHT - debugimg.get_height()
+            screen.blit(debugimg, (2 * SCALE, h))
     pygame.display.flip()
 
 def close():

@@ -1,9 +1,9 @@
 import pygame
 import Game
 import World
-from GUI import GUI
+import GUI
 
-class InventoryGUI(GUI):
+class InventoryGUI(GUI.GUI):
     
     def __init__(self, player, imageurl):
         super(InventoryGUI, self).__init__(imageurl)
@@ -17,28 +17,15 @@ class InventoryGUI(GUI):
                         self.load_imageurl(base + "center2.png"), 
                         self.load_imageurl(base + "center3.png")]
     
-    def render_string_array(self, strings, font, antialias, color):
-        str_images = []
-        h = 0
-        w = 0
-        for string in strings:
-            str_image = font.render(string, antialias, color)
-            str_images.append(str_image)
-            w = max(w, str_image.get_width())
-            h = h + str_image.get_height()
-        surf = pygame.Surface((w, h), pygame.SRCALPHA, 32)
-        h = 0
-        for str_image in str_images:
-            surf.blit(str_image, (0, h))
-            h = h + str_image.get_height()
-        return surf
-    
     def render(self, screen):
         super(InventoryGUI, self).render(screen)
         
         left = (Game.SCREEN_WIDTH - self.width) // 2
         top = (Game.SCREEN_HEIGHT - self.height) // 2
         
+        font = Game.get_font()
+        mouse_pos = pygame.mouse.get_pos()
+           
         tooltip_item = None
         inventory = self.player.inventory
         for r in range(len(inventory)):
@@ -55,16 +42,16 @@ class InventoryGUI(GUI):
                     drawY = slotY + GUI.SCALING / 6
                     screen.blit(inv_item.img, (drawX, drawY))
                     if inv_item.stackable:
-                        countimg = Game.get_font().render(str(inv_item.count), 0, Game.WHITE)
-                        screen.blit(countimg, (drawX, drawY))
+                        countimg = font.render(str(inv_item.count), 0, Game.WHITE)
+                        screen.blit(countimg, (slotX + 2 * Game.SCALE, slotY + 2 * Game.SCALE))
                     rect = pygame.rect.Rect(slotX, slotY, GUI.SCALING, GUI.SCALING)
-                    if rect.collidepoint(pygame.mouse.get_pos()):
+                    if rect.collidepoint(mouse_pos):
                         tooltip_item = inv_item
+                        highlight_pos = (slotX, slotY)
         #TODO draw armor
         
         if tooltip_item is not None:
-            font = Game.get_font()
-            pos = pygame.mouse.get_pos()
+            screen.blit(self.highlightimg, highlight_pos)
             
             text = World.items[tooltip_item.name]["description"]
             if isinstance(text, str):
@@ -73,13 +60,13 @@ class InventoryGUI(GUI):
                 text = text.copy()
             displayName = World.items[tooltip_item.name]["displayName"]
             text.insert(0, displayName)
-            text_image = self.render_string_array(text, font, 0, Game.WHITE)
+            text_image = GUI.render_string_array(text, font, 0, Game.WHITE)
             
             width = text_image.get_width()
             height = text_image.get_height()
             corner = 4 * Game.SCALE
             
-            pos = (pos[0] + corner, pos[1]) #gap for mouse
+            pos = (mouse_pos[0] + corner, mouse_pos[1])
             
             #if too long, flip it to the other side of the mouse
             if pos[0] + width + 2 * corner > Game.SCREEN_WIDTH:
