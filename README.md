@@ -12,7 +12,6 @@ TODO
 	- also messes up entity generation
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
-- Save player inventory in state file
 - Don't render giant blocks in player's hand- use smaller ones
 	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
 	- might need to manually draw smaller versions because naturally scaling them looks bad

@@ -17,14 +17,17 @@ class ItemStack(object):
     
     def __init__(self, name, stackable = True, data = None):
         self.name = name
-        imageurl = World.items[name]["image"]
-        img = Images.load_imageurl(imageurl)
-        self.img = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA, 32).convert_alpha()
-        self.img.blit(img, (0, 0))
+        self.imageurl = World.items[name]["image"]
+        self.load_image()
         self.can_place = World.items[name]["can_place"]
         self.count = 1
         self.stackable = stackable
         self.data = data
+    
+    def load_image(self):
+        img = Images.load_imageurl(self.imageurl)
+        self.img = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA, 32).convert_alpha()
+        self.img.blit(img, (0, 0))
     
     def can_stack(self, itemstack):
         return self.count < MAX_STACK_SIZE and \

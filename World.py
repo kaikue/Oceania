@@ -149,15 +149,10 @@ class World(object):
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
         self.player = player
-        try:
-            savefile = open(self.dir + "/state", "rb")
-            save_data = pickle.load(savefile)
-            savefile.close()
-            player.set_pos(save_data["player_pos"])
-            player_chunk = Convert.world_to_chunk(player.pos[0])[1]
-            self.loaded_chunks = TwoWayList.TwoWayList()
-            self.load_chunks(player_chunk)
-        except:
+        path = self.dir + "/state"
+        if os.path.isfile(path):
+            self.load_state(path)
+        else:
             random.seed(self.name)
             self.generate_spawn()
         self.breaking_blocks = {True: [], False: []}
@@ -295,11 +290,28 @@ class World(object):
         self.save_state()
     
     def save_state(self):
-        save_data = {"player_pos": self.player.pos}
+        save_data = {"player_pos": self.player.pos, 
+                     "player_inventory": self.player.inventory,
+                     "hotbar_slot": self.player.selected_slot}
         #more game state data
         savefile = open(self.dir + "/state", "wb")
         pickle.dump(save_data, savefile)
         savefile.close()
+    
+    def load_state(self, path):
+        savefile = open(path, "rb")
+        save_data = pickle.load(savefile)
+        savefile.close()
+        self.player.set_pos(save_data["player_pos"])
+        player_chunk = Convert.world_to_chunk(self.player.pos[0])[1]
+        self.loaded_chunks = TwoWayList.TwoWayList()
+        self.load_chunks(player_chunk)
+        self.player.inventory = save_data["player_inventory"]
+        for row in self.player.inventory:
+            for item in row:
+                if item is not None:
+                    item.load_image()
+        self.player.selected_slot = save_data["hotbar_slot"]
     
     def get_chunk_file(self, index):
         return self.dir + "/chunk" + str(index) + "data"
