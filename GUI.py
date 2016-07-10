@@ -25,7 +25,6 @@ def render_string_array(strings, font, antialias, color):
 class GUI(object):
     
     def __init__(self, imageurl):
-        #self.imageurl = imageurl
         self.img = Images.load_imageurl(imageurl)
         self.width = self.img.get_width()
         self.height = self.img.get_height()

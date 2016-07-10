@@ -38,7 +38,6 @@ TODO
 	- Make dirt tiles a bit wider so corners don't look weird
 - Folder for item .py files
 	- need to change how they are imported
-- Consistent super syntax
 - Make image loading only happen once ever (for itemdrops especially)
 
 NEEDED FEATURES

@@ -14,7 +14,7 @@ BREAK_DIST = 48
 class Player(Entity):
     
     def __init__(self, pos, imageurl):
-        Entity.__init__(self, pos, imageurl)
+        super(Player, self).__init__(pos, imageurl)
         self.max_health = 20
         self.health = 18
         self.max_speed = 0.25
