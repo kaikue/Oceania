@@ -1,7 +1,6 @@
-import pygame
-
 import GUI
 import Game
+import Images
 
 
 class HotbarGUI(GUI.GUI):
@@ -9,24 +8,20 @@ class HotbarGUI(GUI.GUI):
     def __init__(self, player, imageurl):
         self.player = player
         super(HotbarGUI, self).__init__(imageurl)
-        self.img_heart_full = self.load_imageurl("img/gui/heart.png")
-        self.img_heart_empty = self.load_imageurl("img/gui/heart_empty.png")
+        self.img_heart_full = Images.load_imageurl("img/gui/heart.png")
+        self.img_heart_empty = Images.load_imageurl("img/gui/heart_empty.png")
     
     def render(self, screen):
         left = (Game.SCREEN_WIDTH - self.width) // 2
-        top = 16
+        top = 8 * Game.SCALE
         screen.blit(self.img, (left, top))
         
         for c in range(len(self.player.inventory[0])):
             inv_item = self.player.inventory[0][c]
             if inv_item is not None:
-                screen.blit(inv_item.img, (GUI.SCALING / 6 + left + c * GUI.SCALING, GUI.SCALING / 6 + top))
-                if inv_item.stackable:
-                    countimg = Game.get_font().render(str(inv_item.count), 0, Game.WHITE)
-                    screen.blit(countimg, (left + c * GUI.SCALING + 2 * Game.SCALE, top + 2 * Game.SCALE))
-        #highlight selected item
-        #pygame.draw.rect(screen, Game.WHITE, pygame.Rect(left + GUI.SCALING * self.player.selected_slot, top, GUI.SCALING, GUI.SCALING), 2)
-        screen.blit(self.highlightimg, (left + GUI.SCALING * self.player.selected_slot, top))
+                inv_item.render(left + c * GUI.SCALING, top, screen)
+        
+        screen.blit(Images.highlight_image, (left + GUI.SCALING * self.player.selected_slot, top))
         
         #draw the hearts
         for i in range(self.player.health):

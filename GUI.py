@@ -1,5 +1,6 @@
 import pygame
 import Game
+import Images
 
 SCALING = 48
 
@@ -24,17 +25,10 @@ def render_string_array(strings, font, antialias, color):
 class GUI(object):
     
     def __init__(self, imageurl):
-        self.imageurl = imageurl
-        self.img = self.load_imageurl(imageurl)
+        #self.imageurl = imageurl
+        self.img = Images.load_imageurl(imageurl)
         self.width = self.img.get_width()
         self.height = self.img.get_height()
-        self.highlightimg = self.load_imageurl("img/gui/highlight.png")
-    
-    def load_imageurl(self, imageurl):
-        if imageurl is "":
-            return None
-        img = pygame.image.load(imageurl).convert_alpha()
-        return pygame.transform.scale(img, (Game.SCALE * img.get_width(), Game.SCALE * img.get_height()))
     
     def render(self, screen):
         left = (Game.SCREEN_WIDTH - self.width) // 2

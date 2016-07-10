@@ -4,28 +4,19 @@ import Game
 import Convert
 import Chunk
 import World
+import Images
 
 class Entity(object):
     
-    def __init__(self, pos, imageurl, scale=(), background=False):
-        self.imageurl = imageurl
-        self.scale = scale
-        self.load_image()
-        self.scale_image()
+    def __init__(self, pos, imageurl, background=False):
+        self.img = Images.load_imageurl(imageurl)
         self.set_pos(pos)
         self.dir = [0, 0] #direction: -1, 0, 1
         self.vel = [0, 0] #speeds: any numbers
         self.background = background
     
-    def load_image(self):
-        if self.imageurl is "":
-            self.img = None
-        else:
-            self.img = pygame.image.load(self.imageurl).convert_alpha()
-    
-    def scale_image(self):
-        if self.scale != ():
-            self.img = pygame.transform.scale(self.img, (self.img.get_width() * self.scale[0], self.img.get_height() * self.scale[1]))
+    def scale_image(self, scale):
+        self.img = pygame.transform.scale(self.img, (self.img.get_width() * scale[0], self.img.get_height() * scale[1]))
     
     def pixel_pos(self, centered=False):
         if centered:

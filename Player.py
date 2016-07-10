@@ -6,6 +6,7 @@ from Entity import Entity
 from ItemDrop import ItemDrop
 import ItemStack
 import World
+from Inventory import Inventory
 
 
 BREAK_DIST = 48
@@ -13,17 +14,17 @@ BREAK_DIST = 48
 class Player(Entity):
     
     def __init__(self, pos, imageurl):
-        Entity.__init__(self, pos, imageurl=imageurl, scale=(2, 2))
+        Entity.__init__(self, pos, imageurl)
         self.max_health = 20
         self.health = 18
         self.max_speed = 0.25
         self.acceleration = 0.01 #fiddle with this until it seems good
-        self.inventory = [[None] * 10, [None] * 10, [None] * 10, [None] * 10, [None] * 10] #5 by 10 empty inventory
+        self.inventory = Inventory(5, 10)
         self.selected_slot = 0
         
         #Temp items for testing
-        self.inventory[0][0] = ItemStack.itemstack_from_name("magicStaff")
-        self.inventory[0][1] = ItemStack.itemstack_from_name("pickaxe")
+        self.inventory.insert(ItemStack.itemstack_from_name("magicStaff"))
+        self.inventory.insert(ItemStack.itemstack_from_name("pickaxe"))
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
@@ -39,7 +40,7 @@ class Player(Entity):
         for entity in entities:
             if(self.bounding_box.colliderect(entity.bounding_box)):
                 if isinstance(entity, ItemDrop):
-                    if self.pickup(entity):
+                    if self.inventory.insert(entity):
                         world.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def get_nearby_entities(self, world):
@@ -47,19 +48,6 @@ class Player(Entity):
         entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] - 1).entities
         entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
         return entities
-    
-    def pickup(self, itemdrop):
-        for row in self.inventory:
-            for i in range(len(row)):
-                if row[i] is None:
-                    item = ItemStack.itemstack_from_name(itemdrop.name)
-                    item.data = itemdrop.data
-                    row[i] = item
-                    return True
-                elif row[i].can_stack(itemdrop):
-                    row[i].count += 1
-                    return True
-        return False
     
     def right_click_continuous(self, world, mouse_pos, viewport, background):
         item = self.inventory[0][self.selected_slot]

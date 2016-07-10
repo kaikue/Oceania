@@ -7,12 +7,12 @@ import Game
 import Convert
 import Chunk
 import TwoWayList
+import Images
 
 HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
 SEA_FLOOR = HEIGHT * 3 / 4
 CHUNKS_TO_SIDE = 2
-BREAK_LENGTH = 4 #should be the same as the number of break images
 
 biomes = {}
 structures = {}
@@ -22,13 +22,13 @@ block_icons = {}
 block_mappings = {}
 id_mappings = {}
 items = {}
-break_images = [] #should really find a better place for this
 
 def load_data():
     load_biomes()
     load_structures()
     load_items()
     load_blocks()
+    Images.load_images()
 
 def load_biomes():
     biomes_file = open("biomes.json", "r")
@@ -62,7 +62,6 @@ def load_blocks():
     water_image = pygame.image.load("img/water.png")
     st_water_image = water_image.copy()
     st_water_image.set_alpha(128)
-    pygame.transform.scale(water_image, (24, 24))
     pygame.display.set_icon(water_image) #TODO change the icon to something better
     
     bid = 0
@@ -162,10 +161,6 @@ class World(object):
             random.seed(self.name)
             self.generate_spawn()
         self.breaking_blocks = {True: [], False: []}
-        for i in range(BREAK_LENGTH):
-            img = pygame.image.load("img/break_" + str(i) + ".png").convert_alpha()
-            global break_images
-            break_images.append(pygame.transform.scale(img, (img.get_width() * Game.SCALE, img.get_height() * Game.SCALE)))
     
     def update(self):
         for x in range(self.loaded_chunks.first, self.loaded_chunks.end):
@@ -226,8 +221,8 @@ class World(object):
     
     def render_breaks(self, screen, viewport, background):
         for breaking_block in self.breaking_blocks[background]:
-            break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * BREAK_LENGTH)
-            breakimg = break_images[break_index].copy()
+            break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * Game.BREAK_LENGTH)
+            breakimg = Images.break_images[break_index].copy()
             blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO make this support CTM
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()

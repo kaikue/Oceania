@@ -9,13 +9,13 @@ TODO
 - Button does not function correctly when run from Game.py
     - problem with global variables- make designated launcher class
 - Structures can only be in one chunk (and overwrite each other all the time)
+	- also messes up entity generation
 - Pause game when opening GUIs (like inventory)
     - Pause game at all
 - Save player inventory in state file
 - Don't render giant blocks in player's hand- use smaller ones
 	- should these (and the itemdrop versions) use the high-res tiny textures or smaller pixelated ones?
-	- need to manually draw smaller versions because naturally scaling them looks bad
-	- could also just crop out a center piece of the tile
+	- might need to manually draw smaller versions because naturally scaling them looks bad
 - Finish magic staff
 - Player animation
 - Block breaking particles
@@ -23,18 +23,23 @@ TODO
 - Possibly render foreground water as semitransparent (so it goes over block breaking image)
 - Make sharpened flint more effective on kelp
 - Chests
-    - generate entity when crafting item
     - make them open a GUI
     - remove * rendering (after entity generation is fixed)
 - Inventory
     - Mouse movement of items
+    - Separate class
 - Texture improvements:
 	- Font
 	- Basalt
 	- Game icon
 	- Block breaking animation
+		- crop to CTM
 	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
+- Folder for item .py files
+	- need to change how they are imported
+- Consistent super syntax
+- Make image loading only happen once ever (for itemdrops especially)
 
 NEEDED FEATURES
 --

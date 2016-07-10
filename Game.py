@@ -33,6 +33,7 @@ SKY = (128, 128, 255)
 DEBUG = True #displays fps, coords, grid, etc. but impacts performance.
 MUSIC = False #play background music
 
+BREAK_LENGTH = 4
 
 #GAME FUNCTIONS
 #For handling input, overall game functions.

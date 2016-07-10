@@ -1,6 +1,8 @@
 import pygame
 import Game
 import World
+import GUI
+import Images
 import importlib
 
 
@@ -16,8 +18,7 @@ class ItemStack(object):
     def __init__(self, name, stackable = True, data = None):
         self.name = name
         imageurl = World.items[name]["image"]
-        img = pygame.image.load(imageurl).convert_alpha()
-        img = pygame.transform.scale(img, (img.get_width() * Game.SCALE, img.get_height() * Game.SCALE))
+        img = Images.load_imageurl(imageurl)
         self.img = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA, 32).convert_alpha()
         self.img.blit(img, (0, 0))
         self.can_place = World.items[name]["can_place"]
@@ -42,6 +43,12 @@ class ItemStack(object):
     
     def use_discrete(self, world, player, mouse_pos, viewport):
         pass
+    
+    def render(self, x, y, screen):
+        screen.blit(self.img, (x + GUI.SCALING / 6, y + GUI.SCALING / 6))
+        if self.stackable:
+            countimg = Game.get_font().render(str(self.count), 0, Game.WHITE)
+            screen.blit(countimg, (x + 3 * Game.SCALE, y + 3 * Game.SCALE))
     
     def __str__(self):
         return str(self.count) + "x " + self.itemname
