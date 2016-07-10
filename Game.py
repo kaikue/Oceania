@@ -98,6 +98,9 @@ def update():
             if gamemode == PLAYING:
                 if event.button == 1:
                     #left click
+                    global gui
+                    if gui is not None:
+                        gui.click(pygame.mouse.get_pos())
                     pass
                 elif event.button == 2:
                     #scroll wheel click
@@ -118,10 +121,10 @@ def update():
             #typed a key
             if gamemode == PLAYING:
                 if event.key == pygame.K_e:
-                    global gui
                     if gui is None:
                         gui = InventoryGUI.InventoryGUI(player, "img/gui/inventory.png")
                     else:
+                        gui.close()
                         gui = None
                 if event.key == pygame.K_F3:
                     global DEBUG

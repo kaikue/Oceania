@@ -44,11 +44,11 @@ class ItemStack(object):
     def use_discrete(self, world, player, mouse_pos, viewport):
         pass
     
-    def render(self, x, y, screen):
-        screen.blit(self.img, (x + GUI.SCALING / 6, y + GUI.SCALING / 6))
+    def render(self, pos, screen):
+        screen.blit(self.img, (pos[0] + GUI.SCALING / 6, pos[1] + GUI.SCALING / 6))
         if self.stackable:
             countimg = Game.get_font().render(str(self.count), 0, Game.WHITE)
-            screen.blit(countimg, (x + 3 * Game.SCALE, y + 3 * Game.SCALE))
+            screen.blit(countimg, (pos[0] + 3 * Game.SCALE, pos[1] + 3 * Game.SCALE))
     
     def __str__(self):
         return str(self.count) + "x " + self.itemname

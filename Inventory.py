@@ -5,6 +5,8 @@ import GUI
 import ItemStack
 import Images
 
+HOTBAR_GAP = GUI.SCALING // 8
+
 class Inventory(object):
     
     def __init__(self, rows, cols):
@@ -31,22 +33,33 @@ class Inventory(object):
     def __setitem__(self, i, value):
         self.items[i] = value
     
-    def render(self, left, top, screen, hotbargap):
+    def slot_at(self, pos, left, top, hotbargap):
+        pos = (pos[0] - GUI.SCALING // 2 - left, pos[1] - GUI.SCALING // 2 - top)
+        if hotbargap and pos[1] > GUI.SCALING:
+            pos = (pos[0], pos[1] - HOTBAR_GAP)
+        row = pos[1] // GUI.SCALING
+        col = pos[0] // GUI.SCALING
+        if not (0 <= row < len(self.items) and 0 <= col < len(self.items[row])):
+            return None
+        else:
+            return (row, col)
+    
+    def render(self, left, top, screen, hotbargap, item_to_skip = None):
         font = Game.get_font()
         mouse_pos = pygame.mouse.get_pos()
-           
+        
         tooltip_item = None
         for r in range(len(self.items)):
             for c in range(len(self.items[r])):
                 inv_item = self.items[r][c]
-                if inv_item is not None:
+                if inv_item is not None and inv_item is not item_to_skip:
                     #c and r are flipped here so it renders across then down
                     slotX = GUI.SCALING / 2 + left + c * GUI.SCALING
                     slotY = GUI.SCALING / 2 + top + r * GUI.SCALING
                     if r > 0 and hotbargap:
-                        slotY += GUI.SCALING / 8 #gap under hotbar
+                        slotY += HOTBAR_GAP
                     
-                    inv_item.render(slotX, slotY, screen)
+                    inv_item.render((slotX, slotY), screen)
                     
                     rect = pygame.rect.Rect(slotX, slotY, GUI.SCALING, GUI.SCALING)
                     if rect.collidepoint(mouse_pos):
@@ -54,7 +67,7 @@ class Inventory(object):
                         highlight_pos = (slotX, slotY)
         #TODO draw armor if not none
         
-        if tooltip_item is not None:
+        if tooltip_item is not None and item_to_skip is None:
             screen.blit(Images.highlight_image, highlight_pos)
             
             text = World.items[tooltip_item.name]["description"]
@@ -95,3 +108,4 @@ class Inventory(object):
             screen.blit(Images.tooltip_pieces[2][2], (pos[0] + 3 * corner + x, pos[1] + 3 * corner + y))
             
             screen.blit(text_image, (pos[0] + corner, pos[1] + corner))
+        

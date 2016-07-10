@@ -26,8 +26,7 @@ TODO
     - make them open a GUI
     - remove * rendering (after entity generation is fixed)
 - Inventory
-    - Mouse movement of items
-    - Separate class
+    - Armor
 - Texture improvements:
 	- Font
 	- Basalt

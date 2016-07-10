@@ -33,3 +33,9 @@ class GUI(object):
         left = (Game.SCREEN_WIDTH - self.width) // 2
         top = (Game.SCREEN_HEIGHT - self.height) // 2
         screen.blit(self.img, (left, top))
+    
+    def click(self, pos):
+        pass
+    
+    def close(self):
+        pass

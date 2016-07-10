@@ -19,7 +19,7 @@ class HotbarGUI(GUI.GUI):
         for c in range(len(self.player.inventory[0])):
             inv_item = self.player.inventory[0][c]
             if inv_item is not None:
-                inv_item.render(left + c * GUI.SCALING, top, screen)
+                inv_item.render((left + c * GUI.SCALING, top), screen)
         
         screen.blit(Images.highlight_image, (left + GUI.SCALING * self.player.selected_slot, top))
         
