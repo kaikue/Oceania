@@ -3,7 +3,9 @@
 		"displayName": "Magic Staff",
 		"image": "img/tools/staff.png",
 		"class": "ToolMagicStaff",
-		"description": "An ancient staff imbued with untold power."
+		"description": ["An ancient staff imbued with untold power.",
+						"Right now, the power is just to print to",
+						"the console."]
 	},
 	
 	"pickaxe": {

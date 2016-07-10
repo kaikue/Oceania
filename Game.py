@@ -58,7 +58,7 @@ def start():
     global gamemode
     gamemode = MENU
     global font
-    font = pygame.font.SysFont("monospace", 20)
+    font = pygame.font.Font("fnt/coders_crux.ttf", 32)
     global menu
     menu = Menu.Menu()
     global gui

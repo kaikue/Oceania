@@ -22,8 +22,8 @@ class Player(Entity):
         self.selected_slot = 0
         
         #Temp items for testing
-        self.inventory[0][0] = ItemStack.itemstack_from_name("magicStaff")#ToolMagicStaff("magicStaff", "img/tools/staff.png")
-        self.inventory[0][1] = ItemStack.itemstack_from_name("pickaxe")#ToolPickaxe("pickaxe", "img/tools/pickaxe.png")
+        self.inventory[0][0] = ItemStack.itemstack_from_name("magicStaff")
+        self.inventory[0][1] = ItemStack.itemstack_from_name("pickaxe")
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]

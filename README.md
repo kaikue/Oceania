@@ -29,12 +29,13 @@ TODO
 - Inventory
     - Mouse movement of items
 - Texture improvements:
+	- Font
 	- Basalt
 	- Game icon
 	- Block breaking animation
 	- Kelp border (or no borders at all?)
 	- Make dirt tiles a bit wider so corners don't look weird
-- Tooltip wrapping
+- Tooltip flip to other side if too long
 
 NEEDED FEATURES
 --
