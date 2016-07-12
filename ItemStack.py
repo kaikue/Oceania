@@ -30,7 +30,8 @@ class ItemStack(object):
         self.img.blit(img, (0, 0))
     
     def can_stack(self, itemstack):
-        return itemstack.count + self.count <= MAX_STACK_SIZE and \
+        return itemstack is not None and \
+            itemstack.count + self.count <= MAX_STACK_SIZE and \
             itemstack.name == self.name and \
             self.stackable and \
             itemstack.data == self.data

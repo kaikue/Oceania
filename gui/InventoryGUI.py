@@ -35,7 +35,12 @@ class InventoryGUI(GUI.GUI):
             if other_inventory is not None:
                 clicked_inventory[slot[0]][slot[1]] = other_inventory.insert(clicked_inventory[slot[0]][slot[1]])
         else:
-            #TODO stack'n'swap
+            if self.moving_item is not None:
+                while self.moving_item.can_stack(clicked_inventory[slot[0]][slot[1]]):
+                    self.moving_item.count += 1
+                    clicked_inventory[slot[0]][slot[1]].count -= 1
+                    if clicked_inventory[slot[0]][slot[1]].count == 0:
+                        clicked_inventory[slot[0]][slot[1]] = None
             clicked_inventory[slot[0]][slot[1]], self.moving_item = self.moving_item, clicked_inventory[slot[0]][slot[1]]
     
     def close(self, world):
