@@ -1,22 +1,7 @@
-#IMPORTS
-
-import pygame
-from pygame.locals import DOUBLEBUF
-import os
-import sys
-import Convert
-import Menu
-import World
-import Player
-import GUI
-import InventoryGUI
-from HotbarGUI import HotbarGUI
-
-
 #GLOBAL CONSTANTS
 
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 
 BLOCK_SIZE = 16
 SCALE = 2
@@ -34,6 +19,23 @@ DEBUG = True #displays fps, coords, grid, etc. but impacts performance.
 MUSIC = False #play background music
 
 BREAK_LENGTH = 4
+
+
+#IMPORTS
+#Do these after the constants are set, so that the imported classes can reference them.
+
+import pygame
+from pygame.locals import DOUBLEBUF
+import os
+import sys
+import Convert
+import Menu
+import World
+import Player
+import gui.GUI as GUI
+from gui.InventoryGUI import InventoryGUI
+from gui.HotbarGUI import HotbarGUI
+
 
 #GAME FUNCTIONS
 #For handling input, overall game functions.
@@ -60,7 +62,7 @@ def start():
     global gamemode
     gamemode = MENU
     global font
-    font = pygame.font.Font("fnt/coders_crux.ttf", 32)
+    font = pygame.font.Font("fnt/coders_crux.ttf", 16 * SCALE)
     global menu
     menu = Menu.Menu()
     global gui
@@ -87,7 +89,8 @@ def play():
     hotbarGui = HotbarGUI(player, "img/gui/hotbar.png")
 
 def update():
-    shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
+    pressed = pygame.key.get_pressed()
+    shift = pressed[pygame.K_LSHIFT] or pressed[pygame.K_RSHIFT]
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -100,14 +103,17 @@ def update():
                     #left click
                     global gui
                     if gui is not None:
-                        gui.click(pygame.mouse.get_pos())
-                    pass
+                        gui.click(pygame.mouse.get_pos(), False, shift)
                 elif event.button == 2:
                     #scroll wheel click
                     pass
                 elif event.button == 3:
                     #right click
-                    player.right_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
+                    global gui
+                    if gui is not None:
+                        gui.click(pygame.mouse.get_pos(), True, shift)
+                    else:
+                        player.right_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
                 elif event.button == 4:
                     #scroll wheel up
                     player.change_slot(False)
@@ -122,9 +128,9 @@ def update():
             if gamemode == PLAYING:
                 if event.key == pygame.K_e:
                     if gui is None:
-                        gui = InventoryGUI.InventoryGUI(player, "img/gui/inventory.png")
+                        gui = InventoryGUI(player, "img/gui/inventory.png")
                     else:
-                        gui.close()
+                        gui.close(world)
                         gui = None
                 if event.key == pygame.K_F3:
                     global DEBUG
@@ -151,8 +157,6 @@ def update():
                     player.selected_slot = 9
                 if event.key == pygame.K_ESCAPE:
                     close()
-    
-    pressed = pygame.key.get_pressed()
     
     if gamemode == MENU:
         menu.update()

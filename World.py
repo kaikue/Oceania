@@ -63,7 +63,7 @@ def load_blocks():
     water_image = pygame.image.load("img/water.png")
     st_water_image = water_image.copy()
     st_water_image.set_alpha(128)
-    pygame.display.set_icon(water_image) #TODO change the icon to something better
+    pygame.display.set_icon(water_image) #TODO: change the icon to something better
     
     bid = 0
     global block_images
@@ -196,7 +196,13 @@ class World(object):
         rightchunk = center + CHUNKS_TO_SIDE + 1
         
         for i in range(leftchunk, rightchunk):
-            if self.chunk_exists(i):
+            loaded_chunk = None
+            for chunk in old_chunks.elements:
+                if chunk.x == i:
+                    loaded_chunk = chunk
+            if loaded_chunk is not None:
+                chunk = loaded_chunk
+            elif self.chunk_exists(i):
                 chunk = self.load_chunk(i)
             else:
                 if i < 0:
@@ -205,7 +211,7 @@ class World(object):
                 else:
                     side = Chunk.LEFT
                     prev = old_chunks.get(i - 1)
-                chunk = self.generate_chunk(i, prev, side)
+                chunk = self.generate_chunk(prev, side)
             self.loaded_chunks.append(chunk)
         self.loaded_chunks.update_start(-leftchunk)
     
@@ -223,7 +229,7 @@ class World(object):
         for breaking_block in self.breaking_blocks[background]:
             break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * Game.BREAK_LENGTH)
             breakimg = Images.break_images[break_index].copy()
-            blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO make this support CTM
+            blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO: make this support CTM
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()
             polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
@@ -355,7 +361,7 @@ class World(object):
         self.loaded_chunks.prepend(r2l)
         self.save_all()
     
-    def generate_chunk(self, index, basechunk, side):
+    def generate_chunk(self, basechunk, side):
         chunk = Chunk.Chunk()
         chunk.generate_from_chunk(basechunk, side)
         self.save_chunk(chunk)

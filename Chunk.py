@@ -112,7 +112,7 @@ class Chunk(object):
         self.decorate()
     
     def decorate(self):
-        #TODO caves, ore
+        #TODO: caves, ore
         for x in range(WIDTH):
             for structure_name in self.biome["structures"]:
                 structure = World.structures[structure_name]
@@ -121,7 +121,7 @@ class Chunk(object):
                     break #can only have one structure at a given x
     
     def generate_structure(self, structure, x):
-        #TODO add background blocks defined separately
+        #TODO: add background blocks defined separately
         if structure["type"] == "column":
             height = random.randint(structure["minheight"], structure["maxheight"])
             for y in range(self.heights[x] - height, self.heights[x]):
@@ -142,7 +142,7 @@ class Chunk(object):
                         else:
                             block_name = structure_json["blocks"][char]
                         block = World.get_block(block_name)
-                        #TODO add background
+                        #TODO: add background
                         chunk.set_block_at(curr_chunk_x, curr_y, block, False)
                         if block["entity"] is not "":
                             EntityClass = getattr(importlib.import_module(block["entity"]), block["entity"])

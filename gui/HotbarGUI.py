@@ -1,6 +1,6 @@
-import GUI
 import Game
 import Images
+import gui.GUI as GUI
 
 
 class HotbarGUI(GUI.GUI):

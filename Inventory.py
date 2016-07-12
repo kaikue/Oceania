@@ -1,7 +1,7 @@
 import pygame
 import Game
 import World
-import GUI
+import gui.GUI as GUI
 import ItemStack
 import Images
 
@@ -14,18 +14,30 @@ class Inventory(object):
         for _ in range(rows):
             self.items.append([None] * cols)
     
-    def insert(self, itemdrop):
+    def insert_single(self, itemstack):
+        item = ItemStack.itemstack_from_name(itemstack.name)
+        item.stackable = itemstack.stackable
+        item.data = itemstack.data
+        #first look for places that can stack
+        for row in self.items:
+            for i in range(len(row)):
+                if row[i] is not None and row[i].can_stack(item):
+                    row[i].count += 1
+                    return True
+        #then look for empty slots
         for row in self.items:
             for i in range(len(row)):
                 if row[i] is None:
-                    item = ItemStack.itemstack_from_name(itemdrop.name)
-                    item.data = itemdrop.data
                     row[i] = item
                     return True
-                elif row[i].can_stack(itemdrop):
-                    row[i].count += 1
-                    return True
         return False
+    
+    def insert(self, itemstack):
+        while self.insert_single(itemstack):
+            itemstack.count -= 1
+            if itemstack.count == 0:
+                return None
+        return itemstack
     
     def __getitem__(self, i):
         return self.items[i]
@@ -34,7 +46,8 @@ class Inventory(object):
         self.items[i] = value
     
     def slot_at(self, pos, left, top, hotbargap):
-        pos = (pos[0] - GUI.SCALING // 2 - left, pos[1] - GUI.SCALING // 2 - top)
+        #TODO: give armor slot if necessary... negative coordinate?
+        pos = (pos[0] - left - GUI.SCALING * 13 // 8, pos[1] - top - GUI.SCALING // 2)
         if hotbargap and pos[1] > GUI.SCALING:
             pos = (pos[0], pos[1] - HOTBAR_GAP)
         row = pos[1] // GUI.SCALING
@@ -54,8 +67,8 @@ class Inventory(object):
                 inv_item = self.items[r][c]
                 if inv_item is not None and inv_item is not item_to_skip:
                     #c and r are flipped here so it renders across then down
-                    slotX = GUI.SCALING / 2 + left + c * GUI.SCALING
-                    slotY = GUI.SCALING / 2 + top + r * GUI.SCALING
+                    slotX = left + GUI.SCALING * 13 / 8 +  c * GUI.SCALING
+                    slotY = top + GUI.SCALING / 2 + r * GUI.SCALING
                     if r > 0 and hotbargap:
                         slotY += HOTBAR_GAP
                     

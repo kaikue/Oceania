@@ -9,7 +9,7 @@ import World
 from Inventory import Inventory
 
 
-BREAK_DIST = 48
+BREAK_DIST = Game.BLOCK_SIZE * 3
 
 class Player(Entity):
     
@@ -40,7 +40,7 @@ class Player(Entity):
         for entity in entities:
             if(self.bounding_box.colliderect(entity.bounding_box)):
                 if isinstance(entity, ItemDrop):
-                    if self.inventory.insert(entity):
+                    if self.inventory.insert(entity.get_itemstack()) == None:
                         world.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def get_nearby_entities(self, world):
@@ -78,7 +78,8 @@ class Player(Entity):
                 (not background or world.get_block_at(block_pos, True) == "water"):
                 world.set_block_at(block_pos, World.get_block(item.name), background)
                 if blockentity is not None:
-                    blockentity.pos = block_pos
+                    blockentity.load_image()
+                    blockentity.set_pos(block_pos)
                     world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1]).entities.append(blockentity)
                 item.count -= 1
                 if item.count == 0:
@@ -90,7 +91,8 @@ class Player(Entity):
         entities = self.get_nearby_entities(world)
         for entity in entities:
             if entity.collides(block_pos):
-                entity.interact(item)
+                if entity.interact(self, item):
+                    return
         
         if item is None:
             return
@@ -211,7 +213,7 @@ class Player(Entity):
             self.render_block_preview(shift, held_item, world, block_pos, screen, viewport)
     
     def render(self, screen, pos):
-        #TODO fancy animations here
+        #TODO: fancy animations here
         screen.blit(self.img, pos)
         item = self.inventory[0][self.selected_slot]
         if item is not None:

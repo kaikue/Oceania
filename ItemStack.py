@@ -1,12 +1,12 @@
 import pygame
 import Game
 import World
-import GUI
+import gui.GUI as GUI
 import Images
 import importlib
 
 
-MAX_STACK_SIZE = 100
+MAX_STACK_SIZE = 10
 
 def itemstack_from_name(itemname):
     item = World.items[itemname]
@@ -15,12 +15,12 @@ def itemstack_from_name(itemname):
 
 class ItemStack(object):
     
-    def __init__(self, name, stackable = True, data = None):
+    def __init__(self, name, stackable = True, data = None, count = 1):
         self.name = name
         self.imageurl = World.items[name]["image"]
         self.load_image()
         self.can_place = World.items[name]["can_place"]
-        self.count = 1
+        self.count = count
         self.stackable = stackable
         self.data = data
     
@@ -30,7 +30,7 @@ class ItemStack(object):
         self.img.blit(img, (0, 0))
     
     def can_stack(self, itemstack):
-        return self.count < MAX_STACK_SIZE and \
+        return itemstack.count + self.count <= MAX_STACK_SIZE and \
             itemstack.name == self.name and \
             self.stackable and \
             itemstack.data == self.data
@@ -54,4 +54,4 @@ class ItemStack(object):
             screen.blit(countimg, (pos[0] + 3 * Game.SCALE, pos[1] + 3 * Game.SCALE))
     
     def __str__(self):
-        return str(self.count) + "x " + self.itemname
+        return str(self.count) + "x " + self.name

@@ -6,6 +6,7 @@ Created by Kai Kuehner, 2013-2016.
 
 TODO
 --
+- All TODOs in code
 - Button does not function correctly when run from Game.py
     - problem with global variables- make designated launcher class
 - Structures can only be in one chunk (and overwrite each other all the time)
@@ -19,7 +20,6 @@ TODO
 - Possibly render foreground water as semitransparent (so it goes over block breaking image)
 - Make sharpened flint more effective on kelp
 - Chests
-    - make them open a GUI
     - remove * rendering (after entity generation is fixed)
     - Stack with same data, or not at all
 - Inventory
@@ -30,12 +30,21 @@ TODO
 	- Game icon
 	- Block breaking animation
 		- crop to CTM
-	- Kelp border (or no borders at all?)
+	- Kelp border?
 	- Make dirt tiles a bit wider so corners don't look weird
+	- Borders?
+		- Pros: already on character/items, make some things clearer
+		- Cons: not on blocks yet, make drops look bad
 - Folder for item .py files
 	- need to change how they are imported
 - Make image loading only happen once ever (for itemdrops especially)
 	- Don't render giant blocks in player's hand- use BlockDrop versions
+- Stack'n'swap
+- Right click to halve stack
+- Scroll to insert single
+- Render player in corner of player inventory, chest by chest inventory, etc.
+- WAILA
+- Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 
 NEEDED FEATURES
 --

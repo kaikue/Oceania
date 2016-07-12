@@ -78,9 +78,10 @@ class Entity(object):
     def entity_collisions(self, world):
         pass
     
-    def interact(self, item):
-        #Used for when the player right-clicks the entity with a block.
-        pass
+    def interact(self, player, item):
+        #Used for when the player right-clicks this entity with a block.
+        #Return false if the player should continue to use their held item after calling this, true otherwise.
+        return False
     
     def update(self, world):
         old_pos = [self.pos[0], self.pos[1]]
@@ -92,7 +93,7 @@ class Entity(object):
         self.pos = pos
         #bounding box is in pixels because it can only have ints
         if self.img is None:
-            self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), Game.BLOCK_SIZE, Game.BLOCK_SIZE)
+            self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)
             self.width = 1
             self.height = 1
         else:
@@ -103,6 +104,9 @@ class Entity(object):
     def render(self, screen, pos):
         if self.img is not None:
             screen.blit(self.img, pos)
+    
+    def __str__(self):
+        return str(self.__class__.__name__) + " at " + str(self.pos)
 
 if __name__ == "__main__":
     Game.main()
