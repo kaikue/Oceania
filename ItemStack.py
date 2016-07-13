@@ -6,7 +6,7 @@ import Images
 import importlib
 
 
-MAX_STACK_SIZE = 10
+MAX_STACK_SIZE = 100
 
 def itemstack_from_name(itemname):
     item = World.items[itemname]

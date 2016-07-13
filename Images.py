@@ -7,7 +7,7 @@ tooltip_centers = []
 highlight_image = None
 
 def load_imageurl(imageurl):
-    if imageurl is "":
+    if imageurl == "":
         return None
     img = pygame.image.load(imageurl).convert_alpha()
     return pygame.transform.scale(img, (Game.SCALE * img.get_width(), Game.SCALE * img.get_height()))

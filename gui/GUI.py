@@ -9,7 +9,7 @@ def render_string_array(strings, font, antialias, color):
     h = 0
     w = 0
     for string in strings:
-        if string is "":
+        if string == "":
             continue
         str_image = font.render(string, antialias, color)
         str_images.append(str_image)

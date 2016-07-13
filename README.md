@@ -11,8 +11,7 @@ TODO
     - problem with global variables- make designated launcher class
 - Structures can only be in one chunk (and overwrite each other all the time)
 	- also messes up entity generation
-- Pause game when opening GUIs (like inventory)
-    - Pause game at all
+- Pause screen (can just be a GUI)
 - Finish magic staff
 - Player animation
 - Block breaking particles
@@ -39,10 +38,10 @@ TODO
 	- need to change how they are imported
 - Make image loading only happen once ever (for itemdrops especially)
 	- Don't render giant blocks in player's hand- use BlockDrop versions
-- Scroll to insert single
 - Render player in corner of player inventory, chest by chest inventory, etc.
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
+- Esc to pause or close GUI
 
 NEEDED FEATURES
 --

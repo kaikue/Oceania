@@ -144,7 +144,7 @@ class Chunk(object):
                         block = World.get_block(block_name)
                         #TODO: add background
                         chunk.set_block_at(curr_chunk_x, curr_y, block, False)
-                        if block["entity"] is not "":
+                        if block["entity"] != "":
                             EntityClass = getattr(importlib.import_module(block["entity"]), block["entity"])
                             instance = EntityClass([curr_world_x, curr_y], "")
                             chunk.entities.append(instance)

@@ -16,7 +16,7 @@ class EntityChest(Entity.Entity):
                     item.load_image()
     
     def interact(self, player, item):
-        Game.gui = ChestGUI(self.inventory, player, "img/gui/chest.png")
+        Game.set_gui(ChestGUI(self.inventory, player, "img/gui/chest.png"))
         return True
     
     def render(self, screen, pos):

@@ -150,7 +150,7 @@ class Player(Entity):
             breaking_blocks.remove(block_to_break)
             chunk.set_block_at(Convert.world_to_chunk(block_pos[0])[0], block_pos[1], World.get_block("water"), background)
             blockentity = None
-            if block["entity"] is not "":
+            if block["entity"] != "":
                     #remove the associated entity
                 for entity in chunk.entities:
                     if type(entity).__name__ == block["entity"] and [int(entity.pos[0]), int(entity.pos[1])] == block_pos:

@@ -9,6 +9,7 @@ SCALE = 2
 MENU = 0
 PLAYING = 1
 RESET = 2
+OPENGUI = 3
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -91,6 +92,7 @@ def play():
 def update():
     pressed = pygame.key.get_pressed()
     shift = pressed[pygame.K_LSHIFT] or pressed[pygame.K_RSHIFT]
+    global gamemode
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -98,28 +100,26 @@ def update():
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if gamemode == MENU:
                 menu.mouse_press()
-            if gamemode == PLAYING:
+            elif gamemode == PLAYING:
                 if event.button == 1:
                     #left click
-                    global gui
-                    if gui is not None:
-                        gui.click(pygame.mouse.get_pos(), False, shift)
+                    pass
                 elif event.button == 2:
                     #scroll wheel click
                     pass
                 elif event.button == 3:
                     #right click
-                    global gui
-                    if gui is not None:
-                        gui.click(pygame.mouse.get_pos(), True, shift)
-                    else:
-                        player.right_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
+                    player.right_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
                 elif event.button == 4:
                     #scroll wheel up
                     player.change_slot(False)
                 elif event.button == 5:
                     #scroll wheel down
                     player.change_slot(True)
+            elif gamemode == OPENGUI:
+                global gui
+                gui.click(pygame.mouse.get_pos(), event.button, shift)
+        
         elif event.type == pygame.MOUSEBUTTONUP:
             if gamemode == MENU:
                 menu.mouse_release()
@@ -127,11 +127,8 @@ def update():
             #typed a key
             if gamemode == PLAYING:
                 if event.key == pygame.K_e:
-                    if gui is None:
-                        gui = InventoryGUI(player, "img/gui/inventory.png")
-                    else:
-                        gui.close(world)
-                        gui = None
+                    gui = InventoryGUI(player, "img/gui/inventory.png")
+                    gamemode = OPENGUI
                 if event.key == pygame.K_F3:
                     global DEBUG
                     DEBUG = not DEBUG
@@ -157,6 +154,11 @@ def update():
                     player.selected_slot = 9
                 if event.key == pygame.K_ESCAPE:
                     close()
+            elif gamemode == OPENGUI:
+                if event.key == pygame.K_e:
+                    gui.close(world)
+                    gui = None
+                    gamemode = PLAYING
     
     if gamemode == MENU:
         menu.update()
@@ -185,7 +187,7 @@ def render():
     if gamemode == MENU:
         menu.render(screen)
         
-    elif gamemode == PLAYING:
+    elif gamemode in (PLAYING, OPENGUI):
         shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
         screen.fill(SKY)
         
@@ -202,7 +204,7 @@ def render():
         world.render_breaks(screen, viewport, False)
         player.render(screen, Convert.world_to_viewport(player.pos, viewport))
         
-        if gui is None:
+        if gamemode == PLAYING:
             hotbarGui.render(screen)
         else:
             gui.render(screen)
@@ -220,9 +222,7 @@ def render():
     pygame.display.flip()
 
 def close():
-    if gamemode == MENU:
-        pass
-    elif gamemode == PLAYING:
+    if gamemode in (PLAYING, OPENGUI):
         #pickle loaded chunks and other game state data
         world.close()
     sys.exit(0)
@@ -232,6 +232,15 @@ def get_font():
 
 def get_world():
     return world
+
+def set_gui(g):
+    global gui
+    gui = g
+    global gamemode
+    if gui is None:
+        gamemode = PLAYING
+    else:
+        gamemode = OPENGUI
 
 def play_sound(sound):
     soundObj = pygame.mixer.Sound(sound)
