@@ -39,7 +39,6 @@ TODO
 	- need to change how they are imported
 - Make image loading only happen once ever (for itemdrops especially)
 	- Don't render giant blocks in player's hand- use BlockDrop versions
-- Right click to halve stack
 - Scroll to insert single
 - Render player in corner of player inventory, chest by chest inventory, etc.
 - WAILA

@@ -2,7 +2,6 @@ import pygame
 import Game
 import World
 import gui.GUI as GUI
-import ItemStack
 import Images
 
 HOTBAR_GAP = GUI.SCALING // 8
@@ -15,9 +14,7 @@ class Inventory(object):
             self.items.append([None] * cols)
     
     def insert_single(self, itemstack):
-        item = ItemStack.itemstack_from_name(itemstack.name)
-        item.stackable = itemstack.stackable
-        item.data = itemstack.data
+        item = itemstack.copy_one()
         #first look for places that can stack
         for row in self.items:
             for i in range(len(row)):

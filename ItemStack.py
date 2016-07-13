@@ -13,6 +13,7 @@ def itemstack_from_name(itemname):
     item_class = getattr(importlib.import_module(item["class"]), item["class"])
     return item_class(itemname)
 
+
 class ItemStack(object):
     
     def __init__(self, name, stackable = True, data = None, count = 1):
@@ -35,6 +36,31 @@ class ItemStack(object):
             itemstack.name == self.name and \
             self.stackable and \
             itemstack.data == self.data
+    
+    def take_one(self):
+        self.count -= 1
+        if self.count == 0:
+            return None
+        else:
+            return self
+
+    def take_half(self):
+        other_stack = self.copy_one()
+        other_stack.count = self.count
+        self.count = self.count // 2
+        other_stack.count -= self.count
+        s = self
+        if self.count == 0:
+            s = None
+        if other_stack.count == 0:
+            other_stack = None
+        return s, other_stack
+    
+    def copy_one(self):
+        itemstack = itemstack_from_name(self.name)
+        itemstack.stackable = self.stackable
+        itemstack.data = self.data
+        return itemstack
     
     def get_break_speed(self):
         return 1

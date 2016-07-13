@@ -12,7 +12,6 @@ class InventoryGUI(GUI.GUI):
         self.left = (Game.SCREEN_WIDTH - self.width) // 2
         self.top = (Game.SCREEN_HEIGHT - self.height) // 2
         self.moving_item = None
-        print(self.player.inventory[0][self.player.selected_slot].__class__)
     
     def render(self, screen):
         super(InventoryGUI, self).render(screen)
@@ -31,17 +30,43 @@ class InventoryGUI(GUI.GUI):
         if slot is None:
             return
         
-        if shift:
-            if other_inventory is not None:
-                clicked_inventory[slot[0]][slot[1]] = other_inventory.insert(clicked_inventory[slot[0]][slot[1]])
-        else:
-            if self.moving_item is not None:
-                while self.moving_item.can_stack(clicked_inventory[slot[0]][slot[1]]):
-                    self.moving_item.count += 1
-                    clicked_inventory[slot[0]][slot[1]].count -= 1
-                    if clicked_inventory[slot[0]][slot[1]].count == 0:
-                        clicked_inventory[slot[0]][slot[1]] = None
-            clicked_inventory[slot[0]][slot[1]], self.moving_item = self.moving_item, clicked_inventory[slot[0]][slot[1]]
+        clicked = clicked_inventory[slot[0]][slot[1]]
+        
+        if right:
+            if shift:
+                if other_inventory is not None and clicked is not None: #insert half
+                    clicked, to_insert = clicked.take_half()
+                    if to_insert is not None:
+                        to_insert = other_inventory.insert(to_insert)
+                        if to_insert is not None:
+                            if clicked is None:
+                                clicked = to_insert.copy_one()
+                            clicked.count += to_insert.count
+            else:
+                if self.moving_item is not None: #place 1
+                    if clicked == None:
+                        clicked = self.moving_item.copy_one()
+                        self.moving_item = self.moving_item.take_one()
+                    else:
+                        if self.moving_item.can_stack(clicked):
+                            clicked.count += 1
+                            self.moving_item = self.moving_item.take_one()
+                else:
+                    if clicked is not None: #take half
+                        clicked, self.moving_item = clicked.take_half() 
+        
+        else: #left
+            if shift:
+                if other_inventory is not None and clicked is not None: #insert stack
+                    clicked = other_inventory.insert(clicked)
+            else:
+                if self.moving_item is not None: #stack and swap
+                    while self.moving_item.can_stack(clicked):
+                        self.moving_item.count += 1
+                        clicked = clicked.take_one()
+                clicked, self.moving_item = self.moving_item, clicked
+        
+        clicked_inventory[slot[0]][slot[1]] = clicked
     
     def close(self, world):
         if self.moving_item is not None:
