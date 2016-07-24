@@ -42,6 +42,7 @@ TODO
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 - Esc to pause or close GUI
+- Place chests in background
 
 NEEDED FEATURES
 --
