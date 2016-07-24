@@ -18,8 +18,6 @@ CHUNKS_TO_SIDE = 2
 biomes = {}
 structures = {}
 blocks = {}
-block_images = {}
-block_icons = {}
 block_mappings = {}
 id_mappings = {}
 items = {}
@@ -29,7 +27,7 @@ def load_data():
     load_structures()
     load_items()
     load_blocks()
-    Images.load_images()
+    Images.load_images(blocks, items)
 
 def load_biomes():
     biomes_file = open("biomes.json", "r")
@@ -60,16 +58,7 @@ def load_blocks():
     blocks = json.load(blocks_file)["blocks"]
     blocks_file.close()
     
-    water_image = pygame.image.load("img/water.png")
-    st_water_image = water_image.copy()
-    st_water_image.set_alpha(128)
-    pygame.display.set_icon(water_image) #TODO: change the icon to something better
-    
     bid = 0
-    global block_images
-    block_images = {False:{}, True:{}}
-    global block_icons
-    block_icons = {False:{}, True:{}}
     for block in blocks:
         #set some default attributes
         if "breakable" not in block.keys():
@@ -95,32 +84,6 @@ def load_blocks():
         global id_mappings
         id_mappings[bid] = block["name"]
         
-        #load the block image
-        path = block["image"]
-        if path != "":
-            blockimg = pygame.image.load(path).convert_alpha()
-            if block["connectedTexture"]:
-                icon = pygame.Surface((Game.BLOCK_SIZE, Game.BLOCK_SIZE), pygame.SRCALPHA, 32)
-                icon = icon.convert_alpha()
-                icon.blit(blockimg, (0, 0))
-            else:
-                icon = blockimg.copy()
-            #blockicons[False] is the unscaled version for blockdrops, [True] is scaled up for inventory rendering
-            block_icons[False][bid] = icon
-            block_icons[True][bid] = pygame.transform.scale(icon, (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE))
-            surf = pygame.transform.scale(blockimg, (blockimg.get_width() * Game.SCALE, blockimg.get_height() * Game.SCALE))
-            block_images[False][bid] = surf
-            #blit the image onto the water tile so it isn't just empty transparency
-            image = blockimg.copy()
-            for x in range(image.get_width() // Game.BLOCK_SIZE):
-                for y in range(image.get_height() // Game.BLOCK_SIZE):
-                    image.blit(water_image, (x * Game.BLOCK_SIZE, y * Game.BLOCK_SIZE))
-            image.blit(blockimg, (0, 0))
-            for x in range(image.get_width() // Game.BLOCK_SIZE):
-                for y in range(image.get_height() // Game.BLOCK_SIZE):
-                    image.blit(st_water_image, (x * Game.BLOCK_SIZE, y * Game.BLOCK_SIZE))
-            surf = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
-            block_images[True][bid] = surf
         #make the corresponding item
         items[block["name"]] = {"displayName": block["displayName"],
                                 "image": block["image"],
@@ -128,7 +91,6 @@ def load_blocks():
                                 "description": block["description"],
                                 "can_place": True}
         bid += 1
-    block_images[False][get_block_id("water")] = pygame.Surface((Game.BLOCK_SIZE, Game.BLOCK_SIZE), pygame.SRCALPHA, 32)
 
 def get_block_id(blockname):
     return block_mappings[blockname]
@@ -229,7 +191,11 @@ class World(object):
         for breaking_block in self.breaking_blocks[background]:
             break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * Game.BREAK_LENGTH)
             breakimg = Images.break_images[break_index].copy()
-            blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO: make this support CTM
+            #TODO: make this support CTM
+            if background:
+                blockimg = Images.block_images_background[breaking_block["id"]]
+            else:
+                blockimg = Images.block_images[breaking_block["id"]]
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()
             polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
@@ -280,12 +246,20 @@ class World(object):
                 tile = (3, 3)
             surf = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)).convert_alpha()
             surf.fill((0, 0, 0, 0))
-            surf.blit(block_images[background and not backgroundCTM][block_id], (0, 0),
+            if background and not backgroundCTM:
+                block_images = Images.block_images_background
+            else:
+                block_images = Images.block_images
+            surf.blit(block_images[block_id], (0, 0),
                         pygame.Rect((tile[0] * Game.BLOCK_SIZE * Game.SCALE, tile[1] * Game.BLOCK_SIZE * Game.SCALE),
                                     (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
             return surf
         else:
-            return block_images[background][block_id] 
+            if background:
+                block_images = Images.block_images_background
+            else:
+                block_images = Images.block_images
+            return block_images[block_id]
     
     def render_block(self, block_id, block_pos, connected, screen, viewport, background):
         screen.blit(self.get_block_render(block_id, block_pos, connected, background), Convert.world_to_viewport(block_pos, viewport))
@@ -371,4 +345,6 @@ class World(object):
         self.save_all()
 
 if __name__ == "__main__":
+    #import cProfile
+    #cProfile.run('Game.main()')
     Game.main()
