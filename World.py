@@ -19,6 +19,7 @@ biomes = {}
 structures = {}
 blocks = {}
 block_images = {}
+ctm_block_images = {}
 block_icons = {}
 block_mappings = {}
 id_mappings = {}
@@ -66,10 +67,12 @@ def load_blocks():
     pygame.display.set_icon(water_image) #TODO: change the icon to something better
     
     bid = 0
-    global block_images
-    block_images = {False:{}, True:{}}
     global block_icons
     block_icons = {False:{}, True:{}}
+    global block_images
+    block_images = {False:{}, True:{}}
+    global ctm_block_images
+    ctm_block_images = {False:{}, True:{}}
     for block in blocks:
         #set some default attributes
         if "breakable" not in block.keys():
@@ -108,8 +111,8 @@ def load_blocks():
             #blockicons[False] is the unscaled version for blockdrops, [True] is scaled up for inventory rendering
             block_icons[False][bid] = icon
             block_icons[True][bid] = pygame.transform.scale(icon, (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE))
-            surf = pygame.transform.scale(blockimg, (blockimg.get_width() * Game.SCALE, blockimg.get_height() * Game.SCALE))
-            block_images[False][bid] = surf
+            foreground_image = pygame.transform.scale(blockimg, (blockimg.get_width() * Game.SCALE, blockimg.get_height() * Game.SCALE))
+            block_images[False][bid] = foreground_image
             #blit the image onto the water tile so it isn't just empty transparency
             image = blockimg.copy()
             for x in range(image.get_width() // Game.BLOCK_SIZE):
@@ -119,8 +122,24 @@ def load_blocks():
             for x in range(image.get_width() // Game.BLOCK_SIZE):
                 for y in range(image.get_height() // Game.BLOCK_SIZE):
                     image.blit(st_water_image, (x * Game.BLOCK_SIZE, y * Game.BLOCK_SIZE))
-            surf = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
-            block_images[True][bid] = surf
+            background_image = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
+            block_images[True][bid] = background_image
+            if block["connectedTexture"]:
+                ctm_block_images[False][bid] = {}
+                ctm_block_images[True][bid] = {}
+                for x in range(4):
+                    for y in range(4):
+                        foreground_surf = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)).convert_alpha()
+                        foreground_surf.fill((0, 0, 0, 0))
+                        background_surf = foreground_surf.copy()
+                        foreground_surf.blit(foreground_image, (0, 0),
+                            pygame.Rect((x * Game.BLOCK_SIZE * Game.SCALE, y * Game.BLOCK_SIZE * Game.SCALE),
+                                 (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
+                        ctm_block_images[False][bid][(x, y)] = foreground_surf
+                        background_surf.blit(background_image, (0, 0),
+                            pygame.Rect((x * Game.BLOCK_SIZE * Game.SCALE, y * Game.BLOCK_SIZE * Game.SCALE),
+                                 (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
+                        ctm_block_images[True][bid][(x, y)] = background_surf
         #make the corresponding item
         items[block["name"]] = {"displayName": block["displayName"],
                                 "image": block["image"],
@@ -278,12 +297,7 @@ class World(object):
                 tile = (3, 2)
             if left_block and not right_block and top_block and not bottom_block:
                 tile = (3, 3)
-            surf = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)).convert_alpha()
-            surf.fill((0, 0, 0, 0))
-            surf.blit(block_images[background and not backgroundCTM][block_id], (0, 0),
-                        pygame.Rect((tile[0] * Game.BLOCK_SIZE * Game.SCALE, tile[1] * Game.BLOCK_SIZE * Game.SCALE),
-                                    (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
-            return surf
+            return ctm_block_images[background and not backgroundCTM][block_id][tile]
         else:
             return block_images[background][block_id] 
     
