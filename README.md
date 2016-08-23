@@ -43,9 +43,8 @@ TODO
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 - Esc to pause or close GUI
 - Sliding puzzle lock
-	- scramble
-	- sliding animation
-	- solution checking
+	- 3x3 version
+	- test solution checking
 
 NEEDED FEATURES
 --
