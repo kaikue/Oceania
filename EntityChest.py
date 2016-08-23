@@ -4,9 +4,9 @@ import Inventory
 from gui.ChestGUI import ChestGUI
 
 class EntityChest(Entity.Entity):
-    def __init__(self, pos, imageurl, background=False):
+    def __init__(self, pos, chunk, background=False):
         self.inventory = Inventory.Inventory(4, 10)
-        super(EntityChest, self).__init__(pos, imageurl, background)
+        super(EntityChest, self).__init__(pos, "", background)
     
     def load_image(self):
         super(EntityChest, self).load_image()

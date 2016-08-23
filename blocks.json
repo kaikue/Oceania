@@ -85,6 +85,28 @@
 			"image": "img/flint/flint_knapped_4.png",
             "breaktime": 20,
             "item": "ItemSharpFlint"
+		},
+		{
+			"name": "puzzleController",
+			"displayName": "Puzzle Controller",
+			"image": "img/puzzle/border.png",
+			"solid": false,
+			"breakable": false,
+			"entity": "EntityPuzzleController"
+		},
+		{
+			"name": "puzzleBorder",
+			"displayName": "Puzzle Border",
+			"image": "img/puzzle/border.png",
+			"solid": false,
+			"breakable": false
+		},
+		{
+			"name": "puzzleBackground",
+			"displayName": "Puzzle Background",
+			"image": "img/puzzle/background.png",
+			"solid": false,
+			"breakable": false
 		}
 	]
 }

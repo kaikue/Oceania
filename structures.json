@@ -16,6 +16,11 @@
 		"location": "gen/temple.json",
 		"frequency": 0.05
 	},
+	"puzzle": {
+		"type": "json",
+		"location": "gen/puzzle.json",
+		"frequency": 0.025
+	},
 	"ridge": {
 		"type": "mountain",
 		"frequency": 0.0

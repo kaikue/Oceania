@@ -91,6 +91,8 @@ def load_blocks():
             block["harvestlevel"] = 0
         if "breaktime" not in block.keys():
             block["breaktime"] = 100
+        if "image" not in block.keys():
+            block["image"] = ""
         #add an id to the block
         block["id"] = bid
         global block_mappings
@@ -185,7 +187,7 @@ class World(object):
                 if Convert.world_to_chunk(entity.pos[0])[1] != chunk.x and self.loaded_chunks.contains_index(Convert.world_to_chunk(entity.pos[0])[1]):
                     print("Moving", entity, entity.pos, "from", chunk)
                     chunk.entities.remove(entity)
-                    self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
+                    self.create_entity(entity)
         for layer in [True, False]:
             blocks_to_remove = []
             for breaking_block in self.breaking_blocks[layer]:
@@ -303,6 +305,9 @@ class World(object):
     
     def render_block(self, block_id, block_pos, connected, screen, viewport, background):
         screen.blit(self.get_block_render(block_id, block_pos, connected, background), Convert.world_to_viewport(block_pos, viewport))
+    
+    def create_entity(self, entity):
+        self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
     
     def save_chunk_in_background(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")

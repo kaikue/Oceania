@@ -1,0 +1,15 @@
+{
+	"shape": [
+		"CBBBBB",
+		"B....B",
+		"B....B",
+		"B....B",
+		"B....B",
+		"BBBBBB"
+	],
+	"blocks": {
+		"C": "puzzleController",
+		"B": "puzzleBorder",
+		".": "puzzleBackground"
+	}
+}

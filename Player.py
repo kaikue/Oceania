@@ -66,21 +66,18 @@ class Player(Entity):
                 entities = self.get_nearby_entities(world)
                 entities.append(self) #check against player too
                 for entity in entities:
-                    if entity.collides(block_pos) and World.get_block(item.name)["solid"]:
+                    if entity.collides(block_pos) and entity.background == background and World.get_block(item.name)["solid"]:
                         return
-            
-            #don't place blocks with entities in the background
-            blockentity = item.data
-            if blockentity is not None and background:
-                return
             
             if world.get_block_at(block_pos, False) == "water" and \
                 (not background or world.get_block_at(block_pos, True) == "water"):
                 world.set_block_at(block_pos, World.get_block(item.name), background)
+                blockentity = item.data
                 if blockentity is not None:
                     blockentity.load_image()
                     blockentity.set_pos(block_pos)
-                    world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1]).entities.append(blockentity)
+                    blockentity.background = background
+                    world.create_entity(blockentity)
                 item.count -= 1
                 if item.count == 0:
                     self.inventory[0][self.selected_slot] = None
@@ -90,7 +87,7 @@ class Player(Entity):
         block_pos = self.find_angle_pos(mouse_pos, viewport)
         entities = self.get_nearby_entities(world)
         for entity in entities:
-            if entity.collides(block_pos):
+            if entity.collides(block_pos) and entity.background == background:
                 if entity.interact(self, item):
                     return
         

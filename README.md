@@ -42,7 +42,10 @@ TODO
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 - Esc to pause or close GUI
-- Place chests in background
+- Sliding puzzle lock
+	- scramble
+	- sliding animation
+	- solution checking
 
 NEEDED FEATURES
 --
@@ -68,6 +71,7 @@ NEEDED FEATURES
         - Volcanic pipe- kimberlite, diamond
         - Treasures- "starter packs" of blocks, tool improvement items, anything that will prompt further gameplay
         - Backgrounds in structures- hidden secrets behind some tiles
+		- Sliding puzzle lock
 - GUI work
     - Inventory
 - Entities

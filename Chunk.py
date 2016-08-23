@@ -146,7 +146,7 @@ class Chunk(object):
                         chunk.set_block_at(curr_chunk_x, curr_y, block, False)
                         if block["entity"] != "":
                             EntityClass = getattr(importlib.import_module(block["entity"]), block["entity"])
-                            instance = EntityClass([curr_world_x, curr_y], "")
+                            instance = EntityClass([curr_world_x, curr_y], chunk)
                             chunk.entities.append(instance)
                     curr_world_x += 1
                 curr_y += 1

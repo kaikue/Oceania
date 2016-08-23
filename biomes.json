@@ -31,12 +31,13 @@
 			"iron"
 		],
 		"structures": [
-			"ridge"
+			"ridge",
+			"puzzle"
 		]
 	},
 	"reef": {
 		"name": "Coral Reef",
-		"maxelevation": 64,
+		"maxelevation": 72,
 		"minelevation": 96,
 		"slope": 16,
 		"displacement": 3,
@@ -53,7 +54,7 @@
 	},
 	"forest": {
 		"name": "Kelp Forest",
-		"maxelevation": 64,
+		"maxelevation": 72,
 		"minelevation": 96,
 		"slope": 16,
 		"displacement": 2,
