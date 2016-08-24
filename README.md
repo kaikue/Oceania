@@ -45,6 +45,7 @@ TODO
 - Sliding puzzle lock
 	- 3x3 version
 	- test solution checking
+- Raycast block breaking and mine closest one instead
 
 NEEDED FEATURES
 --

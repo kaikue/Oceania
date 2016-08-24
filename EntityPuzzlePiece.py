@@ -41,6 +41,7 @@ class EntityPuzzlePiece(Entity.Entity):
                     self.old_pos = self.pos
                     self.animating = True
                     self.set_pos(goal_pos)
+                    Game.play_sound("sfx/puzzle/slide.ogg")
                     return True
         return False
     

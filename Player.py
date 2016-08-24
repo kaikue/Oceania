@@ -9,7 +9,7 @@ import World
 from Inventory import Inventory
 
 
-BREAK_DIST = Game.BLOCK_SIZE * 3
+BREAK_DIST = Game.BLOCK_SIZE * 5
 
 class Player(Entity):
     

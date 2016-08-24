@@ -1,4 +1,5 @@
 import random
+import Game
 import Entity
 import EntityPuzzlePiece
 
@@ -43,7 +44,7 @@ class EntityPuzzleController(Entity.Entity):
                 corner_empty = False
         solved = corner_empty and self.count_inversions() == 0
         if solved:
-            print("solved!")
+            Game.play_sound("sfx/puzzle/complete.ogg")
             for piece in self.pieces:
                 piece.locked = True
     
