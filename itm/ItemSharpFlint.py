@@ -1,4 +1,4 @@
-from ItemStack import ItemStack
+from itm.ItemStack import ItemStack
 
 
 class ItemSharpFlint(ItemStack):

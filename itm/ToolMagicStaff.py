@@ -1,4 +1,4 @@
-import ItemTool
+from itm import ItemTool
 
 
 class ToolMagicStaff(ItemTool.ItemTool):

@@ -1,7 +1,7 @@
 import pygame
 import Game
 from Entity import Entity
-import ItemStack
+from itm import ItemStack
 
 class ItemDrop(Entity):
     

@@ -1,8 +1,8 @@
 import pygame
 import Game
 import Convert
-from ItemDrop import ItemDrop
-import ItemStack
+from ent.ItemDrop import ItemDrop
+from itm import ItemStack
 import gui.GUI as GUI
 
 class InventoryGUI(GUI.GUI):

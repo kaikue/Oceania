@@ -3,8 +3,8 @@ import pygame
 import Convert
 import Game
 from Entity import Entity
-from ItemDrop import ItemDrop
-import ItemStack
+from ent.ItemDrop import ItemDrop
+from itm import ItemStack
 import World
 from Inventory import Inventory
 

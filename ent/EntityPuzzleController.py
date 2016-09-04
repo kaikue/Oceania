@@ -1,7 +1,7 @@
 import random
 import Game
 import Entity
-import EntityPuzzlePiece
+from ent import EntityPuzzlePiece
 
 class EntityPuzzleController(Entity.Entity):
     SIZE = 4
@@ -50,10 +50,12 @@ class EntityPuzzleController(Entity.Entity):
     
     def count_inversions(self):
         inversions = 0
-        prev = -1
-        for piece in self.pieces:
-            i = piece.puzzle_pos[1] * EntityPuzzleController.SIZE + piece.puzzle_pos[0]
-            if i < prev:
-                inversions += 1
-            prev = i
+        for i in range(len(self.pieces)):
+            piece = self.pieces[i]
+            current_val = piece.puzzle_pos[1] * EntityPuzzleController.SIZE + piece.puzzle_pos[0]
+            for j in range(i, len(self.pieces)):
+                next_piece = self.pieces[j]
+                next_val = next_piece.puzzle_pos[1] * EntityPuzzleController.SIZE + next_piece.puzzle_pos[0]
+                if current_val < next_val:
+                    inversions += 1
         return inversions

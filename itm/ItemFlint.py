@@ -1,6 +1,6 @@
 import Game
 import World
-from ItemStack import ItemStack
+from itm.ItemStack import ItemStack
 
 
 class ItemFlint(ItemStack):

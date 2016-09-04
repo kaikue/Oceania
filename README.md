@@ -34,11 +34,10 @@ TODO
 	- Borders?
 		- Pros: already on character/items, make some things clearer
 		- Cons: not on blocks yet, make drops look bad
-- Folder for item .py files
-	- need to change how they are imported
+- Mod support (additional classes & jsons in mod folder)
 - Make image loading only happen once ever (for itemdrops especially)
 	- Don't render giant blocks in player's hand- use BlockDrop versions
-- Render player in corner of player inventory, chest by chest inventory, etc.
+- "Transfer all" buttons in corners of inventory GUI
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 - Esc to pause or close GUI
