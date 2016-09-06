@@ -37,7 +37,7 @@ TODO
 - Mod support (additional classes & jsons in mod folder)
 - Make image loading only happen once ever (for itemdrops especially)
 	- Don't render giant blocks in player's hand- use BlockDrop versions
-- "Transfer all" buttons in corners of inventory GUI
+- Shift click on inventory transfer buttons to smart transfer?
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 - Esc to pause or close GUI
