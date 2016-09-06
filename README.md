@@ -45,6 +45,9 @@ TODO
 	- 3x3 version
 	- test solution checking
 - Raycast block breaking and mine closest one instead
+- Pipes
+	- Transfer items- how?
+	- CTM variations: solid, sametype
 
 NEEDED FEATURES
 --
@@ -111,7 +114,6 @@ NEEDED FEATURES
 - Titans
     - drop automation materials
 - Automation
-    - Pipes
     - ore processing
     - crafting
 - Spellcasting

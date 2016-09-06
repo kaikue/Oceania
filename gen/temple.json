@@ -1,11 +1,12 @@
 {
 	"shape": [
-		"OOO   OOO",
-		" O OMO O ",
-		"OOO   OOO"
+		"OPO   OPO",
+		"PPPOMOPPP",
+		"OPO   OPO"
 	],
 	"blocks": {
 		"O": "basaltBricks",
-		"M": "chest"
+		"M": "chest",
+		"P": "pipe"
 	}
 }

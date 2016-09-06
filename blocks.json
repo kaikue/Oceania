@@ -18,7 +18,7 @@
 			"name": "dirt",
 			"displayName": "Dirt",
 			"image": "img/dirt_tiles.png",
-			"connectedTexture": true
+			"connectedTexture": "solid"
 		},
 		{
 			"name": "basalt",
@@ -107,6 +107,15 @@
 			"image": "img/puzzle/background.png",
 			"solid": false,
 			"breakable": false
+		},
+		{
+			"name": "pipe",
+			"displayName": "Pipe",
+			"image": "img/pipes/pipes.png",
+			"connectedTexture": "sametype",
+			"solid": false,
+			"entity": "EntityPipe",
+            "breaktime": 30
 		}
 	]
 }

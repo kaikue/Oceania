@@ -78,7 +78,7 @@ def load_blocks():
         if "breakable" not in block.keys():
             block["breakable"] = True
         if "connectedTexture" not in block.keys():
-            block["connectedTexture"] = False
+            block["connectedTexture"] = None
         if "solid" not in block.keys():
             block["solid"] = True
         if "entity" not in block.keys():
@@ -259,12 +259,18 @@ class World(object):
             screen.blit(breakimg, Convert.world_to_viewport(breaking_block["pos"], viewport))
     
     def get_block_render(self, block_id, block_pos, connected, background, backgroundCTM=False):
-        if connected:
+        if connected is not None:
             #check adjacent tiles
-            left_block = get_block(self.get_block_at((block_pos[0] - 1, block_pos[1]), background))["solid"]
-            right_block = get_block(self.get_block_at((block_pos[0] + 1, block_pos[1]), background))["solid"]
-            top_block = get_block(self.get_block_at((block_pos[0], block_pos[1] - 1), background))["solid"]
-            bottom_block = get_block(self.get_block_at((block_pos[0], block_pos[1] + 1), background))["solid"]
+            if connected == "solid":
+                field = "solid"
+                val = True
+            elif connected == "sametype":
+                field = "id"
+                val = block_id
+            left_block = get_block(self.get_block_at((block_pos[0] - 1, block_pos[1]), background))[field] == val
+            right_block = get_block(self.get_block_at((block_pos[0] + 1, block_pos[1]), background))[field] == val
+            top_block = get_block(self.get_block_at((block_pos[0], block_pos[1] - 1), background))[field] == val
+            bottom_block = get_block(self.get_block_at((block_pos[0], block_pos[1] + 1), background))[field] == val
             tile = ()
             #there must be some better way to do this
             if not left_block and not right_block and not top_block and not bottom_block:
