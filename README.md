@@ -3,6 +3,7 @@ Oceania
 A procedurally generated 2D sandbox game set underwater.
 Written in Pygame.
 Created by Kai Kuehner, 2013-2016.
+![Screenshot](http://i.imgur.com/yOTYumw.png)
 
 TODO
 --
