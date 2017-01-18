@@ -62,6 +62,9 @@ class ItemStack(object):
         itemstack.data = self.data
         return itemstack
     
+    def get_attack_damage(self):
+        return 1
+    
     def get_break_speed(self):
         return 1
     

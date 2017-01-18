@@ -227,10 +227,10 @@ class World(object):
                 chunk = self.load_chunk(i)
             else:
                 if i < 0:
-                    side = Chunk.RIGHT
+                    side = Game.RIGHT
                     prev = old_chunks.get(i + 1)
                 else:
-                    side = Chunk.LEFT
+                    side = Game.LEFT
                     prev = old_chunks.get(i - 1)
                 chunk = self.generate_chunk(prev, side)
             self.loaded_chunks.append(chunk)
@@ -313,7 +313,10 @@ class World(object):
         screen.blit(self.get_block_render(block_id, block_pos, connected, background), Convert.world_to_viewport(block_pos, viewport))
     
     def create_entity(self, entity):
-        self.loaded_chunks.get(Convert.world_to_chunk(entity.pos[0])[1]).entities.append(entity)
+        self.loaded_chunks.get(entity.get_chunk()).entities.append(entity)
+    
+    def remove_entity(self, entity):
+        self.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def save_chunk_in_background(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")
@@ -373,16 +376,16 @@ class World(object):
         self.loaded_chunks = TwoWayList.TwoWayList()
         self.loaded_chunks.append(spawn)
         r1 = Chunk.Chunk()
-        r1.generate_from_chunk(spawn, Chunk.LEFT)
+        r1.generate_from_chunk(spawn, Game.LEFT)
         self.loaded_chunks.append(r1)
         r2 = Chunk.Chunk()
-        r2.generate_from_chunk(r1, Chunk.LEFT)
+        r2.generate_from_chunk(r1, Game.LEFT)
         self.loaded_chunks.append(r2)
         r1l = Chunk.Chunk()
-        r1l.generate_from_chunk(spawn, Chunk.RIGHT)
+        r1l.generate_from_chunk(spawn, Game.RIGHT)
         self.loaded_chunks.prepend(r1l)
         r2l = Chunk.Chunk()
-        r2l.generate_from_chunk(r1l, Chunk.RIGHT)
+        r2l.generate_from_chunk(r1l, Game.RIGHT)
         self.loaded_chunks.prepend(r2l)
         self.save_all()
     

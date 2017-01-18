@@ -12,6 +12,7 @@ TODO
     - problem with global variables- make designated launcher class
 - Structures can only be in one chunk (and overwrite each other all the time)
 	- also messes up entity generation
+	- structures across multiple chunks with perlin noise?
 - Pause screen (can just be a GUI)
 - Finish magic staff
 - Player animation
@@ -30,11 +31,7 @@ TODO
 	- Game icon
 	- Block breaking animation
 		- crop to CTM
-	- Kelp border?
-	- Make dirt tiles a bit wider so corners don't look weird
-	- Borders?
-		- Pros: already on character/items, make some things clearer
-		- Cons: not on blocks yet, make drops look bad
+	- Dark colored borders
 - Mod support (additional classes & jsons in mod folder)
 - Make image loading only happen once ever (for itemdrops especially)
 	- Don't render giant blocks in player's hand- use BlockDrop versions
@@ -49,6 +46,8 @@ TODO
 - Pipes
 	- Transfer items- how?
 	- CTM variations: solid, sametype
+- Move basic item attributes (attack damage, break speed, harvest level) to JSON with defaults
+- Move JSON parsing to separate module, it doesn't belong in World
 
 NEEDED FEATURES
 --
@@ -102,6 +101,10 @@ NEEDED FEATURES
 - Combat
     - Armor
     - Weapons
+    	- Different attack types
+    		- spears jab, swords sweep
+    	- Right click for special move
+    		- spears throw, swords full sweep, picks place block
 - Sound
     - freesound.org
 - Multiblocks- have special multiblock interface that checks specific blocks

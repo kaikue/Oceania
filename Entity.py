@@ -12,8 +12,9 @@ class Entity(object):
         self.imageurl = imageurl
         self.load_image()
         self.set_pos(pos)
-        self.dir = [0, 0] #direction: -1, 0, 1
+        self.move_dir = [0, 0] #direction: -1, 0, 1
         self.vel = [0, 0] #speeds: any numbers
+        self.facing = Game.LEFT
         self.background = background
     
     def load_image(self):
@@ -44,6 +45,7 @@ class Entity(object):
         if self.vel[index] == 0:
             #don't do all this if you don't have to- this "fixes" a chunkloading bug
             return
+        
         self.pos[index] += self.vel[index]
         if index == 0:
             self.bounding_box.x = Convert.world_to_pixel(self.pos[index])
@@ -74,8 +76,26 @@ class Entity(object):
             self.bounding_box.x = Convert.world_to_pixel(self.pos[index])
         else:
             self.bounding_box.y = Convert.world_to_pixel(self.pos[index])
+        
+        if self.move_dir[0] == -1:
+            self.facing = Game.LEFT
+        elif self.move_dir[0] == 1:
+            self.facing = Game.RIGHT
     
     def entity_collisions(self, world):
+        entities = self.get_nearby_entities(world)
+        for entity in entities:
+            if(self.bounding_box.colliderect(entity.bounding_box)):
+                self.collide_with(entity, world)
+    
+    def get_nearby_entities(self, world):
+        #TODO move this to World and only update once per frame
+        entities = list(world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1]).entities)
+        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] - 1).entities
+        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
+        return entities
+    
+    def collide_with(self, entity, world):
         pass
     
     def interact(self, player, item):

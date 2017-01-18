@@ -13,6 +13,9 @@ PLAYING = 1
 RESET = 2
 OPENGUI = 3
 
+LEFT = False
+RIGHT = True
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 TRANSPARENT = (0, 0, 0, 0)
@@ -105,7 +108,7 @@ def update():
             elif gamemode == PLAYING:
                 if event.button == 1:
                     #left click
-                    pass
+                    player.left_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
                 elif event.button == 2:
                     #scroll wheel click
                     pass
@@ -166,15 +169,16 @@ def update():
         menu.update()
     
     elif gamemode == PLAYING:
-        player.dir = [0, 0]
+        player.move_dir = [0, 0]
         if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
-            player.dir[0] -= 1
+            player.move_dir[0] -= 1
         if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
-            player.dir[0] += 1
+            player.move_dir[0] += 1
         if pressed[pygame.K_UP] or pressed[pygame.K_w]:
-            player.dir[1] -= 1
+            player.move_dir[1] -= 1
         if pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
-            player.dir[1] += 1
+            player.move_dir[1] += 1
+        
         mousebuttons = pygame.mouse.get_pressed()
         if mousebuttons[0]:
             player.break_block(world, pygame.mouse.get_pos(), viewport, shift)

@@ -2,21 +2,20 @@ import math
 import pygame
 import Convert
 import Game
-from Entity import Entity
 from ent.ItemDrop import ItemDrop
 from itm import ItemStack
 import World
 from Inventory import Inventory
+from ent.DamageSource import DamageSource
+from ent.EntityLiving import EntityLiving
 
 
 BREAK_DIST = Game.BLOCK_SIZE * 5
 
-class Player(Entity):
+class Player(EntityLiving):
     
     def __init__(self, pos, imageurl):
-        super(Player, self).__init__(pos, imageurl)
-        self.max_health = 20
-        self.health = 18
+        super(Player, self).__init__(pos, imageurl, 20)
         self.max_speed = 0.25
         self.acceleration = 0.01 #fiddle with this until it seems good
         self.inventory = Inventory(5, 10)
@@ -25,32 +24,26 @@ class Player(Entity):
         #Temp items for testing
         self.inventory.insert(ItemStack.itemstack_from_name("magicStaff"))
         self.inventory.insert(ItemStack.itemstack_from_name("pickaxe"))
+        self.inventory.insert(ItemStack.itemstack_from_name("sword"))
     
     def update(self, world):
         old_chunk = Convert.world_to_chunk(self.pos[0])[1]
-        hspeed = min(abs(self.vel[0] + self.acceleration * self.dir[0]), self.max_speed) * self.dir[0]
-        vspeed = min(abs(self.vel[1] + self.acceleration * self.dir[1]), self.max_speed) * self.dir[1]
+        hspeed = min(abs(self.vel[0] + self.acceleration * self.move_dir[0]), self.max_speed) * self.move_dir[0]
+        vspeed = min(abs(self.vel[1] + self.acceleration * self.move_dir[1]), self.max_speed) * self.move_dir[1]
         self.vel = [hspeed, vspeed]
         super(Player, self).update(world)
         new_chunk = Convert.world_to_chunk(self.pos[0])[1]
         if new_chunk != old_chunk:
             world.load_chunks(new_chunk)
-        
-        entities = self.get_nearby_entities(world)
-        for entity in entities:
-            if(self.bounding_box.colliderect(entity.bounding_box)):
-                if isinstance(entity, ItemDrop):
-                    if self.inventory.insert(entity.get_itemstack()) == None:
-                        world.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
-    def get_nearby_entities(self, world):
-        entities = list(world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1]).entities)
-        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] - 1).entities
-        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
-        return entities
+    def collide_with(self, entity, world):
+        super(Player, self).collide_with(entity, world)
+        if isinstance(entity, ItemDrop):
+            if self.inventory.insert(entity.get_itemstack()) == None:
+                world.remove_entity(entity)
     
     def right_click_continuous(self, world, mouse_pos, viewport, background):
-        item = self.inventory[0][self.selected_slot]
+        item = self.get_held_item()
         block_pos = self.find_angle_pos(mouse_pos, viewport)
         
         if item is None:
@@ -82,8 +75,18 @@ class Player(Entity):
                 if item.count == 0:
                     self.inventory[0][self.selected_slot] = None
     
+    def left_click_discrete(self, world, mouse_pos, viewport, background):
+        held_item = self.get_held_item()
+        if held_item is not None:
+            damage = held_item.get_attack_damage()
+        else:
+            damage = 1
+        attack = DamageSource(self.pos, "img/attack.png", damage, self, 30) #TODO: offset with mouse_pos
+        world.create_entity(attack)
+        #TODO: animate held item swinging
+    
     def right_click_discrete(self, world, mouse_pos, viewport, background):
-        item = self.inventory[0][self.selected_slot]
+        item = self.get_held_item()
         block_pos = self.find_angle_pos(mouse_pos, viewport)
         entities = self.get_nearby_entities(world)
         for entity in entities:
@@ -95,6 +98,9 @@ class Player(Entity):
             return
         
         item.use_discrete(world, self, mouse_pos, viewport)
+    
+    def get_held_item(self):
+        return self.inventory[0][self.selected_slot]
     
     def get_break_distance(self):
         #extend with certain items?
@@ -124,7 +130,7 @@ class Player(Entity):
         if background and world.get_block_at(block_pos, False) != "water":
             return
         block = World.get_block(world.get_block_at(block_pos, background))
-        held_item = self.inventory[0][self.selected_slot]
+        held_item = self.get_held_item()
         if held_item is None:
             harvest_level = 0
             break_speed = 1
@@ -195,7 +201,7 @@ class Player(Entity):
         #if player can break the block at the position, highlight it
         #if player is holding a block and can place it, render a preview
         block_pos = self.find_angle_pos(mouse_pos, viewport)
-        held_item = self.inventory[0][self.selected_slot]
+        held_item = self.get_held_item()
         if held_item is None:
             harvest_level = 0
         else:
@@ -211,8 +217,8 @@ class Player(Entity):
     
     def render(self, screen, pos):
         #TODO: fancy animations here
-        screen.blit(self.img, pos)
-        item = self.inventory[0][self.selected_slot]
+        super(Player, self).render(screen, pos)
+        item = self.get_held_item()
         if item is not None:
             screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.SCALE * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.SCALE / 16)])
     
@@ -225,3 +231,7 @@ class Player(Entity):
             self.selected_slot -= 1
             if self.selected_slot < 0:
                 self.selected_slot += len(self.inventory[0])
+    
+    def die(self, world):
+        print("You died :(")
+        #TODO

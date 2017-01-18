@@ -6,8 +6,6 @@ import Convert
 import World
 
 WIDTH = 16
-LEFT = False
-RIGHT = True
 
 class Chunk(object):
     def __init__(self):
@@ -26,7 +24,7 @@ class Chunk(object):
         self.heights = [144] * WIDTH
     
     def generate_from_chunk(self, chunk, sidegenerated):
-        if sidegenerated == LEFT:
+        if sidegenerated == Game.LEFT:
             self.x = chunk.x + 1
             sideheight = chunk.heights[WIDTH - 1]
         else:
@@ -48,7 +46,7 @@ class Chunk(object):
         floor = self.biome["maxelevation"]
         ceiling = self.biome["minelevation"]
         tempheights = [0, 0]
-        if sidegenerated == LEFT:
+        if sidegenerated == Game.LEFT:
             #Pre-existing chunk is on the left side
             lefth = int(chunk.heights[WIDTH - 1])
             righth = random.randint(lefth - self.biome["slope"], lefth + self.biome["slope"])

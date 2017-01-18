@@ -13,5 +13,12 @@
 		"image": "img/tools/pickaxe.png",
 		"class": "ToolPickaxe",
 		"description": "Miney miney."
+	},
+	
+	"sword": {
+		"displayName": "Sword",
+		"image": "img/tools/sword.png",
+		"class": "ToolSword",
+		"description": "Slicey slicey."
 	}
 }
