@@ -116,6 +116,13 @@
 			"solid": false,
 			"entity": "EntityPipe",
             "breaktime": 30
+		},
+		{
+			"name": "grave",
+			"displayName": "Gravestone",
+			"image": "img/grave.png",
+			"solid": false,
+			"entity": "EntityGrave"
 		}
 	]
 }

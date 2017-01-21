@@ -142,10 +142,6 @@ class Chunk(object):
                         block = World.get_block(block_name)
                         #TODO: add background
                         chunk.set_block_at(curr_chunk_x, curr_y, block, False)
-                        if block["entity"] != "":
-                            EntityClass = getattr(importlib.import_module("ent." + block["entity"]), block["entity"])
-                            instance = EntityClass([curr_world_x, curr_y], chunk)
-                            chunk.entities.append(instance)
                     curr_world_x += 1
                 curr_y += 1
             structure_file.close()
@@ -167,6 +163,10 @@ class Chunk(object):
             self.background_blocks[y][x] = block["id"]
         else:
             self.foreground_blocks[y][x] = block["id"]
+        if block["entity"] != "":
+            EntityClass = getattr(importlib.import_module("ent." + block["entity"]), block["entity"])
+            instance = EntityClass([Convert.chunk_to_world(x, self), y], self)
+            self.entities.append(instance)
     
     def render_blocks(self, screen, viewport, background):
         top = max(Convert.pixel_to_world(viewport.y), 0)

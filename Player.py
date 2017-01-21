@@ -233,5 +233,8 @@ class Player(EntityLiving):
                 self.selected_slot += len(self.inventory[0])
     
     def die(self, world):
-        print("You died :(")
-        #TODO
+        self.health = self.max_health
+        #TODO: only create grave at nearest empty foreground space
+        world.set_block_at([int(self.pos[0]), int(self.pos[1])], World.get_block("grave"), False)
+        #TODO: fill it up with items and clear inventory
+        #TODO: respawn
