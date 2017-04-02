@@ -321,6 +321,20 @@ class World(object):
     def remove_entity(self, entity):
         self.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
+    def get_nearby_entities(self, chunk):
+        #TODO only update once per frame?
+        entities = []
+        if self.is_loaded_chunk(chunk):
+            entities += self.loaded_chunks.get(chunk).entities
+        if self.is_loaded_chunk(chunk - 1):
+            entities += self.loaded_chunks.get(chunk - 1).entities
+        if self.is_loaded_chunk(chunk + 1):
+            entities += self.loaded_chunks.get(chunk + 1).entities
+        player_chunk = self.player.get_chunk()
+        if player_chunk == chunk or player_chunk == chunk - 1 or player_chunk == chunk + 1:
+            entities.append(self.player)
+        return entities
+    
     def save_chunk_in_background(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")
         pickle.dump(chunk, chunkfile)

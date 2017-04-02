@@ -1,4 +1,5 @@
 from Entity import Entity
+from ent.EntityLiving import EntityLiving
 
 class DamageSource(Entity):
     
@@ -21,3 +22,8 @@ class DamageSource(Entity):
             if self.decay == 0:
                 world.remove_entity(self)
             self.decay -= 1
+    
+    def collide_with(self, entity, world):
+        if isinstance(entity, EntityLiving):
+            if self.parent != entity:
+                entity.damage(self, world)

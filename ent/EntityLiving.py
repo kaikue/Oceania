@@ -1,7 +1,6 @@
 import pygame
 import Game
 from Entity import Entity
-from ent.DamageSource import DamageSource
 
 INVINCIBLE_FRAMES = 30
 
@@ -31,12 +30,6 @@ class EntityLiving(Entity):
             color = (128, 0, 0, 128)
             pygame.draw.polygon(polysurface, color, olist, 0)
             screen.blit(polysurface, pos)
-    
-    def collide_with(self, entity, world):
-        #TODO move this to DamageSource
-        if isinstance(entity, DamageSource):
-            if entity.parent != self:
-                self.damage(entity, world)
     
     def damage(self, source, world):
         if not self.hurt:

@@ -27,12 +27,12 @@ class Player(EntityLiving):
         self.inventory.insert(ItemStack.itemstack_from_name("sword"))
     
     def update(self, world):
-        old_chunk = Convert.world_to_chunk(self.pos[0])[1]
+        old_chunk = self.get_chunk()
         hspeed = min(abs(self.vel[0] + self.acceleration * self.move_dir[0]), self.max_speed) * self.move_dir[0]
         vspeed = min(abs(self.vel[1] + self.acceleration * self.move_dir[1]), self.max_speed) * self.move_dir[1]
         self.vel = [hspeed, vspeed]
         super(Player, self).update(world)
-        new_chunk = Convert.world_to_chunk(self.pos[0])[1]
+        new_chunk = self.get_chunk()
         if new_chunk != old_chunk:
             world.load_chunks(new_chunk)
     
@@ -88,7 +88,7 @@ class Player(EntityLiving):
     def right_click_discrete(self, world, mouse_pos, viewport, background):
         item = self.get_held_item()
         block_pos = self.find_angle_pos(mouse_pos, viewport)
-        entities = self.get_nearby_entities(world)
+        entities = world.get_nearby_entities(self.get_chunk())
         for entity in entities:
             if entity.collides(block_pos) and entity.background == background:
                 if entity.interact(self, item):

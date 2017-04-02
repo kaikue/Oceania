@@ -86,22 +86,10 @@ class Entity(object):
             self.facing = Game.RIGHT
     
     def entity_collisions(self, world):
-        entities = self.get_nearby_entities(world)
+        entities = world.get_nearby_entities(Convert.world_to_chunk(self.pos[0])[1])
         for entity in entities:
             if(self.bounding_box.colliderect(entity.bounding_box)):
                 self.collide_with(entity, world)
-    
-    def get_nearby_entities(self, world):
-        #TODO move this to World and only update once per frame
-        thischunk = Convert.world_to_chunk(self.pos[0])[1]
-        entities = []
-        if world.is_loaded_chunk(thischunk):
-            entities += world.loaded_chunks.get(thischunk).entities
-        if world.is_loaded_chunk(thischunk - 1):
-            entities += world.loaded_chunks.get(thischunk - 1).entities
-        if world.is_loaded_chunk(thischunk + 1):
-            entities += world.loaded_chunks.get(thischunk + 1).entities
-        return entities
     
     def collide_with(self, entity, world):
         pass
