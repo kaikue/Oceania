@@ -5,6 +5,7 @@ import pickle
 import json
 import pygame
 import Game
+import Player
 import Convert
 import Chunk
 import TwoWayList
@@ -165,12 +166,12 @@ def get_block_from_id(blockid):
 
 class World(object):
     
-    def __init__(self, name, player):
+    def __init__(self, name):
         self.name = name
         self.dir = "dat/" + self.name
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
-        self.player = player
+        self.player = Player.Player([0, 140], "img/player.png")
         path = self.dir + "/state"
         if os.path.isfile(path):
             self.load_state(path)
@@ -361,7 +362,6 @@ class World(object):
         save_data = pickle.load(savefile)
         savefile.close()
         self.player = save_data["player"]
-        Game.player = self.player
         player_chunk = Convert.world_to_chunk(self.player.pos[0])[1]
         self.loaded_chunks = TwoWayList.TwoWayList()
         self.load_chunks(player_chunk)

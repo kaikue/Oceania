@@ -87,12 +87,10 @@ def play():
     World.load_data()
     global viewport
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-    global player
-    player = Player.Player([0, 140], "img/player.png")
     global world
-    world = World.World("defaultworld", player)
+    world = World.World("defaultworld")
     global hotbarGui
-    hotbarGui = HotbarGUI(player, "img/gui/hotbar.png")
+    hotbarGui = HotbarGUI(world.player, "img/gui/hotbar.png")
 
 def update():
     pressed = pygame.key.get_pressed()
@@ -106,6 +104,7 @@ def update():
             if gamemode == MENU:
                 menu.mouse_press()
             elif gamemode == PLAYING:
+                player = world.player
                 if event.button == 1:
                     #left click
                     player.left_click_discrete(world, pygame.mouse.get_pos(), viewport, shift)
@@ -131,6 +130,7 @@ def update():
         elif event.type == pygame.KEYDOWN:
             #typed a key
             if gamemode == PLAYING:
+                player = world.player
                 if event.key == pygame.K_e:
                     gui = InventoryGUI(player, "img/gui/inventory.png")
                     gamemode = OPENGUI
@@ -169,6 +169,7 @@ def update():
         menu.update()
     
     elif gamemode == PLAYING:
+        player = world.player
         player.move_dir = [0, 0]
         if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
             player.move_dir[0] -= 1
@@ -194,6 +195,7 @@ def render():
         menu.render(screen)
         
     elif gamemode in (PLAYING, OPENGUI):
+        player = world.player
         shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
         screen.fill(SKY)
         

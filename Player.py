@@ -56,7 +56,7 @@ class Player(EntityLiving):
             
             #don't want to place a solid block over an entity
             if not background:
-                entities = self.get_nearby_entities(world)
+                entities = world.get_nearby_entities(self.get_chunk())
                 entities.append(self) #check against player too
                 for entity in entities:
                     if entity.collides(block_pos) and entity.background == background and World.get_block(item.name)["solid"]:
