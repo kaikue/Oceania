@@ -34,8 +34,8 @@ class EntityLiving(Entity):
     
     def collide_with(self, entity, world):
         if isinstance(entity, DamageSource):
-            #TODO if parent not me:
-            self.damage(entity, world)
+            if entity.parent != self:
+                self.damage(entity, world)
     
     def damage(self, source, world):
         if not self.hurt:

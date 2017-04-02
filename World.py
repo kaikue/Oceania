@@ -333,6 +333,7 @@ class World(object):
         self.save_state()
     
     def save_state(self):
+        #TODO just serialize the whole player?
         save_data = {"player_pos": self.player.pos, 
                      "player_inventory": self.player.inventory,
                      "hotbar_slot": self.player.selected_slot}
