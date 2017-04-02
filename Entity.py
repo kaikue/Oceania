@@ -58,18 +58,21 @@ class Entity(object):
         block_top = int(self.pos[1])
         block_bottom = math.ceil(self.pos[1] + self.height)
         col1 = col2 = col3 = col4 = False
-        if chunk_left == chunk_right:
+        if chunk_left == chunk_right and world.is_loaded_chunk(chunk_left):
             chunk = world.loaded_chunks.get(chunk_left)
             col1 = self.check_collision(chunk, block_left, block_right, block_top, block_bottom, old_pos, index)
         else:
             #need to check from block_left in chunk_left to block_right in chunk_right and all the blocks in any chunks between them
-            chunk = world.loaded_chunks.get(chunk_left)
-            col2 = self.check_collision(chunk, block_left, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
+            if world.is_loaded_chunk(chunk_left):
+                chunk = world.loaded_chunks.get(chunk_left)
+                col2 = self.check_collision(chunk, block_left, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
             for c in range(chunk_left + 1, chunk_right):
-                chunk = world.loaded_chunks.get(c)
-                col3 = self.check_collision(chunk, 0, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
-            chunk = world.loaded_chunks.get(chunk_right)
-            col4 = self.check_collision(chunk, 0, block_right, block_top, block_bottom, old_pos, index)
+                if world.is_loaded_chunk(c):
+                    chunk = world.loaded_chunks.get(c)
+                    col3 = self.check_collision(chunk, 0, Chunk.WIDTH, block_top, block_bottom, old_pos, index)
+            if world.is_loaded_chunk(chunk_right):
+                chunk = world.loaded_chunks.get(chunk_right)
+                col4 = self.check_collision(chunk, 0, block_right, block_top, block_bottom, old_pos, index)
         if col1 or col2 or col3 or col4:
             self.vel[index] = 0 #reset acceleration?
         if index == 0:
@@ -90,9 +93,14 @@ class Entity(object):
     
     def get_nearby_entities(self, world):
         #TODO move this to World and only update once per frame
-        entities = list(world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1]).entities)
-        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] - 1).entities
-        entities += world.loaded_chunks.get(Convert.world_to_chunk(self.pos[0])[1] + 1).entities
+        thischunk = Convert.world_to_chunk(self.pos[0])[1]
+        entities = []
+        if world.is_loaded_chunk(thischunk):
+            entities += world.loaded_chunks.get(thischunk).entities
+        if world.is_loaded_chunk(thischunk - 1):
+            entities += world.loaded_chunks.get(thischunk - 1).entities
+        if world.is_loaded_chunk(thischunk + 1):
+            entities += world.loaded_chunks.get(thischunk + 1).entities
         return entities
     
     def collide_with(self, entity, world):

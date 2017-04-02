@@ -11,8 +11,10 @@ class DamageSource(Entity):
         self.decay = decay
     
     def update(self, world):
+        super(DamageSource, self).update(world)
+        
         if self.parent is not None:
-            #TODO: move with parent
+            #TODO: move with parent? right now it does that from the pos reference
             pass
         
         if self.decay > -1:

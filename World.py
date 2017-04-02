@@ -240,6 +240,9 @@ class World(object):
     #    t = threading.Thread(target=self.load_chunks_in_background, args=[center])
     #    t.start()
     
+    def is_loaded_chunk(self, index):
+        return self.loaded_chunks.contains_index(index)
+    
     def render(self, screen, viewport, background):
         for chunk in self.loaded_chunks.elements:
             chunk.render_blocks(screen, viewport, background)

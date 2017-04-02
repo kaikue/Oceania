@@ -33,6 +33,7 @@ class EntityLiving(Entity):
             screen.blit(polysurface, pos)
     
     def collide_with(self, entity, world):
+        #TODO move this to DamageSource
         if isinstance(entity, DamageSource):
             if entity.parent != self:
                 self.damage(entity, world)
