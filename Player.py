@@ -185,7 +185,7 @@ class Player(EntityLiving):
         polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
         screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
         collides = False
-        entities = self.get_nearby_entities(world)
+        entities = world.get_nearby_entities(self.get_chunk())
         entities.append(self)
         for entity in entities:
             if entity.collides(block_pos) and entity.background == background:

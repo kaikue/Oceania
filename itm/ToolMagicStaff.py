@@ -10,7 +10,7 @@ class ToolMagicStaff(ItemTool.ItemTool):
     def use_discrete(self, world, player, mouse_pos, viewport):
         #TODO: better rendering, bolt expires
         pos = player.pos[:]
-        damage_source = DamageSource.DamageSource(pos, "img/attack.png", 5, player)
+        damage_source = DamageSource.DamageSource(pos, "img/attack.png", 5, player, 60)
         pixel_player_pos = Convert.world_to_viewport(pos, viewport)
         difference = (mouse_pos[0] - pixel_player_pos[0],
                       mouse_pos[1] - pixel_player_pos[1])
