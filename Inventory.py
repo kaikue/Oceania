@@ -82,8 +82,6 @@ class Inventory(object):
             screen.blit(Images.highlight_image, highlight_pos)
             
             text = World.items[tooltip_item.name]["description"]
-            if isinstance(text, str):
-                text = [text]
             display_name = World.items[tooltip_item.name]["displayName"]
             name_image = GUI.render_string_array([display_name], font, 0, Game.WHITE)
             desc_image = GUI.render_string_array(text, font, 0, Game.WHITE)

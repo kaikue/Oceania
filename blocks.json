@@ -25,14 +25,17 @@
 			"displayName": "Basalt",
 			"image": "img/gabbro/gabbro_1.png",
             "harvestlevel": 1,
-            "breaktime": 200
+            "breaktime": 200,
+            "description": "A common type of stone."
 		},
 		{
 			"name": "kelp",
 			"displayName": "Kelp",
 			"solid": false,
 			"image": "img/kelp/kelp.png",
-            "breaktime": 200
+            "breaktime": 200,
+            "description": ["Delicious kelp.",
+            				"Mmmmm-mmmmmm!"]
 		},
 		{
 			"name": "basaltBricks",

@@ -55,6 +55,8 @@ def load_items():
         item["can_place"] = False
         if "class" not in item.keys():
             item["class"] = "ItemStack"
+        if isinstance(item["description"], str):
+            item["description"] = [item["description"]]
 
 def load_blocks():
     blocks_file = open("blocks.json", "r")
@@ -87,7 +89,7 @@ def load_blocks():
         if "item" not in block.keys():
             block["item"] = "ItemStack"
         if "description" not in block.keys():
-            block["description"] = ""
+            block["description"] = [""]
         if "harvestlevel" not in block.keys():
             block["harvestlevel"] = 0
         if "breaktime" not in block.keys():
@@ -100,6 +102,9 @@ def load_blocks():
         block_mappings[block["name"]] = bid
         global id_mappings
         id_mappings[bid] = block["name"]
+        
+        if isinstance(block["description"], str):
+            block["description"] = [block["description"]]
         
         #load the block image
         path = block["image"]
