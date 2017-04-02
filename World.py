@@ -333,9 +333,9 @@ class World(object):
         self.save_state()
     
     def save_state(self):
-        #TODO just serialize the whole player?
         save_data = {"player_pos": self.player.pos, 
                      "player_inventory": self.player.inventory,
+                     "player_health": self.player.health,
                      "hotbar_slot": self.player.selected_slot}
         #more game state data
         savefile = open(self.dir + "/state", "wb")
@@ -356,6 +356,7 @@ class World(object):
                 if item is not None:
                     item.load_image()
         self.player.selected_slot = save_data["hotbar_slot"]
+        self.player.health = save_data["player_health"]
     
     def get_chunk_file(self, index):
         return self.dir + "/chunk" + str(index) + "data"
