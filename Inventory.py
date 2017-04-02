@@ -5,6 +5,7 @@ import gui.GUI as GUI
 import Images
 
 HOTBAR_GAP = GUI.SCALING // 8
+TOOLTIP_GAP = 10 #between name and description
 
 class Inventory(object):
     
@@ -83,14 +84,16 @@ class Inventory(object):
             text = World.items[tooltip_item.name]["description"]
             if isinstance(text, str):
                 text = [text]
-            else:
-                text = text.copy()
-            displayName = World.items[tooltip_item.name]["displayName"]
-            text.insert(0, displayName)
-            text_image = GUI.render_string_array(text, font, 0, Game.WHITE)
+            display_name = World.items[tooltip_item.name]["displayName"]
+            name_image = GUI.render_string_array([display_name], font, 0, Game.WHITE)
+            desc_image = GUI.render_string_array(text, font, 0, Game.WHITE)
             
-            width = text_image.get_width()
-            height = text_image.get_height()
+            name_width = name_image.get_width()
+            name_height = name_image.get_height()
+            desc_width = desc_image.get_width()
+            desc_height = desc_image.get_height()
+            width = max(name_width, desc_width)
+            height = name_height + TOOLTIP_GAP + desc_height
             corner = 4 * Game.SCALE
             
             pos = (mouse_pos[0] + corner, mouse_pos[1])
@@ -117,5 +120,5 @@ class Inventory(object):
                 screen.blit(Images.tooltip_pieces[2][1], (pos[0] + corner + x, pos[1] + 3 * corner + y))
             screen.blit(Images.tooltip_pieces[2][2], (pos[0] + 3 * corner + x, pos[1] + 3 * corner + y))
             
-            screen.blit(text_image, (pos[0] + corner, pos[1] + corner))
-        
+            screen.blit(name_image, (pos[0] + corner, pos[1] + corner))
+            screen.blit(desc_image, (pos[0] + corner, pos[1] + corner + name_height + TOOLTIP_GAP))
