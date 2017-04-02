@@ -14,7 +14,6 @@ TODO
 	- also messes up entity generation
 	- structures across multiple chunks with perlin noise?
 - Pause screen (can just be a GUI)
-- Finish magic staff
 - Player animation
 - Block breaking particles
 - Block preview visualization is a bit off- probably due to use of outline
