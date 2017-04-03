@@ -152,6 +152,7 @@ class Chunk(object):
         if background:
             return World.get_id_name(self.background_blocks[y][x])
         else:
+            print(x, y)
             return World.get_id_name(self.foreground_blocks[y][x])
     
     def set_blocks_at(self, x, y, block):

@@ -172,7 +172,7 @@ class Player(EntityLiving):
         blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], background, background).copy()
         mask = pygame.mask.from_surface(blockimg)
         olist = mask.outline()
-        polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+        polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale()), pygame.SRCALPHA)
         color = self.get_color(background)
         pygame.draw.polygon(polysurface, color, olist, 0)
         screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
@@ -182,7 +182,7 @@ class Player(EntityLiving):
         blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], background, background).copy()
         mask = pygame.mask.from_surface(blockimg)
         olist = mask.outline()
-        polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+        polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale()), pygame.SRCALPHA)
         screen.blit(polysurface, Convert.world_to_viewport(block_pos, viewport))
         collides = False
         entities = world.get_nearby_entities(self.get_chunk())
@@ -200,7 +200,9 @@ class Player(EntityLiving):
     def draw_block_highlight(self, world, mouse_pos, viewport, screen, shift):
         #if player can break the block at the position, highlight it
         #if player is holding a block and can place it, render a preview
+        print("viewport: " + str(viewport))
         block_pos = self.find_angle_pos(mouse_pos, viewport)
+        print("mouse pos: " + str(mouse_pos) + ", block pos: " + str(block_pos))
         held_item = self.get_held_item()
         if held_item is None:
             harvest_level = 0
@@ -220,7 +222,7 @@ class Player(EntityLiving):
         super(Player, self).render(screen, pos)
         item = self.get_held_item()
         if item is not None:
-            screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.SCALE * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.SCALE / 16)])
+            screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.get_scale() * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.get_scale() / 16)])
     
     def change_slot(self, direction):
         if direction:

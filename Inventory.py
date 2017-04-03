@@ -5,7 +5,6 @@ import World
 import gui.GUI as GUI
 import Images
 
-HOTBAR_GAP = GUI.SCALING // 8
 TOOLTIP_GAP = 10 #between name and description
 
 class Inventory(object):
@@ -45,18 +44,20 @@ class Inventory(object):
         self.items[i] = value
     
     def slot_at(self, pos, left, top, hotbargap):
+        hotbar_gap_amount = GUI.get_scaling() // 8
         #TODO: give armor slot if necessary... negative coordinate?
-        pos = (pos[0] - left - GUI.SCALING * 13 // 8, pos[1] - top - GUI.SCALING // 2)
-        if hotbargap and pos[1] > GUI.SCALING:
-            pos = (pos[0], pos[1] - HOTBAR_GAP)
-        row = pos[1] // GUI.SCALING
-        col = pos[0] // GUI.SCALING
+        pos = (pos[0] - left - GUI.get_scaling() * 13 // 8, pos[1] - top - GUI.get_scaling() // 2)
+        if hotbargap and pos[1] > GUI.get_scaling():
+            pos = (pos[0], pos[1] - hotbar_gap_amount)
+        row = pos[1] // GUI.get_scaling()
+        col = pos[0] // GUI.get_scaling()
         if not (0 <= row < len(self.items) and 0 <= col < len(self.items[row])):
             return None
         else:
             return (row, col)
     
     def render(self, left, top, screen, hotbargap, item_to_skip = None):
+        hotbar_gap_amount = GUI.get_scaling() // 8
         mouse_pos = pygame.mouse.get_pos()
         tooltip_item = None
         for r in range(len(self.items)):
@@ -64,14 +65,14 @@ class Inventory(object):
                 inv_item = self.items[r][c]
                 if inv_item is not None and inv_item is not item_to_skip:
                     #c and r are flipped here so it renders across then down
-                    slotX = left + GUI.SCALING * 13 / 8 +  c * GUI.SCALING
-                    slotY = top + GUI.SCALING / 2 + r * GUI.SCALING
+                    slotX = left + GUI.get_scaling() * 13 / 8 +  c * GUI.get_scaling()
+                    slotY = top + GUI.get_scaling() / 2 + r * GUI.get_scaling()
                     if r > 0 and hotbargap:
-                        slotY += HOTBAR_GAP
+                        slotY += hotbar_gap_amount
                     
                     inv_item.render((slotX, slotY), screen)
                     
-                    rect = pygame.rect.Rect(slotX, slotY, GUI.SCALING, GUI.SCALING)
+                    rect = pygame.rect.Rect(slotX, slotY, GUI.get_scaling(), GUI.get_scaling())
                     if rect.collidepoint(mouse_pos):
                         tooltip_item = inv_item
                         highlight_pos = (slotX, slotY)
@@ -98,15 +99,15 @@ class Inventory(object):
         height = name_height
         if desc_height > 0:
             height += TOOLTIP_GAP + desc_height
-        corner = 4 * Game.SCALE
+        corner = 4 * Game.get_scale()
         edge = 2 * corner
         
         pos = (mouse_pos[0] + corner, mouse_pos[1])
         
         #if too long, flip it to the other side of the mouse
-        if pos[0] + width + 2 * corner > Game.SCREEN_WIDTH:
+        if pos[0] + width + 2 * corner > Game.get_screen_width():
             pos = (max(pos[0] - width - 4 * corner, 0), pos[1]) #gap for mouse
-        if pos[1] + height + 2 * corner > Game.SCREEN_HEIGHT:
+        if pos[1] + height + 2 * corner > Game.get_screen_height():
             pos = (pos[0], pos[1] - height - 2 * corner)
         
         #top border

@@ -22,7 +22,7 @@ def pixels_to_world(pos):
     return [pixel_to_world(pos[0]), pixel_to_world(pos[1])]
 
 def pixel_to_world(p):
-    return int(p / Game.BLOCK_SIZE / Game.SCALE) - 1 * (p < 0)
+    return int(p / Game.BLOCK_SIZE / Game.get_scale()) - 1 * (p < 0)
 
 def world_to_chunk(x):
     #X pos within the world (blocks) to x pos within some chunk (blocks) and x pos of that chunk (chunks).
@@ -33,7 +33,7 @@ def world_to_pixels(pos):
     return [world_to_pixel(pos[0]), world_to_pixel(pos[1])]
 
 def world_to_pixel(p):
-    return p * Game.BLOCK_SIZE * Game.SCALE
+    return p * Game.BLOCK_SIZE * Game.get_scale()
 
 def world_to_viewport(pos, viewport):
     return pixels_to_viewport(world_to_pixels(pos), viewport)

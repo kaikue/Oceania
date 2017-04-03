@@ -15,7 +15,7 @@ class Menu(object):
     
     def create_buttons(self):
         if self.mode == "main":
-            play_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 2 // 3), "Start Game", "play")
+            play_button = Button.Button((1 / 2, 2 / 3), (-Button.WIDTH / 2, 0), "Start Game", "play")
             self.buttons = [play_button]
         elif self.mode == "options":
             self.buttons = []

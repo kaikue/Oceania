@@ -109,7 +109,7 @@ class Entity(object):
         self.pos = pos
         #bounding box is in pixels because it can only have ints
         if self.img is None:
-            self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)
+            self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale())
             self.width = 1
             self.height = 1
         else:

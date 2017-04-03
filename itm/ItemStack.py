@@ -27,7 +27,7 @@ class ItemStack(object):
     
     def load_image(self):
         img = Images.load_imageurl(self.imageurl)
-        self.img = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA, 32).convert_alpha()
+        self.img = pygame.Surface((Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale()), pygame.SRCALPHA, 32).convert_alpha()
         self.img.blit(img, (0, 0))
     
     def can_stack(self, itemstack):
@@ -78,10 +78,10 @@ class ItemStack(object):
         pass
     
     def render(self, pos, screen):
-        screen.blit(self.img, (pos[0] + GUI.SCALING / 6, pos[1] + GUI.SCALING / 6))
+        screen.blit(self.img, (pos[0] + GUI.get_scaling() / 6, pos[1] + GUI.get_scaling() / 6))
         if self.stackable:
             countimg = Game.get_font().render(str(self.count), 0, Game.WHITE)
-            screen.blit(countimg, (pos[0] + 3 * Game.SCALE, pos[1] + 3 * Game.SCALE))
+            screen.blit(countimg, (pos[0] + 3 * Game.get_scale(), pos[1] + 3 * Game.get_scale()))
     
     def __str__(self):
         return str(self.count) + "x " + self.name

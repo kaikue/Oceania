@@ -26,7 +26,7 @@ class EntityLiving(Entity):
         if self.hurt:
             mask = pygame.mask.from_surface(self.img)
             olist = mask.outline()
-            polysurface = pygame.Surface((self.img.get_width() * Game.SCALE, self.img.get_height() * Game.SCALE), pygame.SRCALPHA)
+            polysurface = pygame.Surface((self.img.get_width() * Game.get_scale(), self.img.get_height() * Game.get_scale()), pygame.SRCALPHA)
             color = (128, 0, 0, 128)
             pygame.draw.polygon(polysurface, color, olist, 0)
             screen.blit(polysurface, pos)

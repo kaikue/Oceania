@@ -2,7 +2,8 @@ import pygame
 import Game
 import Images
 
-SCALING = 24 * Game.SCALE
+def get_scaling():
+    return 24 * Game.get_scale()
 
 def render_string_array(strings, font, antialias, color):
     str_images = []
@@ -30,8 +31,8 @@ class GUI(object):
         self.height = self.img.get_height()
     
     def render(self, screen):
-        left = (Game.SCREEN_WIDTH - self.width) // 2
-        top = (Game.SCREEN_HEIGHT - self.height) // 2
+        left = (Game.get_screen_width() - self.width) // 2
+        top = (Game.get_screen_height() - self.height) // 2
         screen.blit(self.img, (left, top))
     
     def click(self, pos, right, shift):

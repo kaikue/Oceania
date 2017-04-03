@@ -10,14 +10,14 @@ class ChestGUI(InventoryGUI):
         self.chest_inventory = chest_inventory
         self.transfer_down_image = Images.load_imageurl("img/gui/arrow_down.png")
         self.transfer_up_image = Images.load_imageurl("img/gui/arrow_up.png")
-        self.transfer_down_position = (self.left + GUI.SCALING * 5 / 8, self.top + GUI.SCALING * 5 / 8)
-        self.transfer_up_position = (self.left + GUI.SCALING * 5 / 8, self.top + GUI.SCALING * 39 / 8)
+        self.transfer_down_position = (self.left + GUI.get_scaling() * 5 / 8, self.top + GUI.get_scaling() * 5 / 8)
+        self.transfer_up_position = (self.left + GUI.get_scaling() * 5 / 8, self.top + GUI.get_scaling() * 39 / 8)
     
     def render(self, screen):
         super(InventoryGUI, self).render(screen)
         
         self.chest_inventory.render(self.left, self.top, screen, False, self.moving_item)
-        self.player.inventory.render(self.left, self.top + GUI.SCALING * 51 / 12, screen, True, self.moving_item)
+        self.player.inventory.render(self.left, self.top + GUI.get_scaling() * 51 / 12, screen, True, self.moving_item)
         
         screen.blit(self.transfer_down_image, self.transfer_down_position)
         screen.blit(self.transfer_up_image, self.transfer_up_position)
@@ -31,8 +31,8 @@ class ChestGUI(InventoryGUI):
         self.draw_moving_item(screen)
     
     def in_transfer_button(self, button_position, target_position):
-        return button_position[0] <= target_position[0] <= button_position[0] + GUI.SCALING * 3 / 4 and \
-            button_position[1] <= target_position[1] <= button_position[1] + GUI.SCALING * 3 / 4
+        return button_position[0] <= target_position[0] <= button_position[0] + GUI.get_scaling() * 3 / 4 and \
+            button_position[1] <= target_position[1] <= button_position[1] + GUI.get_scaling() * 3 / 4
     
     def click(self, pos, right, shift):
         if self.in_transfer_button(self.transfer_down_position, pos):
@@ -50,5 +50,5 @@ class ChestGUI(InventoryGUI):
         slot = self.chest_inventory.slot_at(pos, self.left, self.top, False)
         self.click_slot(slot, right, shift, self.chest_inventory, self.player.inventory)
         
-        slot = self.player.inventory.slot_at(pos, self.left, self.top + GUI.SCALING * 13 // 3, True)
+        slot = self.player.inventory.slot_at(pos, self.left, self.top + GUI.get_scaling() * 13 // 3, True)
         self.click_slot(slot, right, shift, self.player.inventory, self.chest_inventory)

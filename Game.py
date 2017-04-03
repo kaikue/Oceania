@@ -2,11 +2,12 @@
 
 VERSION = "0.1.0"
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
+WINDOW_SCALE = 2
+FULLSCREEN_SCALE = 4
 
 BLOCK_SIZE = 16
-SCALE = 2
 
 MENU = 0
 PLAYING = 1
@@ -31,7 +32,7 @@ BREAK_LENGTH = 4
 #Do these after the constants are set, so that the imported classes can reference them.
 
 import pygame
-from pygame.locals import DOUBLEBUF
+from pygame.locals import DOUBLEBUF, FULLSCREEN
 import os
 import sys
 import Convert
@@ -50,9 +51,9 @@ def start():
     os.environ["SDL_VIDEO_CENTERED"] = "1"
     pygame.init()
     pygame.display.set_caption("Oceania")
-    flags = DOUBLEBUF # | FULLSCREEN
-    global screen
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), flags)
+    global viewport
+    viewport = pygame.Rect(0, 0, 1, 1)
+    set_fullscreen(False)
     global clock
     clock = pygame.time.Clock()
     
@@ -67,12 +68,38 @@ def start():
     global gamemode
     gamemode = MENU
     global font
-    font = pygame.font.Font("fnt/coders_crux.ttf", 16 * SCALE)
+    font = pygame.font.Font("fnt/coders_crux.ttf", 16 * scale)
     global menu
     menu = Menu.Menu()
     global gui
     gui = None
     run()
+
+def set_fullscreen(fullscreen):
+    global is_fullscreen
+    is_fullscreen = fullscreen
+    
+    flags = DOUBLEBUF
+    global screen_width
+    global screen_height
+    global scale
+    if fullscreen:
+        flags |= FULLSCREEN
+        info = pygame.display.Info()
+        screen_width = info.current_w
+        screen_height = info.current_h
+        scale = FULLSCREEN_SCALE
+    else:
+        screen_width = WINDOW_WIDTH
+        screen_height = WINDOW_HEIGHT
+        scale = WINDOW_SCALE
+    global screen
+    screen = pygame.display.set_mode((screen_width, screen_height), flags)
+    viewport.width = screen_width
+    viewport.height = screen_height
+
+def toggle_fullscreen():
+    set_fullscreen(not is_fullscreen)
 
 def run():
     while True:
@@ -84,8 +111,6 @@ def play():
     global gamemode
     gamemode = PLAYING
     World.load_data()
-    global viewport
-    viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     global world
     world = World.World("defaultworld")
     global hotbarGui
@@ -128,12 +153,14 @@ def update():
                 menu.mouse_release()
         elif event.type == pygame.KEYDOWN:
             #typed a key
+            if event.key == pygame.K_F11:
+                toggle_fullscreen()
             if gamemode == PLAYING:
                 player = world.player
                 if event.key == pygame.K_e:
                     gui = InventoryGUI(player, "img/gui/inventory.png")
                     gamemode = OPENGUI
-                if event.key == pygame.K_F3:
+                if event.key == pygame.K_F1:
                     global DEBUG
                     DEBUG = not DEBUG
                 if event.key == pygame.K_1:
@@ -185,8 +212,8 @@ def update():
         if mousebuttons[2]:
             player.right_click_continuous(world, pygame.mouse.get_pos(), viewport, shift)
         player.update(world)
-        viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2
-        viewport.y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2
+        viewport.x = Convert.world_to_pixels(player.pos)[0] - screen_width / 2
+        viewport.y = Convert.world_to_pixels(player.pos)[1] - screen_height / 2
         world.update()
 
 def render():
@@ -224,8 +251,8 @@ def render():
                         "chunk: " + str(chunk.x),
                         "biome: " + str(chunk.biome["name"])]
             debugimg = GUI.render_string_array(debugtext, font, 0, WHITE)
-            h = SCREEN_HEIGHT - debugimg.get_height()
-            screen.blit(debugimg, (2 * SCALE, h))
+            h = screen_height - debugimg.get_height()
+            screen.blit(debugimg, (2 * scale, h))
     pygame.display.flip()
 
 def close():
@@ -239,6 +266,15 @@ def get_font():
 
 def get_world():
     return world
+
+def get_screen_width():
+    return screen_width
+
+def get_screen_height():
+    return screen_height
+
+def get_scale():
+    return scale
 
 def set_gui(g):
     global gui

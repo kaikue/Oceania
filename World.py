@@ -118,8 +118,8 @@ def load_blocks():
                 icon = blockimg.copy()
             #blockicons[False] is the unscaled version for blockdrops, [True] is scaled up for inventory rendering
             block_icons[False][bid] = icon
-            block_icons[True][bid] = pygame.transform.scale(icon, (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE))
-            foreground_image = pygame.transform.scale(blockimg, (blockimg.get_width() * Game.SCALE, blockimg.get_height() * Game.SCALE))
+            block_icons[True][bid] = pygame.transform.scale(icon, (Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale()))
+            foreground_image = pygame.transform.scale(blockimg, (blockimg.get_width() * Game.get_scale(), blockimg.get_height() * Game.get_scale()))
             block_images[False][bid] = foreground_image
             #blit the image onto the water tile so it isn't just empty transparency
             image = blockimg.copy()
@@ -130,23 +130,23 @@ def load_blocks():
             for x in range(image.get_width() // Game.BLOCK_SIZE):
                 for y in range(image.get_height() // Game.BLOCK_SIZE):
                     image.blit(st_water_image, (x * Game.BLOCK_SIZE, y * Game.BLOCK_SIZE))
-            background_image = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
+            background_image = pygame.transform.scale(image, (image.get_width() * Game.get_scale(), image.get_height() * Game.get_scale()))
             block_images[True][bid] = background_image
             if block["connectedTexture"]:
                 ctm_block_images[False][bid] = {}
                 ctm_block_images[True][bid] = {}
                 for x in range(4):
                     for y in range(4):
-                        foreground_surf = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)).convert_alpha()
+                        foreground_surf = pygame.Surface((Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale())).convert_alpha()
                         foreground_surf.fill((0, 0, 0, 0))
                         background_surf = foreground_surf.copy()
                         foreground_surf.blit(foreground_image, (0, 0),
-                            pygame.Rect((x * Game.BLOCK_SIZE * Game.SCALE, y * Game.BLOCK_SIZE * Game.SCALE),
-                                 (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
+                            pygame.Rect((x * Game.BLOCK_SIZE * Game.get_scale(), y * Game.BLOCK_SIZE * Game.get_scale()),
+                                 (Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale())))
                         ctm_block_images[False][bid][(x, y)] = foreground_surf
                         background_surf.blit(background_image, (0, 0),
-                            pygame.Rect((x * Game.BLOCK_SIZE * Game.SCALE, y * Game.BLOCK_SIZE * Game.SCALE),
-                                 (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)))
+                            pygame.Rect((x * Game.BLOCK_SIZE * Game.get_scale(), y * Game.BLOCK_SIZE * Game.get_scale()),
+                                 (Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale())))
                         ctm_block_images[True][bid][(x, y)] = background_surf
         #make the corresponding item
         items[block["name"]] = {"displayName": block["displayName"],
@@ -262,7 +262,7 @@ class World(object):
             blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO: make this support CTM
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()
-            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
+            polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.get_scale(), Game.BLOCK_SIZE * Game.get_scale()), pygame.SRCALPHA)
             pygame.draw.polygon(polysurface, Game.WHITE, olist, 0)
             breakimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
             screen.blit(breakimg, Convert.world_to_viewport(breaking_block["pos"], viewport))

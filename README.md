@@ -48,6 +48,9 @@ TODO
 - Move basic item attributes (attack damage, break speed, harvest level) to JSON with defaults
 - Move JSON parsing to separate module, it doesn't belong in World
 - Structures with background- define characters to be pairs of foreground and background blocks
+- Fullscreen
+	- make sure blockdrops are the right size
+- Default description arg for tooltips
 
 NEEDED FEATURES
 --

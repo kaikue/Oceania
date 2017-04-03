@@ -49,8 +49,9 @@ def draw_rounded_rect(surface, rect, color, radius=0.4):
 
 class Button(object):
     
-    def __init__(self, pos, text, effect):
-        self.pos = pos
+    def __init__(self, screen_position, offset_position, text, effect):
+        self.screen_position = screen_position
+        self.offset_position = offset_position
         self.text = text
         self.effect = effect
         self.pressed = False
@@ -62,13 +63,19 @@ class Button(object):
         elif self.effect == "quit":
             Game.close()
     
+    def get_pos(self):
+        return (int(self.screen_position[0] * Game.get_screen_width() + self.offset_position[0]),
+                int(self.screen_position[1] * Game.get_screen_height() + self.offset_position[1]))
+    
     def get_rect(self):
-        return pygame.Rect(self.pos[0], self.pos[1], WIDTH, HEIGHT)
+        pos = self.get_pos()
+        return pygame.Rect(pos[0], pos[1], WIDTH, HEIGHT)
     
     def mouse_hover(self):
         return self.get_rect().collidepoint(pygame.mouse.get_pos())
     
     def render(self, screen):
+        pos = self.get_pos()
         if self.mouse_hover():
             if self.pressed:
                 color = COLOR_PRESSED
@@ -80,7 +87,7 @@ class Button(object):
         text_img = self.font.render(self.text, 0, FONT_COLOR)
         h = text_img.get_height()
         w = text_img.get_width()
-        screen.blit(text_img, (self.pos[0] + (WIDTH - w) / 2, self.pos[1] + (HEIGHT - h) / 2))
+        screen.blit(text_img, (pos[0] + (WIDTH - w) / 2, pos[1] + (HEIGHT - h) / 2))
 
 if __name__ == "__main__":
     Game.main()

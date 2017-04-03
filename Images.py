@@ -10,7 +10,7 @@ def load_imageurl(imageurl):
     if imageurl == "":
         return None
     img = pygame.image.load(imageurl).convert_alpha()
-    return pygame.transform.scale(img, (Game.SCALE * img.get_width(), Game.SCALE * img.get_height()))
+    return pygame.transform.scale(img, (Game.get_scale() * img.get_width(), Game.get_scale() * img.get_height()))
 
 def load_images():
     base = "img/gui/pieces/"
@@ -26,6 +26,6 @@ def load_images():
     for i in range(Game.BREAK_LENGTH):
         img = pygame.image.load("img/break_" + str(i) + ".png").convert_alpha()
         global break_images
-        break_images.append(pygame.transform.scale(img, (img.get_width() * Game.SCALE, img.get_height() * Game.SCALE)))
+        break_images.append(pygame.transform.scale(img, (img.get_width() * Game.get_scale(), img.get_height() * Game.get_scale())))
     global highlight_image
     highlight_image = load_imageurl("img/gui/highlight.png")
