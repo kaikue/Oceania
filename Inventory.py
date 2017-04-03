@@ -1,3 +1,4 @@
+import math
 import pygame
 import Game
 import World
@@ -91,8 +92,11 @@ class Inventory(object):
             desc_width = desc_image.get_width()
             desc_height = desc_image.get_height()
             width = max(name_width, desc_width)
-            height = name_height + TOOLTIP_GAP + desc_height
+            height = name_height
+            if desc_height > 0:
+                height += TOOLTIP_GAP + desc_height
             corner = 4 * Game.SCALE
+            edge = 2 * corner
             
             pos = (mouse_pos[0] + corner, mouse_pos[1])
             
@@ -103,18 +107,20 @@ class Inventory(object):
                 pos = (pos[0], pos[1] - height - 2 * corner)
             
             screen.blit(Images.tooltip_pieces[0][0], pos)
-            for x in range(0, width, 2 * corner):
+            for x in range(0, width, edge):
                 screen.blit(Images.tooltip_pieces[0][1], (pos[0] + corner + x, pos[1]))
             screen.blit(Images.tooltip_pieces[0][2], (pos[0] + 3 * corner + x, pos[1]))
             
-            for y in range(0, height, 2 * corner):
+            slices = math.ceil(height / edge)
+            for s in range(slices):
+                y = height * s // slices
                 screen.blit(Images.tooltip_pieces[1][0], (pos[0], pos[1] + corner + y))
-                for x in range(0, width, 2 * corner):
-                    screen.blit(Images.tooltip_centers[((x + y) // (2 * corner)) % 4], (pos[0] + corner + x, pos[1] + corner + y))
+                for x in range(0, width, edge):
+                    screen.blit(Images.tooltip_centers[((x + y) // edge) % 4], (pos[0] + corner + x, pos[1] + corner + y))
                 screen.blit(Images.tooltip_pieces[1][2], (pos[0] + 3 * corner + x, pos[1] + corner + y))
             
             screen.blit(Images.tooltip_pieces[2][0], (pos[0], pos[1] + 3 * corner + y))
-            for x in range(0, width, 2 * corner):
+            for x in range(0, width, edge):
                 screen.blit(Images.tooltip_pieces[2][1], (pos[0] + corner + x, pos[1] + 3 * corner + y))
             screen.blit(Images.tooltip_pieces[2][2], (pos[0] + 3 * corner + x, pos[1] + 3 * corner + y))
             

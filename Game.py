@@ -37,7 +37,6 @@ import sys
 import Convert
 import Menu
 import World
-import Player
 import gui.GUI as GUI
 from gui.InventoryGUI import InventoryGUI
 from gui.HotbarGUI import HotbarGUI
