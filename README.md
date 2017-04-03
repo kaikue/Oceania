@@ -64,9 +64,9 @@ NEEDED FEATURES
         - Chalk (makes quicklime in lime kiln- limelight)
         - Gabbro
     - Ores
-        - Manganese nodules-  manganese (27-30%), iron (6%), nickel (1.4%), copper (1-1.3%), cobalt (0.25%)
+        - Manganese nodules-  manganese (80%), cobalt (10%)
         - Chromite (chromium- used for Vitallum, steel, tanned leather)
-        - Cobalt (used for Vitallum, steel drill, )
+        - Cobalt (used for Vitallum, steel drill, ?)
             - Cobalt crusts- cobalt, manganese, iron layer on seamounts
     - More structures
         - Improve temple
@@ -89,7 +89,7 @@ NEEDED FEATURES
     - https://i.imgur.com/jYvaxQ1.jpg
     - T0: Flint
     - T1: Cold forging- shape metal into basic tools with a stone hammer (copper)
-    - T2: Hot forging- up to 750Â°, melt metals in forge, basic alloys, cast into molds (tin, lead, zinc, brass, bronze)
+    - T2: Hot forging- up to 800°, melt metals in forge, basic alloys, cast into molds (tin, lead, zinc, brass, bronze)
         - Craft molds with sand + clay, imprint with some natural material for type (e.g. narwhal horn for sword blade)
         - Melt sand into glass, pour into empty mold
     - T3: Iron, steel, mangalloy

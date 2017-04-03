@@ -57,9 +57,7 @@ class Inventory(object):
             return (row, col)
     
     def render(self, left, top, screen, hotbargap, item_to_skip = None):
-        font = Game.get_font()
         mouse_pos = pygame.mouse.get_pos()
-        
         tooltip_item = None
         for r in range(len(self.items)):
             for c in range(len(self.items[r])):
@@ -82,47 +80,57 @@ class Inventory(object):
         if tooltip_item is not None and item_to_skip is None:
             screen.blit(Images.highlight_image, highlight_pos)
             
-            text = World.items[tooltip_item.name]["description"]
             display_name = World.items[tooltip_item.name]["displayName"]
-            name_image = GUI.render_string_array([display_name], font, 0, Game.WHITE)
-            desc_image = GUI.render_string_array(text, font, 0, Game.WHITE)
-            
-            name_width = name_image.get_width()
-            name_height = name_image.get_height()
-            desc_width = desc_image.get_width()
-            desc_height = desc_image.get_height()
-            width = max(name_width, desc_width)
-            height = name_height
-            if desc_height > 0:
-                height += TOOLTIP_GAP + desc_height
-            corner = 4 * Game.SCALE
-            edge = 2 * corner
-            
-            pos = (mouse_pos[0] + corner, mouse_pos[1])
-            
-            #if too long, flip it to the other side of the mouse
-            if pos[0] + width + 2 * corner > Game.SCREEN_WIDTH:
-                pos = (max(pos[0] - width - 4 * corner, 0), pos[1]) #gap for mouse
-            if pos[1] + height + 2 * corner > Game.SCREEN_HEIGHT:
-                pos = (pos[0], pos[1] - height - 2 * corner)
-            
-            screen.blit(Images.tooltip_pieces[0][0], pos)
+            description = World.items[tooltip_item.name]["description"]
+            self.draw_tooltip(screen, display_name, description)
+    
+    def draw_tooltip(self, screen, name, description):
+        font = Game.get_font()
+        mouse_pos = pygame.mouse.get_pos()
+        
+        name_image = GUI.render_string_array([name], font, 0, Game.WHITE)
+        desc_image = GUI.render_string_array(description, font, 0, Game.WHITE)
+        name_width = name_image.get_width()
+        name_height = name_image.get_height()
+        desc_width = desc_image.get_width()
+        desc_height = desc_image.get_height()
+        width = max(name_width, desc_width)
+        height = name_height
+        if desc_height > 0:
+            height += TOOLTIP_GAP + desc_height
+        corner = 4 * Game.SCALE
+        edge = 2 * corner
+        
+        pos = (mouse_pos[0] + corner, mouse_pos[1])
+        
+        #if too long, flip it to the other side of the mouse
+        if pos[0] + width + 2 * corner > Game.SCREEN_WIDTH:
+            pos = (max(pos[0] - width - 4 * corner, 0), pos[1]) #gap for mouse
+        if pos[1] + height + 2 * corner > Game.SCREEN_HEIGHT:
+            pos = (pos[0], pos[1] - height - 2 * corner)
+        
+        #top border
+        screen.blit(Images.tooltip_pieces[0][0], pos)
+        for x in range(0, width, edge):
+            screen.blit(Images.tooltip_pieces[0][1], (pos[0] + corner + x, pos[1]))
+        screen.blit(Images.tooltip_pieces[0][2], (pos[0] + 3 * corner + x, pos[1]))
+        
+        #middle
+        slices = math.ceil(height / edge)
+        for s in range(slices):
+            y = height * s // slices
+            screen.blit(Images.tooltip_pieces[1][0], (pos[0], pos[1] + corner + y))
             for x in range(0, width, edge):
-                screen.blit(Images.tooltip_pieces[0][1], (pos[0] + corner + x, pos[1]))
-            screen.blit(Images.tooltip_pieces[0][2], (pos[0] + 3 * corner + x, pos[1]))
-            
-            slices = math.ceil(height / edge)
-            for s in range(slices):
-                y = height * s // slices
-                screen.blit(Images.tooltip_pieces[1][0], (pos[0], pos[1] + corner + y))
-                for x in range(0, width, edge):
-                    screen.blit(Images.tooltip_centers[((x + y) // edge) % 4], (pos[0] + corner + x, pos[1] + corner + y))
-                screen.blit(Images.tooltip_pieces[1][2], (pos[0] + 3 * corner + x, pos[1] + corner + y))
-            
-            screen.blit(Images.tooltip_pieces[2][0], (pos[0], pos[1] + 3 * corner + y))
-            for x in range(0, width, edge):
-                screen.blit(Images.tooltip_pieces[2][1], (pos[0] + corner + x, pos[1] + 3 * corner + y))
-            screen.blit(Images.tooltip_pieces[2][2], (pos[0] + 3 * corner + x, pos[1] + 3 * corner + y))
-            
-            screen.blit(name_image, (pos[0] + corner, pos[1] + corner))
-            screen.blit(desc_image, (pos[0] + corner, pos[1] + corner + name_height + TOOLTIP_GAP))
+                screen.blit(Images.tooltip_centers[((x + y) // edge) % 4], (pos[0] + corner + x, pos[1] + corner + y))
+            screen.blit(Images.tooltip_pieces[1][2], (pos[0] + 3 * corner + x, pos[1] + corner + y))
+        
+        #bottom border
+        y = corner + height
+        screen.blit(Images.tooltip_pieces[2][0], (pos[0], pos[1] + y))
+        for x in range(0, width, edge):
+            screen.blit(Images.tooltip_pieces[2][1], (pos[0] + corner + x, pos[1] + y))
+        screen.blit(Images.tooltip_pieces[2][2], (pos[0] + 3 * corner + x, pos[1] + y))
+        
+        #text
+        screen.blit(name_image, (pos[0] + corner, pos[1] + corner))
+        screen.blit(desc_image, (pos[0] + corner, pos[1] + corner + name_height + TOOLTIP_GAP))

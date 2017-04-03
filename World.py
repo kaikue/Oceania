@@ -325,6 +325,7 @@ class World(object):
         self.loaded_chunks.get(entity.get_chunk()).entities.append(entity)
     
     def remove_entity(self, entity):
+        #TODO this may fail
         self.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def get_nearby_entities(self, chunk):
