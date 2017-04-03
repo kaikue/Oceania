@@ -84,7 +84,7 @@ class Inventory(object):
             description = World.items[tooltip_item.name]["description"]
             self.draw_tooltip(screen, display_name, description)
     
-    def draw_tooltip(self, screen, name, description):
+    def draw_tooltip(self, screen, name, description = []):
         font = Game.get_font()
         mouse_pos = pygame.mouse.get_pos()
         

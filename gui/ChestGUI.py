@@ -24,9 +24,9 @@ class ChestGUI(InventoryGUI):
         
         mouse_pos = pygame.mouse.get_pos()
         if self.in_transfer_button(self.transfer_down_position, mouse_pos):
-            self.chest_inventory.draw_tooltip(screen, "Take All", [])
+            self.chest_inventory.draw_tooltip(screen, "Take All")
         if self.in_transfer_button(self.transfer_up_position, mouse_pos):
-            self.chest_inventory.draw_tooltip(screen, "Deposit All", [])
+            self.chest_inventory.draw_tooltip(screen, "Deposit All")
         
         self.draw_moving_item(screen)
     
