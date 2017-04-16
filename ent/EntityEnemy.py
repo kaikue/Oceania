@@ -1,11 +1,12 @@
+import Game
 from ent.EntityLiving import EntityLiving
 
 class EntityEnemy(EntityLiving):
     
     def __init__(self, pos, imageurl, health):
         super(EntityEnemy, self).__init__(pos, imageurl, health)
-        self.max_speed = 0.25
-        self.acceleration = 0.01
+        self.max_speed = 0.1
+        self.acceleration = 0.001
     
     def update(self, world):
         move_dir = self.find_move_dir()
@@ -17,6 +18,16 @@ class EntityEnemy(EntityLiving):
     def find_move_dir(self):
         move_dir = [0, 0]
         #TODO: a* pathfinding
+        goal = Game.get_world().player.pos
+        current = self.pos
+        if current[0] < goal[0]:
+            move_dir[0] = 1
+        elif current[0] > goal[0]:
+            move_dir[0] = -1
+        if current[1] < goal[1]:
+            move_dir[1] = 1
+        elif current[1] > goal[1]:
+            move_dir[1] = -1
         return move_dir
     
     def die(self, world):
