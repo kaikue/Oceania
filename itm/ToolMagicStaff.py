@@ -2,6 +2,7 @@ import math
 import Convert
 from itm import ItemTool
 from ent import DamageSource
+from ent.EntityEnemy import EntityEnemy
 
 class ToolMagicStaff(ItemTool.ItemTool):
     
@@ -20,3 +21,5 @@ class ToolMagicStaff(ItemTool.ItemTool):
         damage_source.vel = [player.vel[0] + normalized[0],
                              player.vel[1] + normalized[1]]
         world.create_entity(damage_source)
+        
+        world.create_entity(EntityEnemy(player.pos[:], "img/blob.png", 10)) #TODO: remove

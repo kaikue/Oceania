@@ -44,4 +44,3 @@ class EntityLiving(Entity):
     
     def die(self, world):
         world.remove_entity(self)
-        #TODO: spawn drops

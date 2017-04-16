@@ -17,7 +17,7 @@ class Player(EntityLiving):
     def __init__(self, pos, imageurl):
         super(Player, self).__init__(pos, imageurl, 20)
         self.max_speed = 0.25
-        self.acceleration = 0.01 #fiddle with this until it seems good
+        self.acceleration = 0.01
         self.inventory = Inventory(5, 10)
         self.selected_slot = 0
         
