@@ -2,7 +2,8 @@ import math
 import World
 from ent.EntityLiving import EntityLiving
 
-MAX_SEARCH_DISTANCE = 50
+MAX_SEARCH_DISTANCE = 100
+PATHFINDING_TIMER = 50
 
 class EntityEnemy(EntityLiving):
     
@@ -10,11 +11,13 @@ class EntityEnemy(EntityLiving):
         super(EntityEnemy, self).__init__(pos, imageurl, health)
         self.max_speed = 0.1
         self.acceleration = 0.001
+        self.timer = 0
+        self.path = []
     
     def update(self, world):
-        move_dir = self.find_move_dir(world)
-        hspeed = min(abs(self.vel[0] + self.acceleration * move_dir[0]), self.max_speed) * move_dir[0]
-        vspeed = min(abs(self.vel[1] + self.acceleration * move_dir[1]), self.max_speed) * move_dir[1]
+        self.move_dir = self.find_move_dir(world)
+        hspeed = min(abs(self.vel[0] + self.acceleration * self.move_dir[0]), self.max_speed) * self.move_dir[0]
+        vspeed = min(abs(self.vel[1] + self.acceleration * self.move_dir[1]), self.max_speed) * self.move_dir[1]
         self.vel = [hspeed, vspeed]
         super(EntityEnemy, self).update(world)
     
@@ -23,11 +26,14 @@ class EntityEnemy(EntityLiving):
         goal = (int(world.player.pos[0]), int(world.player.pos[1]))
         current = (round(self.pos[0]), round(self.pos[1]))
         
-        #TODO cache for performance
-        path = self.pathfind(world, current, goal)
-        if len(path) == 0:
+        self.timer += 1
+        if self.timer == PATHFINDING_TIMER:
+            self.timer = 0
+            self.path = self.pathfind(world, current, goal)
+        
+        if len(self.path) == 0:
             return move_dir
-        dest = path[0]
+        dest = self.find_dest(self.path, current, goal)
         
         if self.pos[0] < dest[0]:
             move_dir[0] = 1
@@ -37,6 +43,7 @@ class EntityEnemy(EntityLiving):
             move_dir[1] = 1
         elif self.pos[1] > dest[1]:
             move_dir[1] = -1
+        
         return move_dir
     
     def pathfind(self, world, start, goal):
@@ -106,6 +113,16 @@ class EntityEnemy(EntityLiving):
                 if block["solid"]:
                     return False
         return True
+    
+    def find_dest(self, path, current, goal):
+        #TODO experiment with this, should be only large enough to stop delay
+        current_distance = self.heuristic(current, goal) - 0.05
+        dest = path[0]
+        i = 1
+        while self.heuristic(dest, goal) > current_distance and i < len(path):
+            dest = path[i]
+            i += 1
+        return dest
     
     def die(self, world):
         #TODO spawn drops
