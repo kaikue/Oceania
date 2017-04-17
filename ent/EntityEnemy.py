@@ -19,7 +19,6 @@ class EntityEnemy(EntityLiving):
         super(EntityEnemy, self).update(world)
     
     def find_move_dir(self, world):
-        self.is_clear(world, self.pos)
         move_dir = [0, 0]
         goal = (int(world.player.pos[0]), int(world.player.pos[1]))
         current = (round(self.pos[0]), round(self.pos[1]))
