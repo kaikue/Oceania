@@ -2,7 +2,7 @@ import math
 import World
 from ent.EntityLiving import EntityLiving
 
-MAX_SEARCH_DISTANCE = 25
+MAX_SEARCH_DISTANCE = 50
 
 class EntityEnemy(EntityLiving):
     
@@ -22,7 +22,7 @@ class EntityEnemy(EntityLiving):
         self.is_clear(world, self.pos)
         move_dir = [0, 0]
         goal = (int(world.player.pos[0]), int(world.player.pos[1]))
-        current = (int(self.pos[0]), int(self.pos[1]))
+        current = (round(self.pos[0]), round(self.pos[1]))
         
         #TODO cache for performance
         path = self.pathfind(world, current, goal)
@@ -30,13 +30,13 @@ class EntityEnemy(EntityLiving):
             return move_dir
         dest = path[0]
         
-        if current[0] < dest[0]:
+        if self.pos[0] < dest[0]:
             move_dir[0] = 1
-        elif current[0] > dest[0]:
+        elif self.pos[0] > dest[0]:
             move_dir[0] = -1
-        if current[1] < dest[1]:
+        if self.pos[1] < dest[1]:
             move_dir[1] = 1
-        elif current[1] > dest[1]:
+        elif self.pos[1] > dest[1]:
             move_dir[1] = -1
         return move_dir
     
@@ -54,8 +54,8 @@ class EntityEnemy(EntityLiving):
             discovered.remove(current)
             visited.append(current)
             for neighbor in self.find_neighbors(current):
-                if not self.is_clear(world, neighbor): #TODO this is probably wrong
-                    visited.append(neighbor)
+                if not self.is_clear(world, neighbor):
+                    continue
                 if neighbor in visited:
                     continue
                 tentative_g_score = g_score[current] + 1

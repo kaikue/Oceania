@@ -1,3 +1,4 @@
+import math
 import Game
 import Chunk
 
@@ -23,6 +24,9 @@ def pixels_to_world(pos):
 
 def pixel_to_world(p):
     return int(p / Game.BLOCK_SIZE / Game.SCALE) - 1 * (p < 0)
+
+def pixel_to_world_ceil(p):
+    return math.ceil(p / Game.BLOCK_SIZE / Game.SCALE)
 
 def world_to_chunk(x):
     #X pos within the world (blocks) to x pos within some chunk (blocks) and x pos of that chunk (chunks).

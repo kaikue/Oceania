@@ -114,8 +114,8 @@ class Entity(object):
             self.height = 1
         else:
             self.bounding_box = pygame.Rect(Convert.world_to_pixel(pos[0]), Convert.world_to_pixel(pos[1]), self.img.get_width(), self.img.get_height())
-            self.width = Convert.pixel_to_world(self.img.get_width()) + 1
-            self.height = Convert.pixel_to_world(self.img.get_height()) + 1
+            self.width = Convert.pixel_to_world_ceil(self.img.get_width())
+            self.height = Convert.pixel_to_world_ceil(self.img.get_height())
     
     def render(self, screen, pos):
         if self.img is not None:
