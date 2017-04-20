@@ -1,4 +1,5 @@
 import math
+import Convert
 import World
 from ent.EntityLiving import EntityLiving
 
@@ -33,7 +34,10 @@ class EntityEnemy(EntityLiving):
         
         if len(self.path) == 0:
             return move_dir
-        dest = self.find_dest(self.path, current, goal)
+        
+        dest = self.path[0]
+        if self.distance(dest, current) < 0.05:
+            self.path.remove(dest)
         
         if self.pos[0] < dest[0]:
             move_dir[0] = 1
@@ -51,7 +55,7 @@ class EntityEnemy(EntityLiving):
         discovered = [start]
         came_from = {}
         g_score = {start: 0}
-        f_score = {start: self.heuristic(start, goal)}
+        f_score = {start: self.distance(start, goal)}
         iterations = 0
         while len(discovered) > 0:
             current = self.pick_lowest(discovered, f_score)
@@ -71,13 +75,13 @@ class EntityEnemy(EntityLiving):
                     continue
                 came_from[neighbor] = current
                 g_score[neighbor] = tentative_g_score
-                f_score[neighbor] = tentative_g_score + self.heuristic(neighbor, goal)
+                f_score[neighbor] = tentative_g_score + self.distance(neighbor, goal)
             iterations += 1
             if iterations > MAX_SEARCH_DISTANCE:
                 break
         return []
     
-    def heuristic(self, p1, p2):
+    def distance(self, p1, p2):
         return math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2)
     
     def pick_lowest(self, discovered, f_score):
@@ -109,20 +113,14 @@ class EntityEnemy(EntityLiving):
     def is_clear(self, world, pos):
         for x in range(int(pos[0]), int(pos[0] + self.width)):
             for y in range(int(pos[1]), int(pos[1] + self.height)):
+                if not world.is_loaded_chunk(Convert.world_to_chunk(x)[1]):
+                    return False
+                if y >= World.HEIGHT:
+                    return False
                 block = World.get_block(world.get_block_at((x, y), False))
                 if block["solid"]:
                     return False
         return True
-    
-    def find_dest(self, path, current, goal):
-        #TODO experiment with this, should be only large enough to stop delay
-        current_distance = self.heuristic(current, goal) - 0.05
-        dest = path[0]
-        i = 1
-        while self.heuristic(dest, goal) > current_distance and i < len(path):
-            dest = path[i]
-            i += 1
-        return dest
     
     def die(self, world):
         #TODO spawn drops

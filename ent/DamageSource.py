@@ -2,7 +2,7 @@ from Entity import Entity
 from ent.EntityLiving import EntityLiving
 
 DEFAULT_ATTACK = 1
-DEFAULT_KNOCKBACK = 0.3 #make sure this is a multiple of KNOCKBACK_FALLOFF
+DEFAULT_KNOCKBACK = 0.2 #make sure this is a multiple of KNOCKBACK_FALLOFF
 KNOCKBACK_FALLOFF = 0.01
 
 class DamageSource(Entity):
