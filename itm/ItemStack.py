@@ -4,6 +4,7 @@ import World
 import gui.GUI as GUI
 import Images
 import importlib
+import ent.DamageSource
 
 
 MAX_STACK_SIZE = 100
@@ -63,7 +64,10 @@ class ItemStack(object):
         return itemstack
     
     def get_attack_damage(self):
-        return 1
+        return ent.DamageSource.DEFAULT_ATTACK
+    
+    def get_knockback(self):
+        return ent.DamageSource.DEFAULT_KNOCKBACK
     
     def get_break_speed(self):
         return 1

@@ -1,6 +1,8 @@
+import math
 import pygame
 import Game
 from Entity import Entity
+import ent.DamageSource
 
 INVINCIBLE_FRAMES = 30
 
@@ -12,14 +14,22 @@ class EntityLiving(Entity):
         self.health = health
         self.hurt = False
         self.hurt_time = -1
+        self.knockback = [0, 0]
     
     def update(self, world):
         if self.hurt_time > -1:
             if self.hurt_time == 0:
                 self.hurt = False
             self.hurt_time -= 1
-            
+        old_vel = self.vel[:]
+        if self.knockback[0] != 0:
+            self.vel[0] += self.knockback[0]
+            self.knockback[0] += math.copysign(ent.DamageSource.KNOCKBACK_FALLOFF, -self.knockback[0])
+        if self.knockback[1] != 0:
+            self.vel[1] += self.knockback[1]
+            self.knockback[1] += math.copysign(ent.DamageSource.KNOCKBACK_FALLOFF, -self.knockback[1])
         super(EntityLiving, self).update(world)
+        self.vel = old_vel
     
     def render(self, screen, pos):
         super(EntityLiving, self).render(screen, pos)
@@ -35,12 +45,25 @@ class EntityLiving(Entity):
         if not self.hurt:
             self.set_hurt(INVINCIBLE_FRAMES)
             self.health -= source.damage
+            self.apply_knockback(source)
             if self.health <= 0:
                 self.die(world)
     
     def set_hurt(self, time):
         self.hurt = True
         self.hurt_time = time
+    
+    def apply_knockback(self, source):
+        k = source.knockback
+        x1 = source.bounding_box.centerx
+        y1 = source.bounding_box.centery
+        x2 = self.bounding_box.centerx
+        y2 = self.bounding_box.centery
+        #normalize vector and multiply by strength of knockback
+        b = x2 - x1
+        h = y2 - y1
+        m = math.sqrt(b ** 2 + h ** 2)
+        self.knockback = [k * b / m, k * h / m]
     
     def die(self, world):
         world.remove_entity(self)

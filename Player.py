@@ -6,7 +6,7 @@ from ent.ItemDrop import ItemDrop
 from itm import ItemStack
 import World
 from Inventory import Inventory
-from ent.DamageSource import DamageSource
+import ent.DamageSource
 from ent.EntityLiving import EntityLiving
 
 
@@ -79,9 +79,11 @@ class Player(EntityLiving):
         held_item = self.get_held_item()
         if held_item is not None:
             damage = held_item.get_attack_damage()
+            knockback = held_item.get_knockback()
         else:
-            damage = 1
-        attack = DamageSource(self.pos, "img/attack.png", damage, self, 30) #TODO: offset with mouse_pos
+            damage = ent.DamageSource.DEFAULT_ATTACK
+            knockback = ent.DamageSource.DEFAULT_KNOCKBACK
+        attack = ent.DamageSource.DamageSource(self.pos, damage, knockback, "img/attack.png", self, 30) #TODO: offset with mouse_pos
         world.create_entity(attack)
         #TODO: animate held item swinging
     

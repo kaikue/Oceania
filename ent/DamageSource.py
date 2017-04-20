@@ -1,12 +1,16 @@
 from Entity import Entity
 from ent.EntityLiving import EntityLiving
 
+DEFAULT_ATTACK = 1
+DEFAULT_KNOCKBACK = 0.3 #make sure this is a multiple of KNOCKBACK_FALLOFF
+KNOCKBACK_FALLOFF = 0.01
+
 class DamageSource(Entity):
     
-    def __init__(self, pos, imageurl, damage, parent = None, decay = -1):
-        #TODO: remove imageurl
+    def __init__(self, pos, damage, knockback, imageurl = "", parent = None, decay = -1):
         super(DamageSource, self).__init__(pos, imageurl)
         self.damage = damage
+        self.knockback = knockback
         #self.damage_type = damage_type #TODO
         self.parent = parent
         self.decay = decay
@@ -16,6 +20,7 @@ class DamageSource(Entity):
         
         if self.parent is not None:
             #TODO: move with parent? right now it does that from the pos reference
+            # and bullets shouldn't do that anyway
             pass
         
         if self.decay > -1:
