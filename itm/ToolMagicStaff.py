@@ -22,4 +22,4 @@ class ToolMagicStaff(ItemTool.ItemTool):
                              player.vel[1] + normalized[1]]
         world.create_entity(damage_source)
         
-        world.create_entity(EntityEnemy(Convert.viewport_to_world(mouse_pos, viewport), "img/blob.png", 10)) #TODO: remove
+        world.create_entity(EntityEnemy(Convert.viewport_to_world(mouse_pos, viewport), "img/enemies/pinky.png", 10)) #TODO: remove

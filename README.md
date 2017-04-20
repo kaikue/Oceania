@@ -77,7 +77,12 @@ NEEDED FEATURES
 - GUI work
     - Inventory
 - Entities
-    - Enemies, friendlies
+    - Enemies
+    	- Load from JSON
+    	- Item drops
+    	- Attacks
+    	- More pathfinding options
+	- Friendlies?
 - Player
     - Animation
     - Customization- name, colors, hair
