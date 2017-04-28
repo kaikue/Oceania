@@ -91,9 +91,12 @@ def play():
     global hotbarGui
     hotbarGui = HotbarGUI(world.player, "img/gui/hotbar.png")
 
-def update():
+def is_shift_pressed():
     pressed = pygame.key.get_pressed()
-    shift = pressed[pygame.K_LSHIFT] or pressed[pygame.K_RSHIFT]
+    return pressed[pygame.K_LSHIFT] or pressed[pygame.K_RSHIFT]
+
+def update():
+    shift = is_shift_pressed()
     global gamemode
     
     for event in pygame.event.get():
@@ -170,6 +173,7 @@ def update():
     elif gamemode == PLAYING:
         player = world.player
         player.move_dir = [0, 0]
+        pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
             player.move_dir[0] -= 1
         if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:

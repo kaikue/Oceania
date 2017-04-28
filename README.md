@@ -34,10 +34,11 @@ TODO
 - Mod support (additional classes & jsons in mod folder)
 - Make image loading only happen once ever (for itemdrops especially)
 	- Don't render giant blocks in player's hand- use BlockDrop versions
-- Shift click on inventory transfer buttons to smart transfer?
+- Favorite items so they don't get mass-transferred (or dropped?)
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 - Esc to pause or close GUI
+- Click outside of inventory or press R to drop item in world
 - Sliding puzzle lock
 	- 3x3 version
 	- test solution checking
@@ -57,17 +58,25 @@ NEEDED FEATURES
         - Lava tubes
         - Air pockets?
     - Hydrothermal vents
-    - Spawn midpoint displacement
+    - Redo worldgen to be Perlin noise based
     - Biomes
+    	- Island
+    	- Beach
+    	- Rocky shore
+    	- Mangrove forest
+    	- Seagrass bed
+    	- Kelp forest
+    	- Choral reef
+    	- Ice edge
+        - Neritic zone
+        - Seamounts- cobalt crusts
+    	- Mid-ocean ridge
     - Rock types
         - Basalt
         - Chalk (makes quicklime in lime kiln- limelight)
         - Gabbro
     - Ores
-        - Manganese nodules-  manganese (80%), cobalt (10%)
-        - Chromite (chromium- used for Vitallum, steel, tanned leather)
-        - Cobalt (used for Vitallum, steel drill, ?)
-            - Cobalt crusts- cobalt, manganese, iron layer on seamounts
+    	- see spreadsheet
     - More structures
         - Improve temple
         - Volcanic pipe- kimberlite, diamond
@@ -90,16 +99,9 @@ NEEDED FEATURES
     - Larger crafting tables- 2x2 (from some item in world), 3x3, 4x4, 5x5, 9x9
     - Slot for crafting tool- hammer for metal work, etc.
     - Generate blockentity when crafting chests etc.
+    - or possibly all in world?
 - Ore processing
     - https://i.imgur.com/jYvaxQ1.jpg
-    - T0: Flint
-    - T1: Cold forging- shape metal into basic tools with a stone hammer (copper)
-    - T2: Hot forging- up to 800°, melt metals in forge, basic alloys, cast into molds (tin, lead, zinc, brass, bronze)
-        - Craft molds with sand + clay, imprint with some natural material for type (e.g. narwhal horn for sword blade)
-        - Melt sand into glass, pour into empty mold
-    - T3: Iron, steel, mangalloy
-    - T4: advanced alloys
-    - Place crucible over hydrothermal vent, place ore into crucible, inject into mold for whatever part (like sword blade)
 - Menus
     - Get input from user to name world
     - Pause, save & quit, options
@@ -143,12 +145,32 @@ NEEDED FEATURES
 - DEEPEST LORE
 
 Progression:
-
-    - Spawn in world
-    - Dig dirt, pick up flint (does this drop from dirt or spawn separately?)
-    - Right click flint with it several times to make Sharpened Flint
-    - Right click Sharpened Flint on bone (from killing something or skeleton in world) to make basic pick
-    - Collect ?
-    - Cold forging (copper)
-    - Crucible
-    
+	- T0: Stone Age
+	    - Spawn in world
+	    - Pick up flint
+	    - Right click flint with it several times to make Sharpened Flint
+	    - Right click Sharpened Flint on bone (from killing something or skeleton in world) to make basic pick
+	- T1: Copper Age
+	    - Collect copper ore
+	    - Cold forging- heat? then hit with hammer? to make pick head or sword blade
+	    - Copper tools, armor
+	- T2: Bronze Age
+		- Collect tin, lead, zinc ore
+	    - Crucible
+   			- Place crucible over hydrothermal vent, place ore into crucible, inject into mold for whatever part (like sword blade)
+   			- Up to 800°, melt metals in forge, basic alloys, cast into molds
+	        - Craft molds with sand + clay, imprint with some natural material for type (e.g. narwhal horn for sword blade)
+	        - Melt sand into glass, pour into empty mold
+	    - Alloys- brass, bronze
+	    - Machines
+	    - Alchemy?
+	- T3: Iron Age
+		- Collect iron ore
+		- Bloomery?
+		- Steel
+		- Mangalloy
+	    - Alchemy?
+	- T4: Final Age
+		- Collect cobalt, chromium
+		- Make vitallum
+		- Make Reverse Atmospheric Diving Suit
