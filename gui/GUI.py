@@ -34,7 +34,10 @@ class GUI(object):
         top = (Game.SCREEN_HEIGHT - self.height) // 2
         screen.blit(self.img, (left, top))
     
-    def click(self, pos, right, shift):
+    def click(self, pos, button, shift):
+        pass
+    
+    def update(self, mouse_pos, mouse_buttons, shift):
         pass
     
     def close(self, world):

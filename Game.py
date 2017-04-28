@@ -162,7 +162,7 @@ def update():
                 if event.key == pygame.K_ESCAPE:
                     close()
             elif gamemode == OPENGUI:
-                if event.key == pygame.K_e:
+                if event.key == pygame.K_e or event.key == pygame.K_ESCAPE:
                     gui.close(world)
                     gui = None
                     gamemode = PLAYING
@@ -192,6 +192,10 @@ def update():
         viewport.x = Convert.world_to_pixels(player.pos)[0] - SCREEN_WIDTH / 2
         viewport.y = Convert.world_to_pixels(player.pos)[1] - SCREEN_HEIGHT / 2
         world.update()
+    
+    elif gamemode == OPENGUI:
+        global gui
+        gui.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed(), shift)
 
 def render():
     if gamemode == MENU:

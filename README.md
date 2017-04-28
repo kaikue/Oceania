@@ -37,7 +37,7 @@ TODO
 - Favorite items so they don't get mass-transferred (or dropped?)
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
-- Esc to pause or close GUI
+- Esc to pause
 - Click outside of inventory or press R to drop item in world
 - Sliding puzzle lock
 	- 3x3 version

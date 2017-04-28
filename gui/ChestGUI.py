@@ -60,15 +60,25 @@ class ChestGUI(InventoryGUI):
                 if self.has_item_of_type(to_inv, from_inv.items[r][c]) or not shift:
                     self.click_slot(slot, 1, True, from_inv, to_inv)
     
+    def click_pos(self, pos, button, shift):
+        #try to click on all of the inventory slots
+        slot = self.chest_inventory.slot_at(pos, self.left, self.top, False)
+        self.click_slot(slot, button, shift, self.chest_inventory, self.player.inventory)
+        
+        slot = self.player.inventory.slot_at(pos, self.left, self.top + GUI.SCALING * 51 // 12, True)
+        self.click_slot(slot, button, shift, self.player.inventory, self.chest_inventory)
+    
     def click(self, pos, button, shift):
+        #discrete click- try the transfer buttons then the slots
         if self.in_transfer_button(self.transfer_down_position, pos):
             self.transfer_all_from(self.chest_inventory, self.player.inventory, shift)
         
         if self.in_transfer_button(self.transfer_up_position, pos):
             self.transfer_all_from(self.player.inventory, self.chest_inventory, shift)
         
-        slot = self.chest_inventory.slot_at(pos, self.left, self.top, False)
-        self.click_slot(slot, button, shift, self.chest_inventory, self.player.inventory)
-        
-        slot = self.player.inventory.slot_at(pos, self.left, self.top + GUI.SCALING * 13 // 3, True)
-        self.click_slot(slot, button, shift, self.player.inventory, self.chest_inventory)
+        self.click_pos(pos, button, shift)
+    
+    def update(self, mouse_pos, mouse_buttons, shift):
+        #continuous click- try only shift-left clicking on the slots
+        if mouse_buttons[0] and shift:
+            self.click_pos(mouse_pos, 1, shift)
