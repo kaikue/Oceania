@@ -21,7 +21,6 @@ class EntityLiving(Entity):
             if self.hurt_time == 0:
                 self.hurt = False
             self.hurt_time -= 1
-        old_vel = self.vel[:]
         if self.knockback[0] != 0:
             self.vel[0] += self.knockback[0]
             self.knockback[0] += math.copysign(ent.DamageSource.KNOCKBACK_FALLOFF, -self.knockback[0])
@@ -29,7 +28,6 @@ class EntityLiving(Entity):
             self.vel[1] += self.knockback[1]
             self.knockback[1] += math.copysign(ent.DamageSource.KNOCKBACK_FALLOFF, -self.knockback[1])
         super(EntityLiving, self).update(world)
-        self.vel = old_vel
     
     def render(self, screen, pos):
         super(EntityLiving, self).render(screen, pos)

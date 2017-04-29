@@ -45,8 +45,8 @@ TODO
 - Move basic item attributes (attack damage, break speed, harvest level) to JSON with defaults
 - Move JSON parsing to separate module, it doesn't belong in World
 - Structures with background- define characters to be pairs of foreground and background blocks
-- Make chests nonsolid
-- Reset acceleration after hitting something
+- Fix acceleration being preserved if releasing left and pressing right at the same time
+- After hitting something, try moving in the same direction more slowly (to prevent gap when running into wall at high speed)
 
 NEEDED FEATURES
 --
