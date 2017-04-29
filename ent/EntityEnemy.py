@@ -123,5 +123,5 @@ class EntityEnemy(EntityLiving):
         return True
     
     def die(self, world):
-        #TODO spawn drops
+        #TODO: spawn drops
         super(EntityEnemy, self).die(world)

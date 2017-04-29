@@ -6,7 +6,7 @@ import gui.GUI as GUI
 import Images
 
 HOTBAR_GAP = GUI.SCALING // 8
-TOOLTIP_GAP = 10 #between name and description
+TOOLTIP_GAP = 5 * Game.SCALE #between name and description
 
 class Inventory(object):
     
@@ -75,7 +75,7 @@ class Inventory(object):
                     if rect.collidepoint(mouse_pos):
                         tooltip_item = inv_item
                         highlight_pos = (slotX, slotY)
-        #TODO draw armor if not none
+        #TODO: draw armor if not none
         
         if tooltip_item is not None and item_to_skip is None:
             screen.blit(Images.highlight_image, highlight_pos)

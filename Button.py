@@ -1,7 +1,6 @@
 import pygame
 import Game
 
-#Buttons needed: play, quit, options
 WIDTH = 150
 HEIGHT = 60
 COLOR_INACTIVE = (97, 180, 207)
@@ -54,7 +53,7 @@ class Button(object):
         self.text = text
         self.effect = effect
         self.pressed = False
-        self.font = pygame.font.SysFont("monospace", 20)
+        self.font = Game.get_font()
     
     def activate(self):
         if self.effect == "play":

@@ -11,7 +11,7 @@ class DamageSource(Entity):
         super(DamageSource, self).__init__(pos, imageurl)
         self.damage = damage
         self.knockback = knockback
-        #self.damage_type = damage_type #TODO
+        #self.damage_type = damage_type #TODO: different types of damage e.g. sword, explosion, etc.
         self.parent = parent
         self.decay = decay
     
