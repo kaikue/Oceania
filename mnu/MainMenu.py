@@ -8,7 +8,6 @@ BG_COLOR = (62, 121, 221)
 
 class MainMenu(Menu):
     def __init__(self):
-        play_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 2 // 3), "Start Game", "play")
         self.back_image = Images.load_imageurl("img/title/back.png")
         self.back_width = self.back_image.get_width()
         self.bg_y = Game.SCREEN_HEIGHT - self.back_image.get_height()
@@ -21,7 +20,10 @@ class MainMenu(Menu):
         self.mid_xs = [-self.mid_width, 0, self.mid_width]
         self.front_xs = [-self.front_width, 0, self.front_width]
         
-        super(MainMenu, self).__init__([play_button])
+        play_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 8 // 15), "Start Game", "play")
+        options_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 10 // 15), "Options", "options")
+        quit_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 12 // 15), "Quit", "quit")
+        super(MainMenu, self).__init__([play_button, options_button, quit_button])
     
     def update_x(self, xs, i, increment, width):
         xs[i] += increment
@@ -39,7 +41,7 @@ class MainMenu(Menu):
         return (self.time * multiplier) % Game.SCREEN_WIDTH
     
     def render(self, screen):
-        screen.fill(Game.BLACK)
+        #TODO: title logo
         pygame.draw.rect(screen, BG_COLOR, pygame.rect.Rect(0, 0, Game.SCREEN_WIDTH, self.bg_y))
         for back_x in self.back_xs:
             screen.blit(self.back_image, (back_x, self.bg_y))

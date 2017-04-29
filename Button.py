@@ -24,6 +24,8 @@ class Button(object):
             Game.unpause()
         elif self.effect == "quit":
             Game.close()
+        
+        self.pressed = False
     
     def get_rect(self):
         return pygame.Rect(self.pos[0], self.pos[1], WIDTH, HEIGHT)

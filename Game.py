@@ -174,6 +174,9 @@ def update():
             elif gamemode == PAUSEMENU:
                 if event.key == pygame.K_ESCAPE:
                     unpause()
+            elif gamemode == MENU:
+                if event.key == pygame.K_ESCAPE:
+                    close()
     
     if gamemode == MENU or gamemode == PAUSEMENU:
         menu.update()
