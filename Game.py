@@ -1,5 +1,4 @@
 #GLOBAL CONSTANTS
-from mnu.Menu import Menu
 
 VERSION = "0.1.1"
 
