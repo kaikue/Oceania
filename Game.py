@@ -23,6 +23,7 @@ LIGHT_GRAY = (224, 224, 224)
 MEDIUM_GRAY = (160, 160, 160)
 TRANSPARENT = (0, 0, 0, 0)
 SKY = (128, 128, 255)
+OVERLAY_BLUE = (62, 121, 221)
 
 DEBUG = True #displays fps, coords, grid, etc. but impacts performance.
 MUSIC = False #play background music
@@ -224,6 +225,12 @@ def render():
             player.draw_block_highlight(world, pygame.mouse.get_pos(), viewport, screen, shift)
         world.render_breaks(screen, viewport, False)
         player.render(screen, Convert.world_to_viewport(player.pos, viewport))
+        
+        #add blue overlay- not completely sure this is good
+        overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        overlay.set_alpha(64)
+        overlay.fill(OVERLAY_BLUE)
+        screen.blit(overlay, (0, 0))
         
         if gamemode == PLAYING:
             hotbarGui.render(screen)
