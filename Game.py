@@ -69,7 +69,7 @@ def start():
     global font
     font = pygame.font.Font("fnt/coders_crux.ttf", 16 * SCALE)
     global menu
-    menu = Menu.Menu()
+    menu = Menu.main_menu()
     global gui
     gui = None
     run()
@@ -160,7 +160,7 @@ def update():
                 if event.key == pygame.K_0:
                     player.selected_slot = 9
                 if event.key == pygame.K_ESCAPE:
-                    close()
+                    pause()
             elif gamemode == OPENGUI:
                 if event.key == pygame.K_e or event.key == pygame.K_ESCAPE:
                     gui.close(world)
@@ -194,7 +194,6 @@ def update():
         world.update()
     
     elif gamemode == OPENGUI:
-        global gui
         gui.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed(), shift)
 
 def render():
@@ -235,6 +234,16 @@ def render():
             h = SCREEN_HEIGHT - debugimg.get_height()
             screen.blit(debugimg, (2 * SCALE, h))
     pygame.display.flip()
+
+def pause():
+    global gamemode
+    gamemode = MENU
+    global menu
+    menu = Menu.pause_menu()
+
+def unpause():
+    global gamemode
+    gamemode = PLAYING
 
 def close():
     if gamemode in (PLAYING, OPENGUI):

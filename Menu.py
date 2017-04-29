@@ -5,21 +5,9 @@ BACKGROUND = (64, 64, 255)
 
 class Menu(object):
     
-    def __init__(self):
+    def __init__(self, buttons):
         self.mouse_pressed = False
-        self.set("main")
-    
-    def set(self, mode):
-        self.mode = mode
-        self.create_buttons()
-    
-    def create_buttons(self):
-        if self.mode == "main":
-            play_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 2 // 3), "Start Game", "play")
-            self.buttons = [play_button]
-        elif self.mode == "options":
-            self.buttons = []
-        #add code here
+        self.buttons = buttons
     
     def mouse_press(self):
         for button in self.buttons:
@@ -47,5 +35,11 @@ class Menu(object):
         for button in self.buttons:
             button.render(screen)
 
-if __name__ == "__main__":
-    Game.main()
+def main_menu():
+    play_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 2 // 3), "Start Game", "play")
+    return Menu([play_button])
+
+def pause_menu():
+    resume_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 1 // 3), "Resume", "resume")
+    quit_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 2 // 3), "Quit", "quit")
+    return Menu([resume_button, quit_button])

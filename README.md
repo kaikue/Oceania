@@ -13,7 +13,6 @@ TODO
 - Structures can only be in one chunk (and overwrite each other all the time)
 	- also messes up entity generation
 	- structures across multiple chunks with perlin noise?
-- Pause screen (can just be a GUI)
 - Player animation
 - Block breaking particles
 - Block preview visualization is a bit off- probably due to use of outline
@@ -37,7 +36,7 @@ TODO
 - Favorite items so they don't get mass-transferred (or dropped?)
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
-- Esc to pause
+- Esc to unpause
 - Click outside of inventory or press R to drop item in world
 - Sliding puzzle lock
 	- 3x3 version
@@ -104,7 +103,7 @@ NEEDED FEATURES
     - https://i.imgur.com/jYvaxQ1.jpg
 - Menus
     - Get input from user to name world
-    - Pause, save & quit, options
+    - Options
 - Combat
     - Armor
     - Weapons

@@ -59,7 +59,10 @@ class Button(object):
     def activate(self):
         if self.effect == "play":
             Game.play()
+        elif self.effect == "resume":
+            Game.unpause()
         elif self.effect == "quit":
+            Game.unpause() #so it will save
             Game.close()
     
     def get_rect(self):
