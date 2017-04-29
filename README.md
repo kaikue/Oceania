@@ -45,6 +45,8 @@ TODO
 - Move basic item attributes (attack damage, break speed, harvest level) to JSON with defaults
 - Move JSON parsing to separate module, it doesn't belong in World
 - Structures with background- define characters to be pairs of foreground and background blocks
+- Make chests nonsolid
+- Reset acceleration after hitting something
 
 NEEDED FEATURES
 --
@@ -100,7 +102,8 @@ NEEDED FEATURES
     - https://i.imgur.com/jYvaxQ1.jpg
 - Menus
     - Get input from user to name world
-    - Options
+    - More options
+    - Better default background
 - Combat
     - Armor
     - Weapons

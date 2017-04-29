@@ -25,7 +25,7 @@ TRANSPARENT = (0, 0, 0, 0)
 SKY = (128, 128, 255)
 BLUE = (62, 121, 221)
 
-DEBUG = True #displays fps, coords, grid, etc. but impacts performance.
+DEBUG = True #displays fps, coords, etc.
 
 BREAK_LENGTH = 4
 
