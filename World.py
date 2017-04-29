@@ -417,6 +417,3 @@ class World(object):
     
     def close(self):
         self.save_all()
-
-if __name__ == "__main__":
-    Game.main()

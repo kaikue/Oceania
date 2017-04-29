@@ -83,6 +83,3 @@ class Button(object):
         h = text_img.get_height()
         w = text_img.get_width()
         screen.blit(text_img, (self.pos[0] + (WIDTH - w) / 2, self.pos[1] + (HEIGHT - h) / 2))
-
-if __name__ == "__main__":
-    Game.main()

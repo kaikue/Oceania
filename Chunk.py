@@ -203,6 +203,3 @@ class Chunk(object):
     
     def __str__(self):
         return "Chunk at x=" + str(self.x) + " contains entities " + str(self.entities)
-
-if __name__ == "__main__":
-    Game.main()

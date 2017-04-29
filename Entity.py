@@ -123,6 +123,3 @@ class Entity(object):
     
     def __str__(self):
         return str(self.__class__.__name__) + " at " + str(self.pos)
-
-if __name__ == "__main__":
-    Game.main()

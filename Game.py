@@ -1,6 +1,6 @@
 #GLOBAL CONSTANTS
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -273,9 +273,3 @@ def set_gui(g):
 def play_sound(sound):
     soundObj = pygame.mixer.Sound(sound)
     soundObj.play()
-
-def main():
-    start()
-
-if __name__ == "__main__":
-    main()

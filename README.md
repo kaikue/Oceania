@@ -8,8 +8,6 @@ Created by Kai Kuehner, 2013-2017.
 TODO
 --
 - All TODOs in code
-- Button does not function correctly when run from Game.py
-    - problem with global variables- make designated launcher class
 - Structures can only be in one chunk (and overwrite each other all the time)
 	- also messes up entity generation
 	- structures across multiple chunks with perlin noise?

@@ -16,7 +16,7 @@ excludes = []
 includes = ["pygame"]
 dirs = ["ent", "fnt", "gen", "gui", "img", "itm", "mus", "sfx"]
 
-setup(name = "Oceania",version = Game.VERSION,description = "Underwater sandbox game",executables = [Executable("World.py", base = base, targetName="Oceania.exe")], options = {"build_exe": {"excludes":excludes, "includes":includes, "include_files":dirs}})
+setup(name = "Oceania",version = Game.VERSION,description = "Underwater sandbox game",executables = [Executable("Launcher.py", base = base, targetName="Oceania.exe")], options = {"build_exe": {"excludes":excludes, "includes":includes, "include_files":dirs}})
 
 buildDirName = "Oceania-v" + Game.VERSION
 buildPath = os.path.join(os.getcwd(),"build")
