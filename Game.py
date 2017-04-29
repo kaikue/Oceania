@@ -12,6 +12,7 @@ MENU = 0
 PLAYING = 1
 RESET = 2
 OPENGUI = 3
+PAUSEMENU = 4
 
 LEFT = False
 RIGHT = True
@@ -103,7 +104,7 @@ def update():
         if event.type == pygame.QUIT:
             close()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if gamemode == MENU:
+            if gamemode == MENU or gamemode == PAUSEMENU:
                 menu.mouse_press()
             elif gamemode == PLAYING:
                 player = world.player
@@ -127,7 +128,7 @@ def update():
                 gui.click(pygame.mouse.get_pos(), event.button, shift)
         
         elif event.type == pygame.MOUSEBUTTONUP:
-            if gamemode == MENU:
+            if gamemode == MENU or gamemode == PAUSEMENU:
                 menu.mouse_release()
         elif event.type == pygame.KEYDOWN:
             #typed a key
@@ -166,8 +167,11 @@ def update():
                     gui.close(world)
                     gui = None
                     gamemode = PLAYING
+            elif gamemode == PAUSEMENU:
+                if event.key == pygame.K_ESCAPE:
+                    unpause()
     
-    if gamemode == MENU:
+    if gamemode == MENU or gamemode == PAUSEMENU:
         menu.update()
     
     elif gamemode == PLAYING:
@@ -197,7 +201,7 @@ def update():
         gui.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed(), shift)
 
 def render():
-    if gamemode == MENU:
+    if gamemode == MENU or gamemode == PAUSEMENU:
         menu.render(screen)
         
     elif gamemode in (PLAYING, OPENGUI):
@@ -237,7 +241,7 @@ def render():
 
 def pause():
     global gamemode
-    gamemode = MENU
+    gamemode = PAUSEMENU
     global menu
     menu = Menu.pause_menu()
 
@@ -246,7 +250,7 @@ def unpause():
     gamemode = PLAYING
 
 def close():
-    if gamemode in (PLAYING, OPENGUI):
+    if gamemode in (PLAYING, OPENGUI, PAUSEMENU):
         #pickle loaded chunks and other game state data
         world.close()
     sys.exit(0)

@@ -62,7 +62,6 @@ class Button(object):
         elif self.effect == "resume":
             Game.unpause()
         elif self.effect == "quit":
-            Game.unpause() #so it will save
             Game.close()
     
     def get_rect(self):
