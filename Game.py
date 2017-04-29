@@ -38,7 +38,8 @@ from pygame.locals import DOUBLEBUF
 import os
 import sys
 import Convert
-import Menu
+from mnu.MainMenu import MainMenu
+from mnu.PauseMenu import PauseMenu
 import World
 import gui.GUI as GUI
 from gui.InventoryGUI import InventoryGUI
@@ -72,7 +73,7 @@ def start():
     global font
     font = pygame.font.Font("fnt/coders_crux.ttf", 16 * SCALE)
     global menu
-    menu = Menu.main_menu()
+    menu = MainMenu()
     global gui
     gui = None
     run()
@@ -245,7 +246,7 @@ def pause():
     global gamemode
     gamemode = PAUSEMENU
     global menu
-    menu = Menu.pause_menu()
+    menu = PauseMenu()
 
 def unpause():
     global gamemode
