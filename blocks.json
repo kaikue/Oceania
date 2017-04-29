@@ -46,6 +46,7 @@
 		{
 			"name": "chest",
 			"displayName": "Chest",
+			"solid": false,
 			"image": "img/chest/chest.png",
 			"entity": "EntityChest"
 		},
