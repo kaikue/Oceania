@@ -5,6 +5,9 @@ import Images
 WIDTH = 96 * Game.SCALE
 HEIGHT = 32 * Game.SCALE
 
+def music_message(enabled):
+    return ("Disable" if enabled else "Enable") + " Music"
+
 class Button(object):
     
     def __init__(self, pos, text, effect):
@@ -24,6 +27,13 @@ class Button(object):
             Game.unpause()
         elif self.effect == "quit":
             Game.close()
+        elif self.effect == "options":
+            Game.show_options()
+        elif self.effect == "back":
+            Game.set_menu(self.prev_menu)
+        elif self.effect == "music":
+            enabled = Game.toggle_music()
+            self.text = music_message(enabled)
         
         self.pressed = False
     

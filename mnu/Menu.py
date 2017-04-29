@@ -1,3 +1,5 @@
+import Game
+
 class Menu(object):
     
     def __init__(self, buttons):
@@ -24,6 +26,9 @@ class Menu(object):
     def update(self):
         if self.mouse_pressed:
             self.mouse_hold()
+    
+    def render_background(self, screen):
+        screen.fill(Game.BLUE)
     
     def render(self, screen):
         for button in self.buttons:

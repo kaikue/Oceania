@@ -1,4 +1,5 @@
 #GLOBAL CONSTANTS
+from mnu.Menu import Menu
 
 VERSION = "0.1.1"
 
@@ -8,7 +9,7 @@ SCREEN_HEIGHT = 600
 BLOCK_SIZE = 16
 SCALE = 2
 
-MENU = 0
+MAINMENU = 0
 PLAYING = 1
 RESET = 2
 OPENGUI = 3
@@ -23,10 +24,9 @@ LIGHT_GRAY = (224, 224, 224)
 MEDIUM_GRAY = (160, 160, 160)
 TRANSPARENT = (0, 0, 0, 0)
 SKY = (128, 128, 255)
-OVERLAY_BLUE = (62, 121, 221)
+BLUE = (62, 121, 221)
 
 DEBUG = True #displays fps, coords, grid, etc. but impacts performance.
-MUSIC = False #play background music
 
 BREAK_LENGTH = 4
 
@@ -41,6 +41,7 @@ import sys
 import Convert
 from mnu.MainMenu import MainMenu
 from mnu.PauseMenu import PauseMenu
+from mnu.OptionsMenu import OptionsMenu
 import World
 import gui.GUI as GUI
 from gui.InventoryGUI import InventoryGUI
@@ -60,17 +61,11 @@ def start():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), flags)
     global clock
     clock = pygame.time.Clock()
-    
-    #not putting the music on github yet
-    if MUSIC:
-        pygame.mixer.init()
-        pygame.mixer.music.load("mus/Seashore Peace - Ambiance.wav")
-        pygame.mixer.music.play(-1, 0.0)
-        #soundObj = pygame.mixer.Sound("mus/Seashore Peace - Ambiance.wav")
-        #soundObj.play()
-    
+    global music
+    music = False
+    pygame.mixer.init()
     global gamemode
-    gamemode = MENU
+    gamemode = MAINMENU
     global font
     font = pygame.font.Font("fnt/coders_crux.ttf", 16 * SCALE)
     global menu
@@ -108,7 +103,7 @@ def update():
         if event.type == pygame.QUIT:
             close()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if gamemode == MENU or gamemode == PAUSEMENU:
+            if gamemode == MAINMENU or gamemode == PAUSEMENU:
                 menu.mouse_press()
             elif gamemode == PLAYING:
                 player = world.player
@@ -132,7 +127,7 @@ def update():
                 gui.click(pygame.mouse.get_pos(), event.button, shift)
         
         elif event.type == pygame.MOUSEBUTTONUP:
-            if gamemode == MENU or gamemode == PAUSEMENU:
+            if gamemode == MAINMENU or gamemode == PAUSEMENU:
                 menu.mouse_release()
         elif event.type == pygame.KEYDOWN:
             #typed a key
@@ -174,11 +169,11 @@ def update():
             elif gamemode == PAUSEMENU:
                 if event.key == pygame.K_ESCAPE:
                     unpause()
-            elif gamemode == MENU:
+            elif gamemode == MAINMENU:
                 if event.key == pygame.K_ESCAPE:
                     close()
     
-    if gamemode == MENU or gamemode == PAUSEMENU:
+    if gamemode == MAINMENU or gamemode == PAUSEMENU:
         menu.update()
     
     elif gamemode == PLAYING:
@@ -208,7 +203,8 @@ def update():
         gui.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed(), shift)
 
 def render():
-    if gamemode == MENU or gamemode == PAUSEMENU:
+    if gamemode == MAINMENU or gamemode == PAUSEMENU:
+        menu.render_background(screen)
         menu.render(screen)
         
     elif gamemode in (PLAYING, OPENGUI):
@@ -232,7 +228,7 @@ def render():
         #add blue overlay- not completely sure this is good
         overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         overlay.set_alpha(64)
-        overlay.fill(OVERLAY_BLUE)
+        overlay.fill(BLUE)
         screen.blit(overlay, (0, 0))
         
         if gamemode == PLAYING:
@@ -261,6 +257,35 @@ def pause():
 def unpause():
     global gamemode
     gamemode = PLAYING
+
+def show_options():
+    global menu
+    menu = OptionsMenu(menu)
+
+def set_menu(new_menu):
+    global menu
+    menu = new_menu
+
+def is_music_enabled():
+    global music
+    return music
+
+def toggle_music():
+    global music
+    music = not music
+    if music:
+        play_music()
+    else:
+        stop_music()
+    return music
+
+def play_music():
+    #not putting the music on github yet
+    pygame.mixer.music.load("mus/Seashore Peace - Ambiance.wav")
+    pygame.mixer.music.play(-1, 0.0)
+
+def stop_music():
+    pygame.mixer.music.stop()
 
 def close():
     if gamemode in (PLAYING, OPENGUI, PAUSEMENU):
