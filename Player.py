@@ -59,16 +59,9 @@ class Player(EntityLiving):
         if new_chunk != old_chunk:
             world.load_chunks(new_chunk)
     
-    def cutoff(self, i):
-        cutoff = 0.01
-        if -cutoff <= i <= cutoff:
-            return 0
-        else:
-            return i
-    
     def update_image(self):
-        xvel = self.cutoff(self.vel[0])
-        yvel = self.cutoff(self.vel[1])
+        xvel = Game.cutoff(self.vel[0], 0.01)
+        yvel = Game.cutoff(self.vel[1], 0.01)
         
         if xvel != 0 or yvel != 0:
             self.anim_timer += 1

@@ -11,7 +11,6 @@ TODO
 - Structures can only be in one chunk (and overwrite each other all the time)
 	- also messes up entity generation
 	- structures across multiple chunks with perlin noise?
-- Player animation
 - Block breaking particles
 - Block preview visualization is a bit off- probably due to use of outline
 - Possibly render foreground water as semitransparent (so it goes over block breaking image)
@@ -46,6 +45,7 @@ TODO
 - Move JSON parsing to separate module, it doesn't belong in World
 - Structures with background- define characters to be pairs of foreground and background blocks
 - Fix acceleration being preserved if releasing left and pressing right at the same time
+- Properly show held item if facing right, swimming, etc.
 
 NEEDED FEATURES
 --
@@ -95,7 +95,7 @@ NEEDED FEATURES
     	- More pathfinding options
 	- Friendlies?
 - Player
-    - Animation
+    - Animation- attack, transitions?
     - Customization- name, colors, hair
 - Crafting
     - Larger crafting tables- 2x2 (from some item in world), 3x3, 4x4, 5x5, 9x9
@@ -106,7 +106,9 @@ NEEDED FEATURES
     - https://i.imgur.com/jYvaxQ1.jpg
 - Fruit farming and cooking
 - Menus
-    - Get input from user to name world
+    - World menu
+        - Get input from user to name world
+        - If no worlds: skip straight to world creation screen
     - More options
     - Better default background
 - Combat

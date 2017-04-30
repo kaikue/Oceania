@@ -21,6 +21,8 @@ class EntityLiving(Entity):
             if self.hurt_time == 0:
                 self.hurt = False
             self.hurt_time -= 1
+        self.knockback[0] = Game.cutoff(self.knockback[0], ent.DamageSource.KNOCKBACK_FALLOFF)
+        self.knockback[1] = Game.cutoff(self.knockback[1], ent.DamageSource.KNOCKBACK_FALLOFF)
         if self.knockback[0] != 0:
             self.vel[0] += self.knockback[0]
             self.knockback[0] += math.copysign(ent.DamageSource.KNOCKBACK_FALLOFF, -self.knockback[0])

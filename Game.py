@@ -310,3 +310,9 @@ def set_gui(g):
 def play_sound(sound):
     soundObj = pygame.mixer.Sound(sound)
     soundObj.play()
+
+def cutoff(n, cutoff):
+    if -cutoff <= n <= cutoff:
+        return 0
+    else:
+        return n
