@@ -71,9 +71,7 @@ class Player(EntityLiving):
                     blockentity.set_pos(block_pos)
                     blockentity.background = background
                     world.create_entity(blockentity)
-                item.count -= 1
-                if item.count == 0:
-                    self.inventory[0][self.selected_slot] = None
+                self.remove_held_item()
     
     def left_click_discrete(self, world, mouse_pos, viewport, background):
         held_item = self.get_held_item()
@@ -103,6 +101,12 @@ class Player(EntityLiving):
     
     def get_held_item(self):
         return self.inventory[0][self.selected_slot]
+    
+    def remove_held_item(self):
+        item = self.get_held_item()
+        item.count -= 1
+        if item.count == 0:
+            self.inventory[0][self.selected_slot] = None
     
     def get_break_distance(self):
         #extend with certain items?

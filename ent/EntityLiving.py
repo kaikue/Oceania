@@ -39,6 +39,9 @@ class EntityLiving(Entity):
             pygame.draw.polygon(polysurface, color, olist, 0)
             screen.blit(polysurface, pos)
     
+    def heal(self, amount):
+        self.health = min(self.health + amount, self.max_health)
+    
     def damage(self, source, world):
         if not self.hurt:
             self.set_hurt(INVINCIBLE_FRAMES)

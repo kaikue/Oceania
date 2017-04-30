@@ -46,7 +46,6 @@ TODO
 - Move JSON parsing to separate module, it doesn't belong in World
 - Structures with background- define characters to be pairs of foreground and background blocks
 - Fix acceleration being preserved if releasing left and pressing right at the same time
-- After hitting something, try moving in the same direction more slowly (to prevent gap when running into wall at high speed)
 
 NEEDED FEATURES
 --
@@ -78,7 +77,12 @@ NEEDED FEATURES
     - More structures
         - Improve temple
         - Volcanic pipe- kimberlite, diamond
-        - Treasures- "starter packs" of blocks, tool improvement items, anything that will prompt further gameplay
+        - Treasures
+            - bunch of building blocks
+            - tool improvement items
+            - anything that will prompt further gameplay
+            - button to blow up structure
+            - max health increasers
         - Backgrounds in structures- hidden secrets behind some tiles
 		- Sliding puzzle lock
 - GUI work

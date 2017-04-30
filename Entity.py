@@ -74,7 +74,7 @@ class Entity(object):
                 chunk = world.loaded_chunks.get(chunk_right)
                 col4 = self.check_collision(chunk, 0, block_right, block_top, block_bottom, old_pos, index)
         if col1 or col2 or col3 or col4:
-            self.vel[index] = 0 #reset acceleration?
+            self.vel[index] = 0
         if index == 0:
             self.bounding_box.x = Convert.world_to_pixel(self.pos[index])
         else:
