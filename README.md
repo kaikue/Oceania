@@ -104,6 +104,7 @@ NEEDED FEATURES
     - or possibly all in world?
 - Ore processing
     - https://i.imgur.com/jYvaxQ1.jpg
+- Fruit farming and cooking
 - Menus
     - Get input from user to name world
     - More options

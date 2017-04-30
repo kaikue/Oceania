@@ -29,3 +29,9 @@ def load_images():
         break_images.append(pygame.transform.scale(img, (img.get_width() * Game.SCALE, img.get_height() * Game.SCALE)))
     global highlight_image
     highlight_image = load_imageurl("img/gui/highlight.png")
+
+def flip_horizontal(image):
+    return pygame.transform.flip(image, True, False)
+
+def rotate(image, angle):
+    return pygame.transform.rotate(image, angle)

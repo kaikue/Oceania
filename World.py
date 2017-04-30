@@ -176,7 +176,7 @@ class World(object):
         self.dir = "dat/" + self.name
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
-        self.player = Player.Player([0, 140], "img/player.png")
+        self.player = Player.Player([0, 140])
         path = self.dir + "/state"
         if os.path.isfile(path):
             self.load_state(path)

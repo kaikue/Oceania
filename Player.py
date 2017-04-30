@@ -2,6 +2,7 @@ import math
 import pygame
 import Convert
 import Game
+import Images
 from ent.ItemDrop import ItemDrop
 from itm import ItemStack
 import World
@@ -11,20 +12,40 @@ from ent.EntityLiving import EntityLiving
 
 
 BREAK_DIST = Game.BLOCK_SIZE * 5
+ANIM_TIME = 10
 
 class Player(EntityLiving):
     
-    def __init__(self, pos, imageurl):
-        super(Player, self).__init__(pos, imageurl, 20)
+    def __init__(self, pos):
+        super(Player, self).__init__(pos, "", 20)
         self.max_speed = 0.25
         self.acceleration = 0.01
         self.inventory = Inventory(5, 10)
         self.selected_slot = 0
+        self.anim_timer = 0
+        self.anim_frame = False
         
         #Temp items for testing
         self.inventory.insert(ItemStack.itemstack_from_name("magicStaff"))
         self.inventory.insert(ItemStack.itemstack_from_name("pickaxe"))
         self.inventory.insert(ItemStack.itemstack_from_name("sword"))
+    
+    def load_image(self):
+        img_idle_l = Images.load_imageurl("img/player/idle.png")
+        self.img_idle_l = img_idle_l
+        self.img_idle_r = Images.flip_horizontal(img_idle_l)
+        img_swim_1_l = Images.load_imageurl("img/player/swim1.png")
+        img_swim_1_u = Images.rotate(img_swim_1_l, -90)
+        img_swim_1_r = Images.flip_horizontal(img_swim_1_l)
+        img_swim_1_d = Images.rotate(img_swim_1_l, 90)
+        self.anim_swim_1 = [img_swim_1_l, img_swim_1_u, img_swim_1_r, img_swim_1_d]
+        img_swim_2_l = Images.load_imageurl("img/player/swim2.png")
+        img_swim_2_u = Images.rotate(img_swim_2_l, -90)
+        img_swim_2_r = Images.flip_horizontal(img_swim_2_l)
+        img_swim_2_d = Images.rotate(img_swim_2_l, 90)
+        self.anim_swim_2 = [img_swim_2_l, img_swim_2_u, img_swim_2_r, img_swim_2_d]
+        
+        self.img = self.img_idle_l
     
     def update(self, world):
         old_chunk = self.get_chunk()
@@ -32,9 +53,45 @@ class Player(EntityLiving):
         vspeed = min(abs(self.vel[1] + self.acceleration * self.move_dir[1]), self.max_speed) * self.move_dir[1]
         self.vel = [hspeed, vspeed]
         super(Player, self).update(world)
+        self.update_image()
+        
         new_chunk = self.get_chunk()
         if new_chunk != old_chunk:
             world.load_chunks(new_chunk)
+    
+    def cutoff(self, i):
+        cutoff = 0.01
+        if -cutoff <= i <= cutoff:
+            return 0
+        else:
+            return i
+    
+    def update_image(self):
+        xvel = self.cutoff(self.vel[0])
+        yvel = self.cutoff(self.vel[1])
+        
+        if xvel != 0 or yvel != 0:
+            self.anim_timer += 1
+            if self.anim_timer == ANIM_TIME:
+                self.anim_timer = 0
+                self.anim_frame = not self.anim_frame
+            if self.anim_frame:
+                anim_swim = self.anim_swim_2
+            else:
+                anim_swim = self.anim_swim_1
+        
+        if xvel < 0:
+            self.img = anim_swim[0]
+        elif xvel > 0:
+            self.img = anim_swim[2]
+        elif yvel < 0:
+            self.img = anim_swim[1]
+        elif yvel > 0:
+            self.img = anim_swim[3]
+        else:
+            img_idle = self.img_idle_l if self.facing == Game.LEFT else self.img_idle_r
+            self.img = img_idle
+            self.anim_timer = 0
     
     def collide_with(self, entity, world):
         super(Player, self).collide_with(entity, world)
