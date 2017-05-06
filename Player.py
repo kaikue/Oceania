@@ -14,7 +14,7 @@ from ent.EntityLiving import EntityLiving
 BREAK_DIST = Game.BLOCK_SIZE * 5
 ANIM_TIME = 10
 
-HAIR_COLORS = ["yellow", "red", "none"] #"brown", "black", "grey", "white", "green", "blue", 
+HAIR_COLORS = ["yellow", "red", "brown", "black", "gray", "white", "green", "blue", "none"]
 HAIR_LENGTHS = ["short", "medium", "long"]
 BODY_COLORS = ["peach", "tan", "brown", "white", "purple", "black"]
 TAIL_COLORS = ["blue", "green", "red", "purple", "orange", "black"]

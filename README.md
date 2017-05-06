@@ -49,7 +49,6 @@ TODO
 - Enemies drop healing hearts
 - When player is hurt, make the whole player image flash red
 - Player customization
-	- finish hair images
 	- menu screen
 		- name
 
