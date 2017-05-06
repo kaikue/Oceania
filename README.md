@@ -47,6 +47,11 @@ TODO
 - Fix acceleration being preserved if releasing left and pressing right at the same time
 - Properly show held item if facing right, swimming, etc.
 - Enemies drop healing hearts
+- When player is hurt, make the whole player image flash red
+- Player customization
+	- finish hair images
+	- menu screen
+		- name
 
 NEEDED FEATURES
 --
@@ -96,9 +101,7 @@ NEEDED FEATURES
     	- Attacks
     	- More pathfinding options
 	- Friendlies?
-- Player
-    - Animation- attack, transitions?
-    - Customization- name, colors, hair
+- Player animation- attack, transitions?
 - Crafting
     - Larger crafting tables- 2x2 (from some item in world), 3x3, 4x4, 5x5, 9x9
     - Slot for crafting tool- hammer for metal work, etc.
