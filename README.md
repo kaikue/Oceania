@@ -46,6 +46,7 @@ TODO
 - Structures with background- define characters to be pairs of foreground and background blocks
 - Fix acceleration being preserved if releasing left and pressing right at the same time
 - Properly show held item if facing right, swimming, etc.
+- Enemies drop healing hearts
 
 NEEDED FEATURES
 --
@@ -90,6 +91,7 @@ NEEDED FEATURES
 - Entities
     - Enemies
     	- Load from JSON
+    	- Spawn where no background
     	- Item drops
     	- Attacks
     	- More pathfinding options
@@ -151,32 +153,33 @@ NEEDED FEATURES
 - DEEPEST LORE
 
 Progression:
-	- T0: Stone Age
-	    - Spawn in world
-	    - Pick up flint
-	    - Right click flint with it several times to make Sharpened Flint
-	    - Right click Sharpened Flint on bone (from killing something or skeleton in world) to make basic pick
-	- T1: Copper Age
-	    - Collect copper ore
-	    - Cold forging- heat? then hit with hammer? to make pick head or sword blade
-	    - Copper tools, armor
-	- T2: Bronze Age
-		- Collect tin, lead, zinc ore
-	    - Crucible
-   			- Place crucible over hydrothermal vent, place ore into crucible, inject into mold for whatever part (like sword blade)
-   			- Up to 800°, melt metals in forge, basic alloys, cast into molds
-	        - Craft molds with sand + clay, imprint with some natural material for type (e.g. narwhal horn for sword blade)
-	        - Melt sand into glass, pour into empty mold
-	    - Alloys- brass, bronze
-	    - Machines
-	    - Alchemy?
-	- T3: Iron Age
-		- Collect iron ore
-		- Bloomery?
-		- Steel
-		- Mangalloy
-	    - Alchemy?
-	- T4: Final Age
-		- Collect cobalt, chromium
-		- Make vitallum
-		- Make Reverse Atmospheric Diving Suit
+--
+- T0: Stone Age
+    - Spawn in world
+    - Pick up flint
+    - Right click flint with it several times to make Sharpened Flint
+    - Right click Sharpened Flint on bone (from killing something or skeleton in world) to make basic pick
+- T1: Copper Age
+    - Collect copper ore
+    - Cold forging- heat? then hit with hammer? to make pick head or sword blade
+    - Copper tools, armor
+- T2: Bronze Age
+	- Collect tin, lead, zinc ore
+    - Crucible
+			- Place crucible over hydrothermal vent, place ore into crucible, inject into mold for whatever part (like sword blade)
+			- Up to 800Â°, melt metals in forge, basic alloys, cast into molds
+        - Craft molds with sand + clay, imprint with some natural material for type (e.g. narwhal horn for sword blade)
+        - Melt sand into glass, pour into empty mold
+    - Alloys- brass, bronze
+    - Machines
+    - Alchemy?
+- T3: Iron Age
+	- Collect iron ore
+	- Bloomery?
+	- Steel
+	- Mangalloy
+    - Alchemy?
+- T4: Final Age
+	- Collect cobalt, chromium
+	- Make vitallum
+	- Make Reverse Atmospheric Diving Suit
