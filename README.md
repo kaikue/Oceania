@@ -50,7 +50,12 @@ TODO
 - When player is hurt, make the whole player image flash red
 - Player customization
 	- menu screen
-		- name
+- Menus
+	- Make them look nicer
+    - More options
+    - Better default background
+    - Quit to main menu in pause menu
+- Player can spawn inside generated structure and get stuck
 
 NEEDED FEATURES
 --
@@ -109,12 +114,6 @@ NEEDED FEATURES
 - Ore processing
     - https://i.imgur.com/jYvaxQ1.jpg
 - Fruit farming and cooking
-- Menus
-    - World menu
-        - Get input from user to name world
-        - If no worlds: skip straight to world creation screen
-    - More options
-    - Better default background
 - Combat
     - Armor
     - Weapons

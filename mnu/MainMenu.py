@@ -1,6 +1,8 @@
 import pygame
 import Game
 from mnu.Menu import Menu
+from mnu.WorldSelectMenu import WorldSelectMenu
+from mnu.WorldNameMenu import WorldNameMenu
 import Button
 import Images
 
@@ -23,7 +25,11 @@ class MainMenu(Menu):
         self.mid_xs = [-self.mid_width, 0, self.mid_width]
         self.front_xs = [-self.front_width, 0, self.front_width]
         
-        play_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 8 // 15), "Start Game", "play")
+        play_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 8 // 15), "Start Game", "menu")
+        if len(Game.get_worlds()) == 0:
+            play_button.next_menu = WorldNameMenu(self)
+        else:
+            play_button.next_menu = WorldSelectMenu(self)
         options_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 10 // 15), "Options", "options")
         quit_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 12 // 15), "Quit", "quit")
         super(MainMenu, self).__init__([play_button, options_button, quit_button])

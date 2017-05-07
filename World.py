@@ -119,7 +119,7 @@ def load_blocks():
             #blockicons[False] is the unscaled version for blockdrops, [True] is scaled up for inventory rendering
             block_icons[False][bid] = icon
             block_icons[True][bid] = pygame.transform.scale(icon, (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE))
-            foreground_image = pygame.transform.scale(blockimg, (blockimg.get_width() * Game.SCALE, blockimg.get_height() * Game.SCALE))
+            foreground_image = Images.scale(blockimg, Game.SCALE)
             block_images[False][bid] = foreground_image
             #blit the image onto the water tile so it isn't just empty transparency
             image = blockimg.copy()
@@ -174,16 +174,18 @@ class World(object):
     def __init__(self, name):
         self.name = name
         self.dir = "dat/" + self.name
-        if not os.path.exists(self.dir):
-            os.makedirs(self.dir)
-        self.player = Player.Player([0, 140], 0, 0, 0, 0)
-        path = self.dir + "/state"
-        if os.path.isfile(path):
-            self.load_state(path)
-        else:
-            random.seed(self.name)
-            self.generate_spawn()
         self.breaking_blocks = {True: [], False: []}
+    
+    def load(self):
+        path = self.dir + "/state"
+        self.load_state(path)
+    
+    def generate(self, seed, player_options):
+        os.makedirs(self.dir)
+        self.player = Player.Player([0, 140], player_options)
+        self.seed = seed
+        random.seed(seed) #TODO: make this perlin noise instead
+        self.generate_spawn()
     
     def update(self):
         for x in range(self.loaded_chunks.first, self.loaded_chunks.end):
@@ -324,11 +326,11 @@ class World(object):
         self.loaded_chunks.get(entity.get_chunk()).entities.append(entity)
     
     def remove_entity(self, entity):
-        #TODO this may fail
+        #TODO: this may fail
         self.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def get_nearby_entities(self, chunk):
-        #TODO only update once per frame?
+        #TODO: only update once per frame?
         entities = []
         if self.is_loaded_chunk(chunk):
             entities += self.loaded_chunks.get(chunk).entities
@@ -356,7 +358,7 @@ class World(object):
         self.save_state()
     
     def save_state(self):
-        save_data = {"player": self.player}
+        save_data = {"player": self.player, "seed": self.seed}
         #more game state data
         savefile = open(self.dir + "/state", "wb")
         pickle.dump(save_data, savefile)
@@ -367,6 +369,7 @@ class World(object):
         save_data = pickle.load(savefile)
         savefile.close()
         self.player = save_data["player"]
+        self.seed = save_data["seed"]
         player_chunk = Convert.world_to_chunk(self.player.pos[0])[1]
         self.loaded_chunks = TwoWayList.TwoWayList()
         self.load_chunks(player_chunk)

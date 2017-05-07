@@ -21,19 +21,33 @@ class Button(object):
         self.pressed_image = Images.load_imageurl("img/gui/button_down.png")
     
     def activate(self):
-        if self.effect == "play":
-            Game.play()
+        if self.effect == "menu":
+            Game.set_menu(self.next_menu)
         elif self.effect == "resume":
             Game.unpause()
         elif self.effect == "quit":
             Game.close()
         elif self.effect == "options":
             Game.show_options()
-        elif self.effect == "back":
-            Game.set_menu(self.prev_menu)
         elif self.effect == "music":
             enabled = Game.toggle_music()
             self.text = music_message(enabled)
+        elif self.effect == "load_world":
+            Game.start_setup()
+            Game.load_world(self.world_to_load)
+            Game.finish_setup()
+        elif self.effect == "scroll_worlds":
+            self.world_menu.scroll_by(self.scroll_amount)
+            self.world_menu.display_worlds()
+        elif self.effect == "create":
+            player_options = self.character_menu.options
+            name = self.world_menu.name
+            seed = self.world_menu.seed
+            Game.start_setup()
+            Game.generate_world(name, seed, player_options)
+            Game.finish_setup()
+        elif self.effect == "random":
+            self.menu.randomize()
         
         self.pressed = False
     

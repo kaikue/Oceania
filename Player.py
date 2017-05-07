@@ -21,7 +21,12 @@ TAIL_COLORS = ["blue", "green", "red", "purple", "orange", "black"]
 
 class Player(EntityLiving):
     
-    def __init__(self, pos, hair_color, hair_length, body_color, tail_color):
+    def __init__(self, pos, options):
+        self.hair_color = options[0]
+        self.hair_length = options[1]
+        self.body_color = options[2]
+        self.tail_color = options[3]
+        
         super(Player, self).__init__(pos, "", 20)
         self.max_speed = 0.25
         self.acceleration = 0.01
@@ -33,11 +38,6 @@ class Player(EntityLiving):
         
         self.anim_state = 0
         self.anim_dir = 0
-        
-        self.hair_color = hair_color
-        self.hair_length = hair_length
-        self.body_color = body_color
-        self.tail_color = tail_color
         
         #Temp items for testing
         self.inventory.insert(ItemStack.itemstack_from_name("magicStaff"))

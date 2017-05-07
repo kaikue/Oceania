@@ -10,7 +10,7 @@ def load_imageurl(imageurl):
     if imageurl == "":
         return None
     img = pygame.image.load(imageurl).convert_alpha()
-    return pygame.transform.scale(img, (Game.SCALE * img.get_width(), Game.SCALE * img.get_height()))
+    return scale(img, Game.SCALE)
 
 def load_images():
     base = "img/gui/pieces/"
@@ -35,3 +35,6 @@ def flip_horizontal(image):
 
 def rotate(image, angle):
     return pygame.transform.rotate(image, angle)
+
+def scale(img, scale):
+    return pygame.transform.scale(img, (scale * img.get_width(), scale * img.get_height()))

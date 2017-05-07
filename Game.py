@@ -79,14 +79,25 @@ def run():
         update()
         render()
 
-def play():
+def start_setup():
     global gamemode
     gamemode = PLAYING
     World.load_data()
     global viewport
     viewport = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+
+def generate_world(world_name, seed, player_options):
     global world
-    world = World.World("defaultworld")
+    world = World.World(world_name)
+    world.generate(seed, player_options)
+
+def load_world(world_name):
+    global world
+    world = World.World(world_name)
+    world.load()
+
+def finish_setup():
+    global world
     global hotbarGui
     hotbarGui = HotbarGUI(world.player, "img/gui/hotbar.png")
 
@@ -294,6 +305,13 @@ def close():
 
 def get_font():
     return font
+
+def get_worlds():
+    #TODO: sort by last opened
+    parent_dir = "dat"
+    #From http://stackoverflow.com/a/800201
+    return [name for name in os.listdir(parent_dir)
+            if os.path.isdir(os.path.join(parent_dir, name))]
 
 def get_world():
     return world
