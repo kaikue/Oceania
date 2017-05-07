@@ -3,6 +3,7 @@ import Game
 import Images
 
 WIDTH = 96 * Game.SCALE
+SMALL_WIDTH = 32 * Game.SCALE
 HEIGHT = 32 * Game.SCALE
 
 def music_message(enabled):
@@ -10,15 +11,19 @@ def music_message(enabled):
 
 class Button(object):
     
-    def __init__(self, pos, text, effect):
+    def __init__(self, pos, text, effect, small = False):
         self.pos = pos
         self.text = text
         self.effect = effect
         self.pressed = False
         self.font = Game.get_font()
-        self.unpressed_image = Images.load_imageurl("img/gui/button_up.png")
-        self.hovered_image = Images.load_imageurl("img/gui/button_hover.png")
-        self.pressed_image = Images.load_imageurl("img/gui/button_down.png")
+        if small:
+            url_base = "img/gui/button_small"
+        else:
+            url_base = "img/gui/button"
+        self.unpressed_image = Images.load_imageurl(url_base + "_up.png")
+        self.hovered_image = Images.load_imageurl(url_base + "_hover.png")
+        self.pressed_image = Images.load_imageurl(url_base + "_down.png")
     
     def activate(self):
         if self.effect == "menu":
@@ -54,7 +59,7 @@ class Button(object):
         self.pressed = False
     
     def get_rect(self):
-        return pygame.Rect(self.pos[0], self.pos[1], WIDTH, HEIGHT)
+        return pygame.Rect(self.pos[0], self.pos[1], self.unpressed_image.get_width(), HEIGHT)
     
     def mouse_hover(self):
         return self.get_rect().collidepoint(pygame.mouse.get_pos())
@@ -73,4 +78,4 @@ class Button(object):
         text_img = self.font.render(self.text, 0, color)
         h = text_img.get_height() - (2 * Game.SCALE)
         w = text_img.get_width()
-        screen.blit(text_img, (self.pos[0] + (WIDTH - w) / 2, self.pos[1] + (HEIGHT - h) / 2))
+        screen.blit(text_img, (self.pos[0] + (self.unpressed_image.get_width() - w) / 2, self.pos[1] + (HEIGHT - h) / 2))

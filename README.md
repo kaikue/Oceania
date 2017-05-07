@@ -24,6 +24,7 @@ TODO
 	- Font
 	- Basalt
 	- Game icon
+		- also make this load during startup, not world creation
 	- Block breaking animation
 		- crop to CTM
 	- Dark colored borders
@@ -49,12 +50,8 @@ TODO
 - Enemies drop healing hearts
 - When player is hurt, make the whole player image flash red
 - Menus
-	- Make them look nicer
-    	- Better default background
-    	- Small labels (world name/seed, player options)
-    	- Smaller arrow buttons
-    	- World list background
-    	- Better text fields
+	- Better text fields
+	- Scroll wheel scrolls world list
     - Validate name in world creation
     - More options
     - Quit to main menu in pause menu

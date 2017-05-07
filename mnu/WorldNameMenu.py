@@ -24,10 +24,10 @@ class WorldNameMenu(Menu):
         next_button.next_menu = CharacterMenu(self)
         
         title_label = Label("World Settings", (Game.SCREEN_WIDTH / 2 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 15))
-        name_label = Label("Name", (Game.SCREEN_WIDTH // 5 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 3))
-        seed_label = Label("Seed", (Game.SCREEN_WIDTH // 5 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 2))
+        name_label = Label("Name", (Game.SCREEN_WIDTH // 5 - Label.SMALL_WIDTH / 2, Game.SCREEN_HEIGHT // 3), True)
+        seed_label = Label("Seed", (Game.SCREEN_WIDTH // 5 - Label.SMALL_WIDTH / 2, Game.SCREEN_HEIGHT // 2), True)
         
-        super(WorldNameMenu, self).__init__([back_button, next_button], [title_label, name_label, seed_label])
+        super(WorldNameMenu, self).__init__([back_button, next_button], [title_label, name_label, seed_label], True)
     
     def mouse_release(self):
         for text_field in self.text_fields:

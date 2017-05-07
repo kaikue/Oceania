@@ -4,10 +4,13 @@ import Images
 
 class Menu(object):
     
-    def __init__(self, buttons, labels = []):
+    def __init__(self, buttons, labels = [], background = False):
         self.mouse_pressed = False
         self.buttons = buttons
         self.labels = labels
+        self.background = background
+        if background:
+            self.background_img = Images.load_imageurl("img/gui/menu_background.png")
     
     def mouse_press(self):
         for button in self.buttons:
@@ -34,6 +37,8 @@ class Menu(object):
         screen.fill(Game.BLUE)
     
     def render(self, screen):
+        if self.background:
+            screen.blit(self.background_img, (0, 0))
         for button in self.buttons:
             button.render(screen)
         for label in self.labels:
@@ -48,17 +53,22 @@ class Menu(object):
 class Label(object):
     
     WIDTH = 128 * Game.SCALE
+    SMALL_WIDTH = 72 * Game.SCALE
     HEIGHT = 32 * Game.SCALE
     Y_OFFSET = 2 * Game.SCALE
     
-    def __init__(self, text, pos):
+    def __init__(self, text, pos, small = False):
         self.text = text
         self.pos = pos
-        self.img = Images.load_imageurl("img/gui/label.png")
+        if small:
+            imgurl = "img/gui/label_small.png"
+        else:
+            imgurl = "img/gui/label.png"
+        self.img = Images.load_imageurl(imgurl)
         self.font = Game.get_font()
     
     def get_rect(self):
-        return pygame.Rect(self.pos[0], self.pos[1], Label.WIDTH, Label.HEIGHT)
+        return pygame.Rect(self.pos[0], self.pos[1], self.img.get_width(), Label.HEIGHT)
     
     def render(self, screen):
         screen.blit(self.img, self.pos)

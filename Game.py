@@ -114,7 +114,8 @@ def update():
             close()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if gamemode == MAINMENU or gamemode == PAUSEMENU:
-                menu.mouse_press()
+                if event.button == 1:
+                    menu.mouse_press()
             elif gamemode == PLAYING:
                 player = world.player
                 if event.button == 1:
