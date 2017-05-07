@@ -52,8 +52,12 @@ TODO
 	- menu screen
 - Menus
 	- Make them look nicer
+    	- Better default background
+    	- Labels
+    	- Smaller arrow buttons
+    	- World list background
+    	- Better text fields
     - More options
-    - Better default background
     - Quit to main menu in pause menu
 - Player can spawn inside generated structure and get stuck
 

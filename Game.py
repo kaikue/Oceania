@@ -182,6 +182,12 @@ def update():
             elif gamemode == MAINMENU:
                 if event.key == pygame.K_ESCAPE:
                     close()
+                elif event.key == pygame.K_BACKSPACE:
+                    menu.delete()
+                elif event.key == pygame.K_SPACE:
+                    menu.type(" ")
+                elif is_legal_key(pygame.key.name(event.key)):
+                    menu.type(pygame.key.name(event.key))
     
     if gamemode == MAINMENU or gamemode == PAUSEMENU:
         menu.update()
@@ -334,3 +340,6 @@ def cutoff(n, cutoff):
         return 0
     else:
         return n
+
+def is_legal_key(key):
+    return len(key) == 1 and str.isalnum(key)

@@ -33,3 +33,9 @@ class Menu(object):
     def render(self, screen):
         for button in self.buttons:
             button.render(screen)
+    
+    def type(self, char):
+        pass
+    
+    def delete(self):
+        pass

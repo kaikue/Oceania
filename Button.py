@@ -41,13 +41,15 @@ class Button(object):
             self.world_menu.display_worlds()
         elif self.effect == "create":
             player_options = self.character_menu.options
-            name = self.world_menu.name
-            seed = self.world_menu.seed
+            name = self.world_menu.name_textfield.text
+            seed = self.world_menu.seed_textfield.text
             Game.start_setup()
             Game.generate_world(name, seed, player_options)
             Game.finish_setup()
         elif self.effect == "random":
             self.menu.randomize()
+        elif self.effect == "change_option":
+            self.menu.change_option(self.category, self.amount)
         
         self.pressed = False
     
