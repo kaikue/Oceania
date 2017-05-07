@@ -10,4 +10,4 @@ class OptionsMenu(Menu):
         self.music_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 1 // 2), music_message, "music")
         back_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 4 // 5), "Back", "menu")
         back_button.next_menu = prev_menu
-        super(OptionsMenu, self).__init__([self.music_button, back_button], [options_label])
+        super(OptionsMenu, self).__init__([self.music_button, back_button], [options_label], True)
