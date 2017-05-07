@@ -1,7 +1,7 @@
 import pygame
 import Game
 import Images
-from mnu.Menu import Menu
+from mnu.Menu import Menu, Label
 from mnu.CharacterMenu import CharacterMenu
 import Button
 
@@ -14,7 +14,7 @@ class WorldNameMenu(Menu):
         
         self.name_textfield = TextField((Game.SCREEN_WIDTH / 2 - TextField.WIDTH / 2, Game.SCREEN_HEIGHT // 3))
         self.name_textfield.select()
-        self.seed_textfield = TextField((Game.SCREEN_WIDTH / 2 - TextField.WIDTH / 2, Game.SCREEN_HEIGHT * 2 // 3))
+        self.seed_textfield = TextField((Game.SCREEN_WIDTH / 2 - TextField.WIDTH / 2, Game.SCREEN_HEIGHT // 2))
         self.text_fields = [self.name_textfield, self.seed_textfield]
         
         back_button = Button.Button((Game.SCREEN_WIDTH / 4 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 4 // 5), "Cancel", "menu")
@@ -23,7 +23,11 @@ class WorldNameMenu(Menu):
         next_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 4 // 5), "Next", "menu")
         next_button.next_menu = CharacterMenu(self)
         
-        super(WorldNameMenu, self).__init__([back_button, next_button])
+        title_label = Label("World Settings", (Game.SCREEN_WIDTH / 2 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 15))
+        name_label = Label("Name", (Game.SCREEN_WIDTH // 5 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 3))
+        seed_label = Label("Seed", (Game.SCREEN_WIDTH // 5 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 2))
+        
+        super(WorldNameMenu, self).__init__([back_button, next_button], [title_label, name_label, seed_label])
     
     def mouse_release(self):
         for text_field in self.text_fields:

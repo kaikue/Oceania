@@ -48,16 +48,14 @@ TODO
 - Properly show held item if facing right, swimming, etc.
 - Enemies drop healing hearts
 - When player is hurt, make the whole player image flash red
-- Player customization
-	- menu screen
 - Menus
-	- Sort world list by date played
 	- Make them look nicer
     	- Better default background
-    	- Labels
+    	- Small labels (world name/seed, player options)
     	- Smaller arrow buttons
     	- World list background
     	- Better text fields
+    - Validate name in world creation
     - More options
     - Quit to main menu in pause menu
 - Player can spawn inside generated structure and get stuck

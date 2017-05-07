@@ -1,7 +1,7 @@
 import random
 import Game
 import Images
-from mnu.Menu import Menu
+from mnu.Menu import Menu, Label
 import Button
 import Player
 
@@ -11,13 +11,11 @@ class CharacterMenu(Menu):
     
     def __init__(self, prev_menu):
         
-        #TODO: add labels
-        #TODO: add title
         #TODO: make option buttons smaller
         
         self.options = [0, 0, 0, 0]
         
-        random_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 1 // 10), "Randomize", "random")
+        random_button = Button.Button((Game.SCREEN_WIDTH / 2 - Button.WIDTH / 2, Game.SCREEN_HEIGHT * 2 // 10), "Randomize", "random")
         random_button.menu = self
         
         l_hair_color_button = self.make_category_button(False, Game.SCREEN_HEIGHT * 3 // 10, 0)
@@ -36,6 +34,9 @@ class CharacterMenu(Menu):
         create_button.character_menu = self
         create_button.world_menu = prev_menu
         
+        title_label = Label("Customize Character", (Game.SCREEN_WIDTH / 2 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 15))
+        #TODO: options labels
+        
         self.load_images()
         
         super(CharacterMenu, self).__init__([random_button, 
@@ -43,7 +44,8 @@ class CharacterMenu(Menu):
                                              l_hair_style_button, r_hair_style_button,
                                              l_body_button, r_body_button,
                                              l_tail_button, r_tail_button,
-                                             back_button, create_button])
+                                             back_button, create_button],
+                                            [title_label])
     
     def make_category_button(self, right, y, category):
         x = Game.SCREEN_WIDTH * 3 // 4 - Button.WIDTH / 2 if right else Game.SCREEN_WIDTH // 4 - Button.WIDTH / 2
