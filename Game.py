@@ -313,11 +313,14 @@ def get_font():
     return font
 
 def get_worlds():
-    #TODO: sort by last opened
     parent_dir = "dat"
     #From http://stackoverflow.com/a/800201
-    return [name for name in os.listdir(parent_dir)
-            if os.path.isdir(os.path.join(parent_dir, name))]
+    worlds = [name for name in os.listdir(parent_dir)
+              if os.path.isdir(os.path.join(parent_dir, name))]
+    #From http://stackoverflow.com/a/168424 - sort by last modified (use state file time)
+    worlds.sort(key=lambda x: os.path.getmtime(parent_dir + "/" + x + "/state"))
+    worlds.reverse()
+    return worlds
 
 def get_world():
     return world

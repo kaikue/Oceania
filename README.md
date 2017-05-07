@@ -51,6 +51,7 @@ TODO
 - Player customization
 	- menu screen
 - Menus
+	- Sort world list by date played
 	- Make them look nicer
     	- Better default background
     	- Labels
