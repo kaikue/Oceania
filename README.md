@@ -3,7 +3,7 @@ Oceania
 A procedurally generated 2D sandbox game set underwater.
 Written in Pygame.
 Created by Kai Kuehner, 2013-2017.
-![Screenshot](http://i.imgur.com/yOTYumw.png)
+![Screenshot](http://i.imgur.com/wUVoCkr.png)
 
 TODO
 --
@@ -56,6 +56,7 @@ TODO
     - More options
     - Quit to main menu in pause menu
 - Player can spawn inside generated structure and get stuck
+- Make build script generate empty dat/ folder
 
 NEEDED FEATURES
 --
@@ -123,6 +124,10 @@ NEEDED FEATURES
     		- spears throw, swords full sweep, picks place block
 - Sound
     - freesound.org
+    - Button press- stone sliding/click
+    - Player hurt- female grunt (underwater?)
+    - Player swim- underwater swoosh
+    - Dig
 - Multiblocks- have special multiblock interface that checks specific blocks
     - Hammer cycles through block variations
 - Lighting
