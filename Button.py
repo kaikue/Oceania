@@ -28,6 +28,8 @@ class Button(object):
     def activate(self):
         if self.effect == "menu":
             Game.set_menu(self.next_menu)
+        elif self.effect == "mainmenu":
+            Game.show_main_menu()
         elif self.effect == "resume":
             Game.unpause()
         elif self.effect == "quit":

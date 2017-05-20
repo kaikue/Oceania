@@ -56,6 +56,7 @@ TODO
     - More options
     - Quit to main menu in pause menu
 - Player can spawn inside generated structure and get stuck
+- Update to Pygame 1.9.3: https://pypi.python.org/pypi/Pygame/1.9.3
 
 NEEDED FEATURES
 --

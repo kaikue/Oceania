@@ -63,12 +63,9 @@ def start():
     global music
     music = False
     pygame.mixer.init()
-    global gamemode
-    gamemode = MAINMENU
     global font
     font = pygame.font.Font("fnt/coders_crux.ttf", 16 * SCALE)
-    global menu
-    menu = MainMenu()
+    show_main_menu()
     global gui
     gui = None
     run()
@@ -282,6 +279,12 @@ def show_options():
 def set_menu(new_menu):
     global menu
     menu = new_menu
+
+def show_main_menu():
+    global gamemode
+    gamemode = MAINMENU
+    global menu
+    menu = MainMenu()
 
 def is_music_enabled():
     global music
