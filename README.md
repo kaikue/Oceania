@@ -56,7 +56,6 @@ TODO
     - More options
     - Quit to main menu in pause menu
 - Player can spawn inside generated structure and get stuck
-- Make build script generate empty dat/ folder
 
 NEEDED FEATURES
 --

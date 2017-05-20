@@ -29,6 +29,9 @@ jsons = ["biomes.json","blocks.json","items.json","structures.json"]
 for json in jsons:
 	shutil.copy(os.path.join(os.getcwd(),json), buildDirPath)
 
+#create dat folder
+os.mkdir(os.path.join(buildDirPath, "dat"))
+
 #copy OGG dlls
 pygameDir = "C:\\Python34\\Lib\\site-packages\\pygame"
 dlls = ["libogg.dll", "libvorbis.dll", "libvorbisfile.dll"]
