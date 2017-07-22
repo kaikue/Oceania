@@ -261,7 +261,8 @@ class Player(EntityLiving):
             return (255, 255, 255, 128)
     
     def render_break_preview(self, background, world, block, block_pos, screen, viewport):
-        blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], background, background).copy()
+        chunk = world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
+        blockimg = world.get_block_render(World.get_block_id(block["name"]), block_pos, block["connectedTexture"], background, chunk, background).copy()
         mask = pygame.mask.from_surface(blockimg)
         olist = mask.outline()
         polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
@@ -271,7 +272,8 @@ class Player(EntityLiving):
     
     def render_block_preview(self, background, held_item, world, block_pos, screen, viewport):
         held_block = World.get_block(held_item.name)
-        blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], background, background).copy()
+        chunk = world.loaded_chunks.get(Convert.world_to_chunk(block_pos[0])[1])
+        blockimg = world.get_block_render(World.get_block_id(held_block["name"]), block_pos, held_block["connectedTexture"], background, chunk, background).copy()
         mask = pygame.mask.from_surface(blockimg)
         olist = mask.outline()
         polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)

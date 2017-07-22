@@ -16,6 +16,12 @@ SEA_LEVEL = HEIGHT / 4
 SEA_FLOOR = HEIGHT * 3 / 4
 CHUNKS_TO_SIDE = 2
 
+CTM_POSITIONS = \
+    {
+        False: {False: 0, True:  1},
+        True:  {True:  2, False: 3}
+    }
+
 biomes = {}
 structures = {}
 blocks = {}
@@ -205,8 +211,16 @@ class World(object):
                 self.breaking_blocks[layer].remove(b)
     
     def get_block_at(self, world_pos, background):
-        chunk = self.loaded_chunks.get(Convert.world_to_chunk(world_pos[0])[1])
-        x_in_chunk = Convert.world_to_chunk(world_pos[0])[0]
+        chunk = self.loaded_chunks.get(world_pos[0] // Chunk.WIDTH) #Convert.world_to_chunk(world_pos[0])[1]
+        x_in_chunk = world_pos[0] % Chunk.WIDTH #Convert.world_to_chunk(world_pos[0])[0]
+        return chunk.get_block_at(x_in_chunk, world_pos[1], background)
+    
+    def get_block_in_chunk(self, world_pos, background, chunk):
+        if chunk.x != world_pos[0] // Chunk.WIDTH:
+            #wrong chunk
+            return self.get_block_at(world_pos, background)
+        
+        x_in_chunk = world_pos[0] % Chunk.WIDTH
         return chunk.get_block_at(x_in_chunk, world_pos[1], background)
     
     def set_block_at(self, world_pos, block, background):
@@ -268,7 +282,7 @@ class World(object):
             breakimg.blit(polysurface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
             screen.blit(breakimg, Convert.world_to_viewport(breaking_block["pos"], viewport))
     
-    def get_block_render(self, block_id, block_pos, connected, background, backgroundCTM=False):
+    def get_block_render(self, block_id, block_pos, connected, background, chunk, backgroundCTM=False):
         if connected is not None:
             #check adjacent tiles
             if connected == "solid":
@@ -277,50 +291,24 @@ class World(object):
             elif connected == "sametype":
                 field = "id"
                 val = block_id
-            left_block = get_block(self.get_block_at((block_pos[0] - 1, block_pos[1]), background))[field] == val
-            right_block = get_block(self.get_block_at((block_pos[0] + 1, block_pos[1]), background))[field] == val
-            top_block = get_block(self.get_block_at((block_pos[0], block_pos[1] - 1), background))[field] == val
-            bottom_block = get_block(self.get_block_at((block_pos[0], block_pos[1] + 1), background))[field] == val
-            tile = ()
-            #there must be some better way to do this
-            if not left_block and not right_block and not top_block and not bottom_block:
-                tile = (0, 0)
-            if not left_block and not right_block and not top_block and bottom_block:
-                tile = (0, 1)
-            if not left_block and not right_block and top_block and bottom_block:
-                tile = (0, 2)
-            if not left_block and not right_block and top_block and not bottom_block:
-                tile = (0, 3)
-            if not left_block and right_block and not top_block and not bottom_block:
-                tile = (1, 0)
-            if not left_block and right_block and not top_block and bottom_block:
-                tile = (1, 1)
-            if not left_block and right_block and top_block and bottom_block:
-                tile = (1, 2)
-            if not left_block and right_block and top_block and not bottom_block:
-                tile = (1, 3)
-            if left_block and right_block and not top_block and not bottom_block:
-                tile = (2, 0)
-            if left_block and right_block and not top_block and bottom_block:
-                tile = (2, 1)
-            if left_block and right_block and top_block and bottom_block:
-                tile = (2, 2)
-            if left_block and right_block and top_block and not bottom_block:
-                tile = (2, 3)
-            if left_block and not right_block and not top_block and not bottom_block:
-                tile = (3, 0)
-            if left_block and not right_block and not top_block and bottom_block:
-                tile = (3, 1)
-            if left_block and not right_block and top_block and bottom_block:
-                tile = (3, 2)
-            if left_block and not right_block and top_block and not bottom_block:
-                tile = (3, 3)
+            
+            left_block = self.block_against(block_pos, -1, 0, background, chunk, field, val)
+            right_block = self.block_against(block_pos, 1, 0, background, chunk, field, val)
+            top_block = self.block_against(block_pos, 0, -1, background, chunk, field, val)
+            bottom_block = self.block_against(block_pos, 0, 1, background, chunk, field, val)
+            
+            tile = (CTM_POSITIONS[left_block][right_block], CTM_POSITIONS[top_block][bottom_block])
             return ctm_block_images[background and not backgroundCTM][block_id][tile]
         else:
             return block_images[background][block_id] 
     
-    def render_block(self, block_id, block_pos, connected, screen, viewport, background):
-        screen.blit(self.get_block_render(block_id, block_pos, connected, background), Convert.world_to_viewport(block_pos, viewport))
+    def block_against(self, block_pos, x_offset, y_offset, background, chunk, field, val):
+        #TODO: this part is slow
+        block = self.get_block_in_chunk((block_pos[0] + x_offset, block_pos[1] + y_offset), background, chunk)
+        return get_block(block)[field] == val
+    
+    def render_block(self, block_id, block_pos, connected, screen, viewport, background, chunk):
+        screen.blit(self.get_block_render(block_id, block_pos, connected, background, chunk), Convert.world_to_viewport(block_pos, viewport))
     
     def create_entity(self, entity):
         self.loaded_chunks.get(entity.get_chunk()).entities.append(entity)

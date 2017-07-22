@@ -196,7 +196,7 @@ class Chunk(object):
         else:
             block = World.get_block_from_id(self.foreground_blocks[y][x])
         if block["name"] != "air":
-            Game.get_world().render_block(block["id"], [Convert.chunk_to_world(x, self), y], block["connectedTexture"], screen, viewport, background)
+            Game.get_world().render_block(block["id"], [Convert.chunk_to_world(x, self), y], block["connectedTexture"], screen, viewport, background, self)
         #if Game.DEBUG:
             #draw bounding box- this is really slow for some reason
         #    pygame.draw.rect(screen, Game.BLACK, pygame.Rect(Convert.chunk_to_viewport(pos, self, viewport), (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE)), 1)

@@ -23,3 +23,12 @@ class EntityChest(Entity.Entity):
         #this is temporary, until I fix the structure generation
         txt = Game.get_font().render("*", 0, Game.WHITE)
         screen.blit(txt, pos)
+    
+    #breaks entity pickup
+    """def __eq__(self, other):
+        if type(other) is type(self):
+            return self.items == other.items
+        return False
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)"""

@@ -23,10 +23,11 @@
 		{
 			"name": "basalt",
 			"displayName": "Basalt",
-			"image": "img/gabbro/gabbro_1.png",
+			"image": "img/gabbro/gabbro_tiles.png",
             "harvestlevel": 1,
             "breaktime": 200,
-            "description": "A common type of stone."
+            "description": "A common type of stone.",
+			"connectedTexture": "solid"
 		},
 		{
 			"name": "kelp",
