@@ -44,6 +44,14 @@ class Inventory(object):
     def __setitem__(self, i, value):
         self.items[i] = value
     
+    def __eq__(self, other):
+        if type(other) is type(self):
+            return self.items == other.items
+        return False
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)
+    
     def slot_at(self, pos, left, top, hotbargap):
         #TODO: give armor slot if necessary... negative coordinate?
         pos = (pos[0] - left - GUI.SCALING * 13 // 8, pos[1] - top - GUI.SCALING // 2)
