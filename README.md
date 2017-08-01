@@ -56,6 +56,7 @@ TODO
     - Quit to main menu in pause menu
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
+- Keybinding (first in config, then in game menu)
 
 NEEDED FEATURES
 --
@@ -104,6 +105,8 @@ NEEDED FEATURES
     	- Item drops
     	- Attacks
     	- More pathfinding options
+    - Bosses
+	    - Drop weapons/armor based on abilities
 	- Friendlies?
 - Player animation- attack, transitions?
 - Crafting
@@ -155,6 +158,7 @@ NEEDED FEATURES
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg
+	- Indonesia, Vietnam, New Zealand
 - DEEPEST LORE
 
 Progression:
