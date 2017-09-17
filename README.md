@@ -155,6 +155,7 @@ NEEDED FEATURES
 		- Orbit (revolves around player)
 - Waves
 - Way to get any random item (like instability orbs)
+- Fish breeding
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg
