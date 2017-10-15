@@ -161,6 +161,8 @@ class Player(EntityLiving):
                 self.remove_held_item()
     
     def left_click_discrete(self, world, mouse_pos, viewport, background):
+        if self.attack is not None:
+            return
         held_item = self.get_held_item()
         if held_item is not None:
             damage = held_item.get_attack_damage()
@@ -172,8 +174,8 @@ class Player(EntityLiving):
             reach = ent.DamageSourceSweep.DEFAULT_REACH
         pos = self.pos[:]
         angle = self.find_angle(mouse_pos, viewport)
-        attack = DamageSourceSweep(pos, damage, knockback, reach, angle, "", self, 30) #TODO: offset with mouse_pos
-        world.create_entity(attack)
+        self.attack = DamageSourceSweep(pos, damage, knockback, reach, angle, "", self, 30)
+        world.create_entity(self.attack)
     
     def right_click_discrete(self, world, mouse_pos, viewport, background):
         item = self.get_held_item()

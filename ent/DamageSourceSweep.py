@@ -13,6 +13,7 @@ class DamageSourceSweep(DamageSource):
         super().__init__(pos, damage, knockback, imageurl, parent, decay)
         if self.parent == None:
             raise AttributeError("DamageSourceSweep must have a parent.")
+        self.parent.attack = self
         self.reach = reach
         self.max_decay = decay
         if -math.pi / 2 < angle < math.pi / 2:
@@ -61,3 +62,7 @@ class DamageSourceSweep(DamageSource):
         pygame.draw.rect(screen, Game.RED, \
                          pygame.rect.Rect(Convert.pixels_to_viewport(self.bounding_box.topleft, Game.viewport), \
                                           (self.bounding_box.width, self.bounding_box.height)))
+    
+    def destroy(self, world):
+        super().destroy(world)
+        self.parent.attack = None

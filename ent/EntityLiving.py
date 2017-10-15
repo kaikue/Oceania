@@ -15,6 +15,7 @@ class EntityLiving(Entity):
         self.hurt = False
         self.hurt_time = -1
         self.knockback = [0, 0]
+        self.attack = None
     
     def update(self, world):
         if self.hurt_time > -1:
@@ -70,3 +71,5 @@ class EntityLiving(Entity):
     
     def die(self, world):
         world.remove_entity(self)
+        if self.attack is not None:
+            self.attack.destroy(world)

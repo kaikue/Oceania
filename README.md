@@ -57,9 +57,8 @@ TODO
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
 - Keybinding (first in config, then in game menu)
-- DamageSourceStab and spear
+- DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
-- Only let player have one sweep attack at a time
 - Autoswing weapons
 - Render attacks (separate arm animation)
 

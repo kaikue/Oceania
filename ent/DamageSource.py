@@ -20,10 +20,13 @@ class DamageSource(Entity):
         
         if self.decay > -1:
             if self.decay == 0:
-                world.remove_entity(self)
+                self.destroy(world)
             self.decay -= 1
     
     def collide_with(self, entity, world):
         if isinstance(entity, EntityLiving):
             if self.parent != entity:
                 entity.damage(self, world)
+    
+    def destroy(self, world):
+        world.remove_entity(self)
