@@ -8,6 +8,7 @@ from itm import ItemStack
 import World
 from Inventory import Inventory
 import ent.DamageSource
+from ent.DamageSourceSweep import DamageSourceSweep
 from ent.EntityLiving import EntityLiving
 
 
@@ -164,13 +165,15 @@ class Player(EntityLiving):
         if held_item is not None:
             damage = held_item.get_attack_damage()
             knockback = held_item.get_knockback()
+            reach = 32 #TODO
         else:
             damage = ent.DamageSource.DEFAULT_ATTACK
             knockback = ent.DamageSource.DEFAULT_KNOCKBACK
+            reach = ent.DamageSource.DEFAULT_REACH
         pos = self.pos[:]
-        attack = ent.DamageSource.DamageSource(pos, damage, knockback, "img/attack.png", self, True, 30) #TODO: offset with mouse_pos
+        angle = self.find_angle(mouse_pos, viewport)
+        attack = DamageSourceSweep(pos, damage, knockback, reach, angle, "", self, 30) #TODO: offset with mouse_pos
         world.create_entity(attack)
-        #TODO: animate held item swinging
     
     def right_click_discrete(self, world, mouse_pos, viewport, background):
         item = self.get_held_item()

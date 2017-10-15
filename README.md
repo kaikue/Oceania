@@ -57,6 +57,8 @@ TODO
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
 - Keybinding (first in config, then in game menu)
+- Replace all super(Class, self) with super()
+- Is DamageSource move with parent even necessary?
 
 NEEDED FEATURES
 --

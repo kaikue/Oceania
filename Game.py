@@ -24,6 +24,7 @@ MEDIUM_GRAY = (160, 160, 160)
 TRANSPARENT = (0, 0, 0, 0)
 SKY = (128, 128, 255)
 BLUE = (62, 121, 221)
+RED = (255, 0, 0)
 
 DEBUG = True #displays fps, coords, etc.
 

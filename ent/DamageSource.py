@@ -1,9 +1,11 @@
+import Game
 from Entity import Entity
 from ent.EntityLiving import EntityLiving
 
 DEFAULT_ATTACK = 1
 DEFAULT_KNOCKBACK = 0.2 #make sure this is a multiple of KNOCKBACK_FALLOFF
 KNOCKBACK_FALLOFF = 0.01
+DEFAULT_REACH = Game.BLOCK_SIZE * Game.SCALE
 
 class DamageSource(Entity):
     
@@ -23,7 +25,6 @@ class DamageSource(Entity):
             if self.move_with_parent:
                 for i in (0, 1):
                     self.pos[i] += self.parent.vel[i]
-                self.parent_old_pos = self.parent.pos
         
         if self.decay > -1:
             if self.decay == 0:
