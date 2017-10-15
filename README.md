@@ -28,7 +28,6 @@ TODO
         - crop to CTM- pipes are really noticeable
     - Dark colored borders
 - Mod support (additional classes & jsons in mod folder)
-- Render full block image for block itemstacks in inventory
 - Favorite items so they don't get mass-transferred (or dropped?)
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
@@ -61,6 +60,7 @@ TODO
 - Autoswing weapons
 - Render attacks (separate arm animation)
 - Snap EntityLiving to big pixel grid if vel = 0
+- Player jumps between swimming and stopped images while slowing down while hitting a block
 
 NEEDED FEATURES
 --
@@ -161,6 +161,7 @@ NEEDED FEATURES
 - Waves
 - Way to get any random item (like instability orbs)
 - Fish breeding
+- Minimap
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg

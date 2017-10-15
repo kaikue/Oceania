@@ -123,7 +123,7 @@ def load_blocks():
                 icon = blockimg.copy()
             item_images[block["name"]] = Images.make_itemdrop_image(icon)
             foreground_image = Images.scale(blockimg, Game.SCALE)
-            block_images[False][bid] = foreground_image
+            block_images[False][bid] = Images.crop(foreground_image)
             #blit the image onto the water tile so it isn't just empty transparency
             image = blockimg.copy()
             for x in range(image.get_width() // Game.BLOCK_SIZE):

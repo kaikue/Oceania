@@ -1,8 +1,6 @@
-import pygame
 import Game
 import World
 import gui.GUI as GUI
-import Images
 import importlib
 import ent.DamageSource
 
@@ -79,7 +77,10 @@ class ItemStack(object):
         pass
     
     def render(self, pos, screen):
-        screen.blit(self.img, (pos[0] + GUI.SCALING / 6, pos[1] + GUI.SCALING / 6))
+        img = self.img
+        if self.can_place:
+            img = World.block_images[False][World.get_block_id(self.name)]
+        screen.blit(img, (pos[0] + GUI.SCALING / 6, pos[1] + GUI.SCALING / 6))
         if self.stackable:
             countimg = Game.get_font().render(str(self.count), 0, Game.WHITE)
             screen.blit(countimg, (pos[0] + 3 * Game.SCALE, pos[1] + 3 * Game.SCALE))

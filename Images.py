@@ -30,11 +30,11 @@ def load_images():
     global highlight_image
     highlight_image = load_imageurl("img/gui/highlight.png")
 
-def flip_horizontal(image):
-    return pygame.transform.flip(image, True, False)
+def flip_horizontal(img):
+    return pygame.transform.flip(img, True, False)
 
-def rotate(image, angle):
-    return pygame.transform.rotate(image, angle)
+def rotate(img, angle):
+    return pygame.transform.rotate(img, angle)
 
 def scale(img, scale):
     return pygame.transform.scale(img, (scale * img.get_width(), scale * img.get_height()))
@@ -45,3 +45,9 @@ def make_itemdrop_image(blockimg):
     img.blit(blockimg, (0, 0))
     img = pygame.transform.scale(img, (Game.BLOCK_SIZE // Game.SCALE, Game.BLOCK_SIZE // Game.SCALE))
     return pygame.transform.scale(img, (Game.BLOCK_SIZE, Game.BLOCK_SIZE))
+
+def crop(blockimg):
+    #takes scaled block image
+    img = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA, 32).convert_alpha()
+    img.blit(blockimg, (0, 0))
+    return img
