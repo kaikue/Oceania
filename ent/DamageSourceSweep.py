@@ -29,13 +29,22 @@ class DamageSourceSweep(DamageSource):
         #all calculations in pixels
         px = self.parent.bounding_box.centerx + self.reach * math.cos(angle)
         py = self.parent.bounding_box.centery + self.reach * math.sin(angle)
+        pw = self.parent.bounding_box.centerx - px
+        ph = self.parent.bounding_box.centery - py
+        
+        if pw < 0:
+            pw *= -1
+            px -= pw
+        if ph < 0:
+            ph *= -1
+            py -= ph
+        
         self.bounding_box.x = px
         self.bounding_box.y = py
-        self.bounding_box.width = self.parent.bounding_box.centerx - px
-        self.bounding_box.height = self.parent.bounding_box.centery - py
+        self.bounding_box.width = pw
+        self.bounding_box.height = ph
         
         #TODO: make it more thicc, centered on px and py
-        #TODO: make work properly for other quadrants (no negative widths and stuff)
         
     
     def render(self, screen, pos):

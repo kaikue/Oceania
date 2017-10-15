@@ -5,7 +5,7 @@ from ent.EntityLiving import EntityLiving
 DEFAULT_ATTACK = 1
 DEFAULT_KNOCKBACK = 0.2 #make sure this is a multiple of KNOCKBACK_FALLOFF
 KNOCKBACK_FALLOFF = 0.01
-DEFAULT_REACH = 2 * Game.BLOCK_SIZE * Game.SCALE
+DEFAULT_REACH = 2 * Game.BLOCK_SIZE * Game.SCALE #in pixels
 
 class DamageSource(Entity):
     

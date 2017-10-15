@@ -60,6 +60,7 @@ TODO
 - Is DamageSource move with parent even necessary?
 - Add reach attribute to items (just weapons)
 - Only let player have one sweep attack at a time
+- Autoswing weapons
 
 NEEDED FEATURES
 --
