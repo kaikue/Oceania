@@ -59,7 +59,6 @@ TODO
 - Add reach attribute to items (just weapons)
 - Autoswing weapons
 - Render attacks (separate arm animation)
-- Snap EntityLiving to big pixel grid if vel = 0
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 
 NEEDED FEATURES

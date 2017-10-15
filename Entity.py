@@ -43,7 +43,11 @@ class Entity(object):
     
     def tentative_move(self, world, old_pos, index):
         if self.vel[index] == 0:
-            #don't do all this if you don't have to- this "fixes" a chunkloading bug
+            #don't do the collision stuff if we don't have to- this "fixes" a chunkloading bug
+            #just clamp to scaled pixel position
+            world_pos = Convert.world_to_pixel(self.pos[index])
+            clamped_pos = (world_pos // Game.SCALE) / Game.BLOCK_SIZE
+            self.pos[index] = clamped_pos
             return
         
         self.pos[index] += self.vel[index]
