@@ -10,7 +10,7 @@ MIN_SIZE = Game.BLOCK_SIZE / 2 * Game.SCALE #in pixels
 class DamageSourceSweep(DamageSource):
     
     def __init__(self, pos, damage, knockback, reach, angle, imageurl = "", parent = None, decay = 100):
-        super().__init__(pos, damage, knockback, imageurl, parent, True, decay)
+        super().__init__(pos, damage, knockback, imageurl, parent, decay)
         if self.parent == None:
             raise AttributeError("DamageSourceSweep must have a parent.")
         self.reach = reach
@@ -27,7 +27,7 @@ class DamageSourceSweep(DamageSource):
         super().update(world)
         
         t = (self.max_decay - self.decay) / self.max_decay
-        angle = (1 - t) * self.angle_start + t * self.angle_end #TODO: swing downward if on left
+        angle = (1 - t) * self.angle_start + t * self.angle_end
         
         #all calculations in pixels
         px = self.parent.bounding_box.centerx + self.reach * math.cos(angle)

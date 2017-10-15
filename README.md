@@ -29,7 +29,7 @@ TODO
     - Dark colored borders
 - Mod support (additional classes & jsons in mod folder)
 - Make image loading only happen once ever (for itemdrops especially)
-    - Don't render giant blocks in player's hand- use BlockDrop versions
+    - Don't render giant blocks in player's hand- use BlockDrop versions except for tools
 - Favorite items so they don't get mass-transferred (or dropped?)
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
@@ -57,10 +57,11 @@ TODO
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
 - Keybinding (first in config, then in game menu)
-- Is DamageSource move with parent even necessary?
+- DamageSourceStab and spear
 - Add reach attribute to items (just weapons)
 - Only let player have one sweep attack at a time
 - Autoswing weapons
+- Render attacks (separate arm animation)
 
 NEEDED FEATURES
 --
