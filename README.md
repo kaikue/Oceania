@@ -58,6 +58,8 @@ TODO
 - CTM rendering is slow- figure out some solution for large contiguous masses
 - Keybinding (first in config, then in game menu)
 - Is DamageSource move with parent even necessary?
+- Add reach attribute to items (just weapons)
+- Only let player have one sweep attack at a time
 
 NEEDED FEATURES
 --

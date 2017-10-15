@@ -165,7 +165,7 @@ class Player(EntityLiving):
         if held_item is not None:
             damage = held_item.get_attack_damage()
             knockback = held_item.get_knockback()
-            reach = 32 #TODO
+            reach = ent.DamageSource.DEFAULT_REACH #TODO
         else:
             damage = ent.DamageSource.DEFAULT_ATTACK
             knockback = ent.DamageSource.DEFAULT_KNOCKBACK
