@@ -165,11 +165,11 @@ class Player(EntityLiving):
         if held_item is not None:
             damage = held_item.get_attack_damage()
             knockback = held_item.get_knockback()
-            reach = ent.DamageSource.DEFAULT_REACH #TODO
+            reach = ent.DamageSourceSweep.DEFAULT_REACH #TODO
         else:
             damage = ent.DamageSource.DEFAULT_ATTACK
             knockback = ent.DamageSource.DEFAULT_KNOCKBACK
-            reach = ent.DamageSource.DEFAULT_REACH
+            reach = ent.DamageSourceSweep.DEFAULT_REACH
         pos = self.pos[:]
         angle = self.find_angle(mouse_pos, viewport)
         attack = DamageSourceSweep(pos, damage, knockback, reach, angle, "", self, 30) #TODO: offset with mouse_pos
