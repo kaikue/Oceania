@@ -108,5 +108,5 @@ class InventoryGUI(GUI.GUI):
     def close(self, world):
         if self.moving_item is not None:
             chunk = world.loaded_chunks.get(Convert.world_to_chunk(self.player.pos[0])[1])
-            chunk.entities.append(ItemDrop(self.player.pos, self.moving_item.name, self.moving_item.imageurl, self.moving_item.data, self.moving_item.count))
+            chunk.entities.append(ItemDrop(self.player.pos, self.moving_item.name, self.moving_item.data, self.moving_item.count))
             self.moving_item = None

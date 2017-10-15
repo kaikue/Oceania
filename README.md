@@ -25,11 +25,10 @@ TODO
     - Game icon
         - also make this load during startup, not world creation
     - Block breaking animation
-        - crop to CTM
+        - crop to CTM- pipes are really noticeable
     - Dark colored borders
 - Mod support (additional classes & jsons in mod folder)
-- Make image loading only happen once ever (itemdrops, itemstacks)
-    - Don't render giant blocks in player's hand- use BlockDrop versions except for tools
+- Render full block image for block itemstacks in inventory
 - Favorite items so they don't get mass-transferred (or dropped?)
 - WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)

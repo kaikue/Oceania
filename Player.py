@@ -261,7 +261,7 @@ class Player(EntityLiving):
                         chunk.entities.remove(entity)
                         blockentity = entity
                         break
-            chunk.entities.append(ItemDrop(block_pos, block["name"], block["image"], blockentity))
+            chunk.entities.append(ItemDrop(block_pos, block["name"], blockentity))
     
     def get_color(self, background):
         if background:
