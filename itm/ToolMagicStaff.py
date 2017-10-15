@@ -11,7 +11,7 @@ class ToolMagicStaff(ItemTool.ItemTool):
     def use_discrete(self, world, player, mouse_pos, viewport):
         #TODO: different types of projectile
         pos = player.pos[:]
-        damage_source = DamageSource.DamageSource(pos, 5, 0.5, "img/projectiles/orb.png", player, 60)
+        damage_source = DamageSource.DamageSource(pos, 5, 0.5, "img/projectiles/orb.png", player, False, 60)
         pixel_player_pos = Convert.world_to_viewport(pos, viewport)
         difference = (mouse_pos[0] - pixel_player_pos[0],
                       mouse_pos[1] - pixel_player_pos[1])

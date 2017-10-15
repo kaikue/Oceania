@@ -167,7 +167,8 @@ class Player(EntityLiving):
         else:
             damage = ent.DamageSource.DEFAULT_ATTACK
             knockback = ent.DamageSource.DEFAULT_KNOCKBACK
-        attack = ent.DamageSource.DamageSource(self.pos, damage, knockback, "img/attack.png", self, 30) #TODO: offset with mouse_pos
+        pos = self.pos[:]
+        attack = ent.DamageSource.DamageSource(pos, damage, knockback, "img/attack.png", self, True, 30) #TODO: offset with mouse_pos
         world.create_entity(attack)
         #TODO: animate held item swinging
     

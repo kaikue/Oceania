@@ -67,6 +67,7 @@ NEEDED FEATURES
         - Air pockets?
     - Hydrothermal vents
     - Redo worldgen to be Perlin noise based
+		- AccidentalNoiseLib- https://stackoverflow.com/questions/145270/calling-c-c-from-python
     - Biomes
     	- Island
     	- Beach

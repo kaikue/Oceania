@@ -7,21 +7,23 @@ KNOCKBACK_FALLOFF = 0.01
 
 class DamageSource(Entity):
     
-    def __init__(self, pos, damage, knockback, imageurl = "", parent = None, decay = -1):
+    def __init__(self, pos, damage, knockback, imageurl = "", parent = None, move_with_parent = True, decay = -1):
         super(DamageSource, self).__init__(pos, imageurl)
         self.damage = damage
         self.knockback = knockback
         #self.damage_type = damage_type #TODO: different types of damage e.g. sword, explosion, etc.
         self.parent = parent
+        self.move_with_parent = move_with_parent
         self.decay = decay
     
     def update(self, world):
         super(DamageSource, self).update(world)
         
         if self.parent is not None:
-            #TODO: move with parent? right now it does that from the pos reference
-            # and bullets shouldn't do that anyway
-            pass
+            if self.move_with_parent:
+                for i in (0, 1):
+                    self.pos[i] += self.parent.vel[i]
+                self.parent_old_pos = self.parent.pos
         
         if self.decay > -1:
             if self.decay == 0:
