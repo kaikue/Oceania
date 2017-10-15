@@ -8,7 +8,7 @@ class ItemDrop(Entity):
     def __init__(self, pos, name, imageurl, data = None, count = 1):
         #center the position in the block
         pos = [pos[0] + 0.25, pos[1] + 0.25]
-        super(ItemDrop, self).__init__(pos, imageurl)
+        super().__init__(pos, imageurl)
         self.name = name
         self.data = data
         self.count = count

@@ -9,7 +9,7 @@ class EntityPuzzlePiece(Entity.Entity):
         #puzzle_pos must be a pair of ints from 0 to 3, not including (0, 0)
         self.puzzle_pos = puzzle_pos
         imageurl = "img/puzzle/puzzle_" + str(puzzle_pos[1]) + "_" + str(puzzle_pos[0]) + ".png"
-        super(EntityPuzzlePiece, self).__init__(pos, imageurl, False)
+        super().__init__(pos, imageurl, False)
         self.animating = False
         self.animation_stage = 0
         self.locked = False

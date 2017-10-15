@@ -9,7 +9,7 @@ PATHFINDING_TIMER = 50
 class EntityEnemy(EntityLiving):
     
     def __init__(self, pos, imageurl, health):
-        super(EntityEnemy, self).__init__(pos, imageurl, health)
+        super().__init__(pos, imageurl, health)
         self.max_speed = 0.1
         self.acceleration = 0.001
         self.timer = 0
@@ -20,7 +20,7 @@ class EntityEnemy(EntityLiving):
         hspeed = min(abs(self.vel[0] + self.acceleration * self.move_dir[0]), self.max_speed) * self.move_dir[0]
         vspeed = min(abs(self.vel[1] + self.acceleration * self.move_dir[1]), self.max_speed) * self.move_dir[1]
         self.vel = [hspeed, vspeed]
-        super(EntityEnemy, self).update(world)
+        super().update(world)
     
     def find_move_dir(self, world):
         move_dir = [0, 0]
@@ -124,4 +124,4 @@ class EntityEnemy(EntityLiving):
     
     def die(self, world):
         #TODO: spawn drops
-        super(EntityEnemy, self).die(world)
+        super().die(world)

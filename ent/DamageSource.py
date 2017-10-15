@@ -10,7 +10,7 @@ DEFAULT_REACH = Game.BLOCK_SIZE * Game.SCALE
 class DamageSource(Entity):
     
     def __init__(self, pos, damage, knockback, imageurl = "", parent = None, move_with_parent = True, decay = -1):
-        super(DamageSource, self).__init__(pos, imageurl)
+        super().__init__(pos, imageurl)
         self.damage = damage
         self.knockback = knockback
         #self.damage_type = damage_type #TODO: different types of damage e.g. sword, explosion, etc.
@@ -19,7 +19,7 @@ class DamageSource(Entity):
         self.decay = decay
     
     def update(self, world):
-        super(DamageSource, self).update(world)
+        super().update(world)
         
         if self.parent is not None:
             if self.move_with_parent:

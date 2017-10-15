@@ -7,7 +7,7 @@ import Images
 class ChestGUI(InventoryGUI):
     
     def __init__(self, chest_inventory, player, imageurl):
-        super(ChestGUI, self).__init__(player, imageurl)
+        super().__init__(player, imageurl)
         self.chest_inventory = chest_inventory
         self.transfer_down_image = Images.load_imageurl("img/gui/arrow_down.png")
         self.transfer_up_image = Images.load_imageurl("img/gui/arrow_up.png")
@@ -17,7 +17,7 @@ class ChestGUI(InventoryGUI):
         self.transfer_up_position = (self.left + GUI.SCALING * 5 / 8, self.top + GUI.SCALING * 39 / 8)
     
     def render(self, screen):
-        super(InventoryGUI, self).render(screen)
+        super().render(screen)
         
         self.chest_inventory.render(self.left, self.top, screen, False, self.moving_item)
         self.player.inventory.render(self.left, self.top + GUI.SCALING * 51 / 12, screen, True, self.moving_item)

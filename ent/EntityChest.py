@@ -6,10 +6,10 @@ from gui.ChestGUI import ChestGUI
 class EntityChest(Entity.Entity):
     def __init__(self, pos, chunk, background=False):
         self.inventory = Inventory.Inventory(4, 10)
-        super(EntityChest, self).__init__(pos, "", background)
+        super().__init__(pos, "", background)
     
     def load_image(self):
-        super(EntityChest, self).load_image()
+        super().load_image()
         for row in self.inventory:
             for item in row:
                 if item is not None:

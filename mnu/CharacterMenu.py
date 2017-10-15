@@ -41,15 +41,15 @@ class CharacterMenu(Menu):
         
         self.load_images()
         
-        super(CharacterMenu, self).__init__([random_button, 
-                                             l_hair_color_button, r_hair_color_button,
-                                             l_hair_style_button, r_hair_style_button,
-                                             l_body_button, r_body_button,
-                                             l_tail_button, r_tail_button,
-                                             back_button, create_button],
-                                            [title_label, 
-                                             hair_color_label, hair_style_label,
-                                             body_label, tail_label], True)
+        super().__init__([random_button, 
+                          l_hair_color_button, r_hair_color_button,
+                          l_hair_style_button, r_hair_style_button,
+                          l_body_button, r_body_button,
+                          l_tail_button, r_tail_button,
+                          back_button, create_button],
+                         [title_label, 
+                          hair_color_label, hair_style_label,
+                          body_label, tail_label], True)
     
     def get_category_y(self, category):
         return Game.SCREEN_HEIGHT * 3 // 10 + category * (Button.HEIGHT + Game.SCALE)

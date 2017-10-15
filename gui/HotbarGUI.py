@@ -6,7 +6,7 @@ import gui.GUI as GUI
 class HotbarGUI(GUI.GUI):
     
     def __init__(self, player, imageurl):
-        super(HotbarGUI, self).__init__(imageurl)
+        super().__init__(imageurl)
         self.player = player
         self.img_heart_full = Images.load_imageurl("img/gui/heart.png")
         self.img_heart_empty = Images.load_imageurl("img/gui/heart_empty.png")

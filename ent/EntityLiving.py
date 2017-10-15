@@ -9,7 +9,7 @@ INVINCIBLE_FRAMES = 30
 class EntityLiving(Entity):
     
     def __init__(self, pos, imageurl, health):
-        super(EntityLiving, self).__init__(pos, imageurl)
+        super().__init__(pos, imageurl)
         self.max_health = health
         self.health = health
         self.hurt = False
@@ -29,10 +29,10 @@ class EntityLiving(Entity):
         if self.knockback[1] != 0:
             self.vel[1] += self.knockback[1]
             self.knockback[1] += math.copysign(ent.DamageSource.KNOCKBACK_FALLOFF, -self.knockback[1])
-        super(EntityLiving, self).update(world)
+        super().update(world)
     
     def render(self, screen, pos):
-        super(EntityLiving, self).render(screen, pos)
+        super().render(screen, pos)
         if self.hurt:
             mask = pygame.mask.from_surface(self.img)
             olist = mask.outline()

@@ -27,14 +27,14 @@ class WorldNameMenu(Menu):
         name_label = Label("Name", (Game.SCREEN_WIDTH // 5 - Label.SMALL_WIDTH / 2, Game.SCREEN_HEIGHT // 3), True)
         seed_label = Label("Seed", (Game.SCREEN_WIDTH // 5 - Label.SMALL_WIDTH / 2, Game.SCREEN_HEIGHT // 2), True)
         
-        super(WorldNameMenu, self).__init__([back_button, next_button], [title_label, name_label, seed_label], True)
+        super().__init__([back_button, next_button], [title_label, name_label, seed_label], True)
     
     def mouse_release(self):
         for text_field in self.text_fields:
             text_field.selected = False
             if text_field.get_rect().collidepoint(pygame.mouse.get_pos()):
                 text_field.select()
-        super(WorldNameMenu, self).mouse_release()
+        super().mouse_release()
     
     def type(self, char):
         for text_field in self.text_fields:

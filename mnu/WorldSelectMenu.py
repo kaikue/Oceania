@@ -28,7 +28,7 @@ class WorldSelectMenu(Menu):
         
         title_label = Label("Select World", (Game.SCREEN_WIDTH / 2 - Label.WIDTH / 2, Game.SCREEN_HEIGHT // 15))
         
-        super(WorldSelectMenu, self).__init__([scroll_up_button, scroll_down_button, create_world_button, back_button], [title_label], True)
+        super().__init__([scroll_up_button, scroll_down_button, create_world_button, back_button], [title_label], True)
         
         self.world_buttons = []
         self.display_worlds()

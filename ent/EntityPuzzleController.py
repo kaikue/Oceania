@@ -7,7 +7,7 @@ class EntityPuzzleController(Entity.Entity):
     SIZE = 4
     
     def __init__(self, pos, chunk):
-        super(EntityPuzzleController, self).__init__(pos, "", False)
+        super().__init__(pos, "", False)
         self.pieces = []
         for r in range(EntityPuzzleController.SIZE):
             for c in range(EntityPuzzleController.SIZE):

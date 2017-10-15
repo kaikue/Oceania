@@ -28,7 +28,7 @@ class Player(EntityLiving):
         self.body_color = options[2]
         self.tail_color = options[3]
         
-        super(Player, self).__init__(pos, "", 20)
+        super().__init__(pos, "", 20)
         self.max_speed = 0.25
         self.acceleration = 0.01
         self.inventory = Inventory(5, 10)
@@ -74,7 +74,7 @@ class Player(EntityLiving):
         hspeed = min(abs(self.vel[0] + self.acceleration * self.move_dir[0]), self.max_speed) * self.move_dir[0]
         vspeed = min(abs(self.vel[1] + self.acceleration * self.move_dir[1]), self.max_speed) * self.move_dir[1]
         self.vel = [hspeed, vspeed]
-        super(Player, self).update(world)
+        super().update(world)
         self.update_image()
         
         new_chunk = self.get_chunk()
@@ -116,7 +116,7 @@ class Player(EntityLiving):
     
     def render(self, screen, pos):
         screen.blit(self.tail_img, pos)
-        super(Player, self).render(screen, pos)
+        super().render(screen, pos)
         screen.blit(self.hair_img, pos)
         
         item = self.get_held_item()
@@ -124,7 +124,7 @@ class Player(EntityLiving):
             screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.SCALE * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.SCALE / 16)])
     
     def collide_with(self, entity, world):
-        super(Player, self).collide_with(entity, world)
+        super().collide_with(entity, world)
         if isinstance(entity, ItemDrop):
             if self.inventory.insert(entity.get_itemstack()) == None:
                 world.remove_entity(entity)

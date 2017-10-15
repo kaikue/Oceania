@@ -8,14 +8,14 @@ import gui.GUI as GUI
 class InventoryGUI(GUI.GUI):
     
     def __init__(self, player, imageurl):
-        super(InventoryGUI, self).__init__(imageurl)
+        super().__init__(imageurl)
         self.player = player
         self.left = (Game.SCREEN_WIDTH - self.width) // 2
         self.top = (Game.SCREEN_HEIGHT - self.height) // 2
         self.moving_item = None
     
     def render(self, screen):
-        super(InventoryGUI, self).render(screen)
+        super().render(screen)
         self.player.inventory.render(self.left, self.top, screen, True, self.moving_item)
         self.draw_moving_item(screen)
     
