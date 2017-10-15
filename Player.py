@@ -121,7 +121,10 @@ class Player(EntityLiving):
         
         item = self.get_held_item()
         if item is not None:
-            screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.SCALE * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.SCALE / 16)])
+            self.render_held_item(screen, pos, item)
+    
+    def render_held_item(self, screen, pos, item):
+        screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.SCALE * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.SCALE / 16)])
     
     def collide_with(self, entity, world):
         super().collide_with(entity, world)

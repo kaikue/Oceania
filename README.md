@@ -28,7 +28,7 @@ TODO
         - crop to CTM
     - Dark colored borders
 - Mod support (additional classes & jsons in mod folder)
-- Make image loading only happen once ever (for itemdrops especially)
+- Make image loading only happen once ever (itemdrops, itemstacks)
     - Don't render giant blocks in player's hand- use BlockDrop versions except for tools
 - Favorite items so they don't get mass-transferred (or dropped?)
 - WAILA
@@ -61,6 +61,7 @@ TODO
 - Add reach attribute to items (just weapons)
 - Autoswing weapons
 - Render attacks (separate arm animation)
+- Snap EntityLiving to big pixel grid if vel = 0
 
 NEEDED FEATURES
 --

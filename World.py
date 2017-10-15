@@ -27,7 +27,7 @@ structures = {}
 blocks = {}
 block_images = {}
 ctm_block_images = {}
-block_icons = {}
+block_drop_images = {}
 block_mappings = {}
 id_mappings = {}
 items = {}
@@ -76,8 +76,8 @@ def load_blocks():
     pygame.display.set_icon(water_image) #TODO: change the icon to something better
     
     bid = 0
-    global block_icons
-    block_icons = {False:{}, True:{}}
+    global block_drop_images
+    block_drop_images = {}
     global block_images
     block_images = {False:{}, True:{}}
     global ctm_block_images
@@ -122,9 +122,7 @@ def load_blocks():
                 icon.blit(blockimg, (0, 0))
             else:
                 icon = blockimg.copy()
-            #blockicons[False] is the unscaled version for blockdrops, [True] is scaled up for inventory rendering
-            block_icons[False][bid] = icon
-            block_icons[True][bid] = pygame.transform.scale(icon, (Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE))
+            block_drop_images[bid] = Images.make_itemdrop_image(icon)
             foreground_image = Images.scale(blockimg, Game.SCALE)
             block_images[False][bid] = foreground_image
             #blit the image onto the water tile so it isn't just empty transparency
@@ -136,7 +134,7 @@ def load_blocks():
             for x in range(image.get_width() // Game.BLOCK_SIZE):
                 for y in range(image.get_height() // Game.BLOCK_SIZE):
                     image.blit(st_water_image, (x * Game.BLOCK_SIZE, y * Game.BLOCK_SIZE))
-            background_image = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE))
+            background_image = pygame.transform.scale(image, (image.get_width() * Game.SCALE, image.get_height() * Game.SCALE)) #TODO use Images scale function
             block_images[True][bid] = background_image
             if block["connectedTexture"]:
                 ctm_block_images[False][bid] = {}
