@@ -27,22 +27,18 @@ TODO
     - Block breaking animation
         - crop to CTM- pipes are really noticeable
     - Dark colored borders
-- Mod support (additional classes & jsons in mod folder)
 - Favorite items so they don't get mass-transferred (or dropped?)
-- WAILA
 - Player:44 throws exception when collecting dropped itemstack? (dropping itemstack in wrong chunk?)
 - Click outside of inventory or press R to drop item in world
 - Sliding puzzle lock
     - 3x3 version
     - test solution checking
-- Raycast block breaking and mine closest one instead
 - Pipes
     - Transfer items- how?
     - CTM variations: solid, sametype
 - Move basic item attributes (attack damage, break speed, harvest level) to JSON with defaults
 - Move JSON parsing to separate module, it doesn't belong in World
 - Structures with background- define characters to be pairs of foreground and background blocks
-- Fix acceleration being preserved if releasing left and pressing right at the same time
 - Enemies drop healing hearts when killed
 - When player is hurt, make the whole player image flash red
 - Menus
@@ -56,7 +52,11 @@ TODO
 - Keybinding (first in config, then in game menu)
 - DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
-- Render rotating attacks (separate arm animation) (generate rotated images when doing attack)
+- Render rotating attacks
+    - find proper position to render image (center on player's hand or so)
+    - angle is still wrong
+    - arm- blit separate arm part onto item image?
+    - don't render held item while self.attack is not None
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
 - Attack center is weird when swimming left/right
@@ -100,8 +100,6 @@ NEEDED FEATURES
             - max health increasers
         - Backgrounds in structures- hidden secrets behind some tiles
         - Sliding puzzle lock
-- GUI work
-    - Inventory
 - Entities
     - Enemies
         - Load from JSON
@@ -171,6 +169,8 @@ NEEDED FEATURES
 - Allow player to change scale
     - test different scale values
 - Item that extends attack reach and/or break distance
+- WAILA
+- Mod support (additional classes & jsons in mod folder)
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg

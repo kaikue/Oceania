@@ -257,7 +257,7 @@ class Player(EntityLiving):
             reach = ent.DamageSourceSweep.DEFAULT_REACH
         pos = self.pos[:]
         angle = self.find_angle(mouse_pos, viewport)
-        self.attack = DamageSourceSweep(pos, damage, knockback, reach, angle, "", self, 30)
+        self.attack = DamageSourceSweep(pos, damage, knockback, reach, angle, held_item, self, 30)
         world.create_entity(self.attack)
     
     def get_held_item(self):

@@ -43,7 +43,7 @@ def rotate(img, angle):
     return pygame.transform.rotate(img, angle)
 
 def scale(img, scale):
-    return pygame.transform.scale(img, (scale * img.get_width(), scale * img.get_height()))
+    return pygame.transform.scale(img, (int(scale * img.get_width()), int(scale * img.get_height())))
 
 def make_itemdrop_image(blockimg):
     #takes unscaled block image
