@@ -15,6 +15,7 @@ class DamageSourceSweep(DamageSource):
         self.reach = reach
         self.item = item
         self.max_decay = decay
+        self.angle_mid = angle
         if -math.pi / 2 < angle < math.pi / 2:
             self.side = Game.LEFT
             self.angle_start = angle - math.pi / 2
@@ -34,8 +35,8 @@ class DamageSourceSweep(DamageSource):
         if self.item is not None:
             img = self.item.imgs[0]
             img = Images.scale(img, 1 / Game.SCALE)
-            start_deg = math.degrees(self.angle_start)
-            end_deg = math.degrees(self.angle_end)
+            start_deg = math.degrees(self.angle_start - 2 * self.angle_mid)
+            end_deg = math.degrees(self.angle_end - 2 * self.angle_mid)
             for i in range(0, self.max_decay + 1, FRAME_LENGTH):
                 t = (self.max_decay - i) / self.max_decay
                 angle = (1 - t) * start_deg + t * end_deg + 225

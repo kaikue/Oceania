@@ -53,8 +53,7 @@ TODO
 - DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
 - Render rotating attacks
-    - find proper position to render image (center on player's hand or so)
-    - angle is still wrong
+    - find proper position to render image (center on player's shoulder or so)- use render offset?
     - arm- blit separate arm part onto item image?
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
