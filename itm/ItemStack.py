@@ -24,7 +24,7 @@ class ItemStack(object):
         self.data = data
     
     def load_image(self):
-        self.img = World.item_images[self.name]
+        self.imgs = World.item_images[self.name]
     
     def can_stack(self, itemstack):
         return itemstack is not None and \
@@ -77,9 +77,10 @@ class ItemStack(object):
         pass
     
     def render(self, pos, screen):
-        img = self.img
         if self.can_place:
             img = World.block_images[False][World.get_block_id(self.name)]
+        else:
+            img = self.imgs[0]
         screen.blit(img, (pos[0] + GUI.SCALING / 6, pos[1] + GUI.SCALING / 6))
         if self.stackable:
             countimg = Game.get_font().render(str(self.count), 0, Game.WHITE)

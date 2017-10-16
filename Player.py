@@ -124,7 +124,64 @@ class Player(EntityLiving):
             self.render_held_item(screen, pos, item)
     
     def render_held_item(self, screen, pos, item):
-        screen.blit(item.img, [pos[0] - (Game.BLOCK_SIZE * Game.SCALE * 5 / 8), pos[1] + (Game.BLOCK_SIZE * Game.SCALE / 16)])
+        if self.anim_state == 0:
+            offset_y = Game.BLOCK_SIZE * Game.SCALE * 1 / 16
+            if self.anim_dir == 0: #left
+                offset_x = Game.BLOCK_SIZE * Game.SCALE * -12 / 16
+                if item.can_place:
+                    offset_x += Game.BLOCK_SIZE * Game.SCALE * 2 / 16
+                else:
+                    img = item.imgs[0]
+            else: #right
+                offset_x = Game.BLOCK_SIZE * Game.SCALE * 20 / 16
+                if item.can_place:
+                    offset_x += Game.BLOCK_SIZE * Game.SCALE * -2 / 16
+                else:
+                    img = item.imgs[1]
+        else:
+            if self.anim_dir == 0: #left
+                offset_x = Game.BLOCK_SIZE * Game.SCALE * 0 / 16
+                offset_y = Game.BLOCK_SIZE * Game.SCALE * 12 / 16
+                if self.anim_state == 2:
+                    offset_x += Game.BLOCK_SIZE * Game.SCALE * 1 / 16
+                if item.can_place:
+                    offset_y += Game.BLOCK_SIZE * Game.SCALE * -2 / 16
+                else:
+                    img = item.imgs[2]
+            elif self.anim_dir == 1: #up
+                offset_x = Game.BLOCK_SIZE * Game.SCALE * -12 / 16
+                offset_y = Game.BLOCK_SIZE * Game.SCALE * 0 / 16
+                if self.anim_state == 2:
+                    offset_y += Game.BLOCK_SIZE * Game.SCALE * 1 / 16
+                if item.can_place:
+                    offset_x += Game.BLOCK_SIZE * Game.SCALE * 2 / 16
+                else:
+                    img = item.imgs[0]
+            elif self.anim_dir == 2: #right
+                offset_x = Game.BLOCK_SIZE * Game.SCALE * 27 / 16
+                offset_y = Game.BLOCK_SIZE * Game.SCALE * 12 / 16
+                if self.anim_state == 2:
+                    offset_x -= Game.BLOCK_SIZE * Game.SCALE * 1 / 16
+                if item.can_place:
+                    offset_y += Game.BLOCK_SIZE * Game.SCALE * -2 / 16
+                else:
+                    img = item.imgs[3]
+            else: #down
+                offset_x = Game.BLOCK_SIZE * Game.SCALE * 12 / 16
+                offset_y = Game.BLOCK_SIZE * Game.SCALE * 27 / 16
+                if self.anim_state == 2:
+                    offset_y -= Game.BLOCK_SIZE * Game.SCALE * 1 / 16
+                if item.can_place:
+                    offset_x += Game.BLOCK_SIZE * Game.SCALE * -2 / 16
+                else:
+                    img = item.imgs[4]
+        
+        if item.can_place:
+            img = item.imgs[0]
+            offset_x += Game.BLOCK_SIZE * Game.SCALE * 1 / 4
+            offset_y += Game.BLOCK_SIZE * Game.SCALE * 1 / 4
+        
+        screen.blit(img, [pos[0] + offset_x, pos[1] + offset_y])
     
     def collide_with(self, entity, world):
         super().collide_with(entity, world)

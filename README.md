@@ -43,23 +43,26 @@ TODO
 - Move JSON parsing to separate module, it doesn't belong in World
 - Structures with background- define characters to be pairs of foreground and background blocks
 - Fix acceleration being preserved if releasing left and pressing right at the same time
-- Properly show held item if facing right, swimming, etc.
-- Enemies drop healing hearts
+- Enemies drop healing hearts when killed
 - When player is hurt, make the whole player image flash red
 - Menus
     - Better text fields
     - Scroll wheel scrolls world list
     - Validate name in world creation
     - More options
-    - Quit to main menu in pause menu
+        - Key bindings
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
 - Keybinding (first in config, then in game menu)
 - DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
 - Autoswing weapons
-- Render attacks (separate arm animation)
+- Render attacks (separate arm animation) (generate rotated images when doing attack)
 - Player jumps between swimming and stopped images while slowing down while hitting a block
+- Make item names in tooltips bold
+- Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
+- Player inventory renders in chest position too
+- Attack center is weird when swimming left/right
 
 NEEDED FEATURES
 --
@@ -161,6 +164,15 @@ NEEDED FEATURES
 - Way to get any random item (like instability orbs)
 - Fish breeding
 - Minimap
+- Keybindings
+    - Defaults, can reset to them
+    - Every option must have a keybinding
+    - Left click, right click, scroll wheel up/down/click
+    - Movement WASD/arrow keys
+    - Background lshift/rshift
+    - Hotbar first through tenth slots
+- Allow player to change scale
+    - test different scale values
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg

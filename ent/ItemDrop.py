@@ -13,7 +13,7 @@ class ItemDrop(Entity):
         self.count = count
     
     def load_image(self):
-        self.img = World.item_images[self.name]
+        self.img = World.item_images[self.name][0]
     
     def get_itemstack(self):
         itemstack = ItemStack.itemstack_from_name(self.name)

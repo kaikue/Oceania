@@ -179,9 +179,7 @@ def update():
                 if event.key == pygame.K_ESCAPE:
                     unpause()
             elif gamemode == MAINMENU:
-                if event.key == pygame.K_ESCAPE:
-                    close()
-                elif event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_BACKSPACE:
                     menu.delete()
                 elif event.key == pygame.K_SPACE:
                     menu.type(" ")

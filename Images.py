@@ -33,6 +33,12 @@ def load_images():
 def flip_horizontal(img):
     return pygame.transform.flip(img, True, False)
 
+def flip_vertical(img):
+    return pygame.transform.flip(img, False, True)
+
+def flip_completely(img):
+    return pygame.transform.flip(img, True, True)
+
 def rotate(img, angle):
     return pygame.transform.rotate(img, angle)
 

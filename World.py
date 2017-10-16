@@ -25,9 +25,9 @@ CTM_POSITIONS = \
 biomes = {}
 structures = {}
 blocks = {}
-block_images = {}
+block_images = {} #False:{foreground block ids to image}, True:{background block ids to image}
 ctm_block_images = {}
-item_images = {}
+item_images = {} #[normal, flipped horizontal, rotated 90 degrees CCW, rotated 90 degrees CCW and flipped horizontal, flipped horizontal and vertical]
 block_mappings = {}
 id_mappings = {}
 items = {}
@@ -63,7 +63,14 @@ def load_items():
             item["class"] = "ItemStack"
         if isinstance(item["description"], str):
             item["description"] = [item["description"]]
-        item_images[itemname] = Images.load_imageurl(item["image"])
+        img = Images.load_imageurl(item["image"])
+        
+        img_rotated = Images.rotate(img, 90)
+        item_images[itemname] = [img,
+                                Images.flip_horizontal(img),
+                                img_rotated,
+                                Images.flip_horizontal(img_rotated),
+                                Images.flip_completely(img)]
 
 def load_blocks():
     blocks_file = open("blocks.json", "r")
@@ -121,7 +128,7 @@ def load_blocks():
                 icon.blit(blockimg, (0, 0))
             else:
                 icon = blockimg.copy()
-            item_images[block["name"]] = Images.make_itemdrop_image(icon)
+            item_images[block["name"]] = [Images.make_itemdrop_image(icon)]
             foreground_image = Images.scale(blockimg, Game.SCALE)
             block_images[False][bid] = Images.crop(foreground_image)
             #blit the image onto the water tile so it isn't just empty transparency
