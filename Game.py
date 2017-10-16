@@ -66,6 +66,8 @@ def start():
     pygame.mixer.init()
     global font
     font = pygame.font.Font("fnt/coders_crux.ttf", 16 * SCALE)
+    global big_font
+    big_font = pygame.font.Font("fnt/coders_crux.ttf", 24 * SCALE)
     show_main_menu()
     global gui
     gui = None
@@ -312,8 +314,11 @@ def close():
         world.close()
     sys.exit(0)
 
-def get_font():
-    return font
+def get_font(big = False):
+    if big:
+        return big_font
+    else:
+        return font
 
 def get_worlds():
     parent_dir = "dat"

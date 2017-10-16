@@ -93,10 +93,11 @@ class Inventory(object):
             self.draw_tooltip(screen, display_name, description)
     
     def draw_tooltip(self, screen, name, description = []):
-        font = Game.get_font()
+        font = Game.get_font(False)
+        big_font = Game.get_font(True)
         mouse_pos = pygame.mouse.get_pos()
         
-        name_image = GUI.render_string_array([name], font, 0, Game.WHITE)
+        name_image = GUI.render_string_array([name], big_font, 0, Game.WHITE)
         desc_image = GUI.render_string_array(description, font, 0, Game.WHITE)
         name_width = name_image.get_width()
         name_height = name_image.get_height()

@@ -59,7 +59,6 @@ TODO
 - Autoswing weapons (including pickaxes)
 - Render attacks (separate arm animation) (generate rotated images when doing attack)
 - Player jumps between swimming and stopped images while slowing down while hitting a block
-- Make item names in tooltips bold
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
 - Attack center is weird when swimming left/right
 
