@@ -191,6 +191,10 @@ class Player(EntityLiving):
             if self.inventory.insert(entity.get_itemstack()) == None:
                 world.remove_entity(entity)
     
+    def left_click_continuous(self, world, mouse_pos, viewport, background):
+        self.break_block(world, pygame.mouse.get_pos(), viewport, background)
+        self.do_attack(world, mouse_pos, viewport)
+    
     def right_click_continuous(self, world, mouse_pos, viewport, background):
         item = self.get_held_item()
         block_pos = self.find_angle_pos(mouse_pos, viewport)
@@ -222,7 +226,24 @@ class Player(EntityLiving):
                     world.create_entity(blockentity)
                 self.remove_held_item()
     
+    def right_click_discrete(self, world, mouse_pos, viewport, background):
+        item = self.get_held_item()
+        block_pos = self.find_angle_pos(mouse_pos, viewport)
+        entities = world.get_nearby_entities(self.get_chunk())
+        for entity in entities:
+            if entity.collides(block_pos) and entity.background == background:
+                if entity.interact(self, item):
+                    return
+        
+        if item is None:
+            return
+        
+        item.use_discrete(world, self, mouse_pos, viewport)
+    
     def left_click_discrete(self, world, mouse_pos, viewport, background):
+        pass
+    
+    def do_attack(self, world, mouse_pos, viewport):
         if self.attack is not None:
             return
         held_item = self.get_held_item()
@@ -238,20 +259,6 @@ class Player(EntityLiving):
         angle = self.find_angle(mouse_pos, viewport)
         self.attack = DamageSourceSweep(pos, damage, knockback, reach, angle, "", self, 30)
         world.create_entity(self.attack)
-    
-    def right_click_discrete(self, world, mouse_pos, viewport, background):
-        item = self.get_held_item()
-        block_pos = self.find_angle_pos(mouse_pos, viewport)
-        entities = world.get_nearby_entities(self.get_chunk())
-        for entity in entities:
-            if entity.collides(block_pos) and entity.background == background:
-                if entity.interact(self, item):
-                    return
-        
-        if item is None:
-            return
-        
-        item.use_discrete(world, self, mouse_pos, viewport)
     
     def get_held_item(self):
         return self.inventory[0][self.selected_slot]

@@ -56,8 +56,7 @@ TODO
 - Keybinding (first in config, then in game menu)
 - DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
-- Autoswing weapons (including pickaxes)
-- Render attacks (separate arm animation) (generate rotated images when doing attack)
+- Render rotating attacks (separate arm animation) (generate rotated images when doing attack)
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
 - Attack center is weird when swimming left/right
@@ -171,6 +170,7 @@ NEEDED FEATURES
     - Hotbar first through tenth slots
 - Allow player to change scale
     - test different scale values
+- Item that extends attack reach and/or break distance
 - Water suit + island
     - Reverse Atmospheric Diving Suit (Vitallum)
     - https://i.imgur.com/jgcLPXi.jpg

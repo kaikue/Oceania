@@ -206,7 +206,7 @@ def update():
         
         mousebuttons = pygame.mouse.get_pressed()
         if mousebuttons[0]:
-            player.break_block(world, pygame.mouse.get_pos(), viewport, shift)
+            player.left_click_continuous(world, pygame.mouse.get_pos(), viewport, shift)
         if mousebuttons[2]:
             player.right_click_continuous(world, pygame.mouse.get_pos(), viewport, shift)
         player.update(world)
