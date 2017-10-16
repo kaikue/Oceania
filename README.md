@@ -56,7 +56,6 @@ TODO
     - find proper position to render image (center on player's hand or so)
     - angle is still wrong
     - arm- blit separate arm part onto item image?
-    - don't render held item while self.attack is not None
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
 - Attack center is weird when swimming left/right

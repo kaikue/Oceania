@@ -120,7 +120,7 @@ class Player(EntityLiving):
         screen.blit(self.hair_img, pos)
         
         item = self.get_held_item()
-        if item is not None:
+        if item is not None and self.attack is None:
             self.render_held_item(screen, pos, item)
     
     def render_held_item(self, screen, pos, item):
