@@ -56,12 +56,11 @@ TODO
 - Keybinding (first in config, then in game menu)
 - DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
-- Autoswing weapons
+- Autoswing weapons (including pickaxes)
 - Render attacks (separate arm animation) (generate rotated images when doing attack)
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Make item names in tooltips bold
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
-- Player inventory renders in chest position too
 - Attack center is weird when swimming left/right
 
 NEEDED FEATURES

@@ -124,6 +124,8 @@ class Player(EntityLiving):
             self.render_held_item(screen, pos, item)
     
     def render_held_item(self, screen, pos, item):
+        #calculate position of held item in player's hand based on animation state
+        #    as well as whether it's a placeable block
         if self.anim_state == 0:
             offset_y = Game.BLOCK_SIZE * Game.SCALE * 1 / 16
             if self.anim_dir == 0: #left

@@ -17,7 +17,7 @@ class ChestGUI(InventoryGUI):
         self.transfer_up_position = (self.left + GUI.SCALING * 5 / 8, self.top + GUI.SCALING * 39 / 8)
     
     def render(self, screen):
-        super().render(screen)
+        super(InventoryGUI, self).render(screen) #grandparent's method
         
         self.chest_inventory.render(self.left, self.top, screen, False, self.moving_item)
         self.player.inventory.render(self.left, self.top + GUI.SCALING * 51 / 12, screen, True, self.moving_item)
