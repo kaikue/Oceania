@@ -113,6 +113,9 @@ class Player(EntityLiving):
         self.img = self.body_images[self.anim_state][self.anim_dir]
         self.hair_img = self.hair_images[self.anim_state][self.anim_dir]
         self.tail_img = self.tail_images[self.anim_state][self.anim_dir]
+        
+        self.bounding_box.width = self.img.get_width()
+        self.bounding_box.height = self.img.get_height()
     
     def render(self, screen, pos):
         screen.blit(self.tail_img, pos)
