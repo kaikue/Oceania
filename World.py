@@ -202,7 +202,9 @@ class World(object):
             chunk = self.loaded_chunks.get(x)
             for entity in chunk.entities:
                 entity.update(self)
-                if Convert.world_to_chunk(entity.pos[0])[1] != chunk.x and self.loaded_chunks.contains_index(Convert.world_to_chunk(entity.pos[0])[1]):
+                if Convert.world_to_chunk(entity.pos[0])[1] != chunk.x \
+                        and self.loaded_chunks.contains_index(Convert.world_to_chunk(entity.pos[0])[1]) \
+                        and entity in chunk.entities:
                     chunk.entities.remove(entity)
                     self.create_entity(entity)
         for layer in [True, False]:

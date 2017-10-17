@@ -122,6 +122,12 @@ class Entity(object):
             self.height = Convert.pixel_to_world_ceil(self.img.get_height())
     
     def render(self, screen, pos):
+        if Game.DEBUG:
+            #draw bounding rect
+            pygame.draw.rect(screen, Game.BLACK, 
+                             pygame.rect.Rect(Convert.pixels_to_viewport(self.bounding_box.topleft, Game.get_viewport()), 
+                                              (self.bounding_box.width, self.bounding_box.height)), 1)
+        
         if self.img is not None:
             screen.blit(self.img, pos)
     

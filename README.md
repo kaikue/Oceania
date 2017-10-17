@@ -47,17 +47,22 @@ TODO
     - Validate name in world creation
     - More options
         - Key bindings
+    - Delete world button (& confirm dialog)
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
 - Keybinding (first in config, then in game menu)
 - DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
 - Render rotating attacks
-    - find proper position to render image (center on player's shoulder or so)- use render offset?
-    - arm- blit separate arm part onto item image?
+    - arm- blit separate arm part onto item image? and don't render arm
+    - Offset attack when swimming
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
-- Attack center is weird when swimming left/right
+- Player's bounding box is off when swimming
+- Press (or hold?) CTRL to switch to raycast-closest-hit mode (for mining a tunnel)
+- Unpickling messes up inter-object references
+    - DamageSourceSweep item and parent
+- Player can clip into blocks and get stuck with left-pixel-aligning
 
 NEEDED FEATURES
 --
@@ -115,6 +120,7 @@ NEEDED FEATURES
     - Generate blockentity when crafting chests etc.
     - or possibly all in world?
 - Ore processing
+    - http://scholar.chem.nyu.edu/tekpages/Subjects.html
     - https://i.imgur.com/jYvaxQ1.jpg
 - Fruit farming and cooking
 - Combat

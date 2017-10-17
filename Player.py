@@ -119,9 +119,12 @@ class Player(EntityLiving):
         super().render(screen, pos)
         screen.blit(self.hair_img, pos)
         
-        item = self.get_held_item()
-        if item is not None and self.attack is None:
-            self.render_held_item(screen, pos, item)
+        if self.attack is None:
+            item = self.get_held_item()
+            if item is not None:
+                self.render_held_item(screen, pos, item)
+        else:
+            self.attack.render_actual(screen)
     
     def render_held_item(self, screen, pos, item):
         #calculate position of held item in player's hand based on animation state

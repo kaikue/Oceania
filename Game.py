@@ -333,6 +333,9 @@ def get_worlds():
 def get_world():
     return world
 
+def get_viewport():
+    return viewport
+
 def set_gui(g):
     global gui
     gui = g
