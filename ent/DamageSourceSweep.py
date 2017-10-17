@@ -84,7 +84,7 @@ class DamageSourceSweep(DamageSource):
         self.bounding_box.width = pw
         self.bounding_box.height = ph
         
-        #TODO: if player is swimming, add some to the pos
+        #TODO: if player is swimming, maybe add some to the pos?
         parent_w = self.parent.bounding_box.width / Game.BLOCK_SIZE / Game.SCALE
         parent_h = self.parent.bounding_box.height / Game.BLOCK_SIZE / Game.SCALE
         self.pos = [self.parent.pos[0] + parent_w / 2, self.parent.pos[1] + parent_h / 2]

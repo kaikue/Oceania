@@ -55,7 +55,7 @@ TODO
 - Add reach attribute to items (just weapons)
 - Render rotating attacks
     - arm- blit separate arm part onto item image? and don't render arm
-    - Offset attack when swimming (after fixing bounding boxes)
+    - Offset attack when swimming?
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
 - Bounding box issues
@@ -65,7 +65,7 @@ TODO
 - Press (or hold?) CTRL to switch to raycast-closest-hit mode (for mining a tunnel)
 - Unpickling messes up inter-object references
     - DamageSourceSweep item and parent
-- Player can clip into blocks and get stuck with left-pixel-aligning
+- Player doesn't naturally align to grid against a horizontal block collision
 
 NEEDED FEATURES
 --

@@ -46,8 +46,11 @@ class Entity(object):
             #don't do the collision stuff if we don't have to- this "fixes" a chunkloading bug
             #just clamp to scaled pixel position
             world_pos = Convert.world_to_pixel(self.pos[index])
-            clamped_pos = (world_pos // Game.SCALE) / Game.BLOCK_SIZE
-            self.pos[index] = clamped_pos
+            pixel_pos = world_pos / Game.SCALE
+            #prevent clipping left into block
+            clamped_pixel_pos = math.ceil(pixel_pos) if self.facing == Game.LEFT else math.floor(pixel_pos)
+            block_pos = clamped_pixel_pos / Game.BLOCK_SIZE
+            self.pos[index] = block_pos
             return
         
         self.pos[index] += self.vel[index]
