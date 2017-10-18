@@ -59,7 +59,7 @@ TODO
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
 - Bounding box issues
-    - Either keep bounding box fixed (causes issues), or:
+    - Either keep bounding box fixed (block_size * scale square), or:
     - Don't go back to idle animation when not enough room for it (causes clipping into blocks)
     - Keep swimming animation while key is held down (so player can slide into 1 block hole)
 - Press (or hold?) CTRL to switch to raycast-closest-hit mode (for mining a tunnel)
@@ -124,6 +124,7 @@ NEEDED FEATURES
     - or possibly all in world?
 - Ore processing
     - http://scholar.chem.nyu.edu/tekpages/Subjects.html
+    - https://en.wikipedia.org/wiki/Roman_economy#Mining_and_metallurgy
     - https://i.imgur.com/jYvaxQ1.jpg
 - Fruit farming and cooking
 - Combat

@@ -41,6 +41,12 @@ class Entity(object):
                     return True
         return False
     
+    def update_bounding_box(self, index):
+        if index == 0:
+            self.bounding_box.x = Convert.world_to_pixel(self.pos[index])
+        else:
+            self.bounding_box.y = Convert.world_to_pixel(self.pos[index])
+    
     def tentative_move(self, world, old_pos, index):
         if self.vel[index] == 0:
             #don't do the collision stuff if we don't have to- this "fixes" a chunkloading bug
@@ -51,13 +57,11 @@ class Entity(object):
             clamped_pixel_pos = math.ceil(pixel_pos) if self.facing == Game.LEFT else math.floor(pixel_pos)
             block_pos = clamped_pixel_pos / Game.BLOCK_SIZE
             self.pos[index] = block_pos
+            self.update_bounding_box(index)
             return
         
         self.pos[index] += self.vel[index]
-        if index == 0:
-            self.bounding_box.x = Convert.world_to_pixel(self.pos[index])
-        else:
-            self.bounding_box.y = Convert.world_to_pixel(self.pos[index])
+        self.update_bounding_box(index)
         block_left = int(Convert.world_to_chunk(self.pos[0])[0])
         chunk_left = Convert.world_to_chunk(self.pos[0])[1]
         block_right = math.ceil(Convert.world_to_chunk(self.pos[0] + self.width)[0])

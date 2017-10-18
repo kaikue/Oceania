@@ -32,24 +32,24 @@ class DamageSourceSweep(DamageSource):
     def load_image(self):
         self.img = None
         self.imgs = []
+        img = pygame.Surface((Game.BLOCK_SIZE * 3, Game.BLOCK_SIZE * 3), pygame.SRCALPHA, 32).convert_alpha() #not game scale
+        center = img.get_rect().center
+        #TODO: blit small diagonal arm image on img (after blitting item? but before rotation)
         if self.item is not None:
             #TODO: self.item may be a dummy pickled object that hasn't been loaded- what should we do?
             #does the parent reference also get lost? that would be bad
             #self.item.load_image()
             item_img = self.item.imgs[0]
             item_img = Images.scale(item_img, 1 / Game.SCALE)
-            img = pygame.Surface((Game.BLOCK_SIZE * 3, Game.BLOCK_SIZE * 3), pygame.SRCALPHA, 32).convert_alpha() #not game scale
-            center = img.get_rect().center
-            #TODO: blit small diagonal arm image on 2x canvas
             img.blit(item_img, (0, 0))
-            start_deg = math.degrees(self.angle_start - 2 * self.angle_mid)
-            end_deg = math.degrees(self.angle_end - 2 * self.angle_mid)
-            for i in range(0, self.max_decay + 1, FRAME_LENGTH):
-                t = (self.max_decay - i) / self.max_decay
-                angle = (1 - t) * start_deg + t * end_deg + 225
-                rotated_img = Images.rotate(img, angle)
-                rotated_img.get_rect().center = center
-                self.imgs.append(Images.scale(rotated_img, Game.SCALE))
+        start_deg = math.degrees(self.angle_start - 2 * self.angle_mid)
+        end_deg = math.degrees(self.angle_end - 2 * self.angle_mid)
+        for i in range(0, self.max_decay + 1, FRAME_LENGTH):
+            t = (self.max_decay - i) / self.max_decay
+            angle = (1 - t) * start_deg + t * end_deg + 225
+            rotated_img = Images.rotate(img, angle)
+            rotated_img.get_rect().center = center
+            self.imgs.append(Images.scale(rotated_img, Game.SCALE))
     
     def update(self, world):
         super().update(world)
