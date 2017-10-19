@@ -13,7 +13,8 @@ from ent.EntityLiving import EntityLiving
 
 
 BREAK_DIST = Game.BLOCK_SIZE * 5
-ANIM_TIME = 10
+ANIM_TIME_MOVING = 10
+ANIM_TIME_STOPPED = 4 * ANIM_TIME_MOVING
 
 HAIR_COLORS = ["yellow", "red", "brown", "black", "gray", "white", "green", "blue", "none"]
 HAIR_LENGTHS = ["short", "medium", "long"]
@@ -75,47 +76,113 @@ class Player(EntityLiving):
         vspeed = min(abs(self.vel[1] + self.acceleration * self.move_dir[1]), self.max_speed) * self.move_dir[1]
         self.vel = [hspeed, vspeed]
         super().update(world)
-        self.update_image()
+        self.update_image(world) #should this be before the super update?
         
         new_chunk = self.get_chunk()
         if new_chunk != old_chunk:
             world.load_chunks(new_chunk)
     
-    def update_image(self):
+    def transition_to_anim_state(self, anim_state, world):
+        self.transition_to_anim(anim_state, self.anim_dir, world)
+    
+    def transition_to_anim_dir(self, anim_dir, world):
+        if self.anim_state == 0:
+            #this isn't right- we want to go to anim_state 1 or 2
+            print("CLIPPY")
+            anim_dir = anim_dir // 2
+        self.transition_to_anim(self.anim_state, anim_dir, world)
+    
+    def transition_to_anim(self, anim_state, anim_dir, world):
+        new_img = self.body_images[anim_state][anim_dir]
+        new_width = new_img.get_width()
+        new_height = new_img.get_height()
+        old_pos = [self.pos[0], self.pos[1]]
+        old_width = self.bounding_box.width
+        old_height = self.bounding_box.height
+        
+        self.bounding_box.width = new_width
+        self.bounding_box.height = new_height
+        
+        width_shift = (new_width - old_width) / Game.BLOCK_SIZE / Game.SCALE
+        height_shift = (new_height - old_height) / Game.BLOCK_SIZE / Game.SCALE
+        
+        #try aligning to each corner
+        #top left
+        if not self.check_collisions(world):
+            self.set_anim(anim_state, anim_dir, new_img)
+            return True
+        """
+        #top right
+        self.update_pos([self.pos[0] + width_shift, self.pos[1]])
+        if not self.check_collisions(world):
+            self.set_anim(anim_state, anim_dir, new_img)
+            return True
+        
+        #bottom left
+        self.update_pos([self.pos[0], self.pos[1] + height_shift])
+        if not self.check_collisions(world):
+            self.set_anim(anim_state, anim_dir, new_img)
+            return True
+        
+        #bottom right
+        self.update_pos([self.pos[0] + width_shift, self.pos[1] + height_shift])
+        if not self.check_collisions(world):
+            self.set_anim(anim_state, anim_dir, new_img)
+            return True
+        """
+        #transition failed- don't change anything
+        self.update_pos(old_pos)
+        self.bounding_box.width = old_width
+        self.bounding_box.height = old_height
+        print("FAIL", old_height, new_height, anim_state, anim_dir, self.anim_state, self.anim_dir)
+        return False
+    
+    def set_anim(self, anim_state, anim_dir, new_img):
+        #succeeded- actually set the animation
+        self.anim_state = anim_state
+        self.anim_dir = anim_dir
+        if self.anim_state == 0:
+            self.anim_timer = 0
+    
+    def update_anim_timer(self, moving, world):
+        max_time = ANIM_TIME_MOVING if moving else ANIM_TIME_STOPPED
+        self.anim_timer += 1
+        if self.anim_timer >= max_time:
+            self.anim_timer = 0
+            self.anim_frame = not self.anim_frame
+        if self.anim_frame:
+            self.transition_to_anim_state(2, world)
+        else:
+            self.transition_to_anim_state(1, world)
+    
+    def update_image(self, world):
         xvel = Game.cutoff(self.vel[0], 0.01)
         yvel = Game.cutoff(self.vel[1], 0.01)
         
         if xvel != 0 or yvel != 0:
-            self.anim_timer += 1
-            if self.anim_timer == ANIM_TIME:
-                self.anim_timer = 0
-                self.anim_frame = not self.anim_frame
-            if self.anim_frame:
-                self.anim_state = 2
-            else:
-                self.anim_state = 1
+            self.update_anim_timer(True, world)
+            
+            if xvel < 0:
+                self.transition_to_anim_dir(0, world)
+            elif xvel > 0:
+                self.transition_to_anim_dir(2, world)
+            elif yvel < 0:
+                self.transition_to_anim_dir(1, world)
+            elif yvel > 0:
+                self.transition_to_anim_dir(3, world)
         
-        if xvel < 0:
-            self.anim_dir = 0
-        elif xvel > 0:
-            self.anim_dir = 2
-        elif yvel < 0:
-            self.anim_dir = 1
-        elif yvel > 0:
-            self.anim_dir = 3
         else:
             if self.facing == Game.LEFT:
-                self.anim_dir = 0
+                anim_dir = 0
             else:
-                self.anim_dir = 1
-            self.anim_state = 0
-            self.anim_timer = 0
+                anim_dir = 1
+            self.transition_to_anim(0, anim_dir, world)
+            if self.anim_state != 0:
+                self.update_anim_timer(False, world)
+        
         self.img = self.body_images[self.anim_state][self.anim_dir]
         self.hair_img = self.hair_images[self.anim_state][self.anim_dir]
         self.tail_img = self.tail_images[self.anim_state][self.anim_dir]
-        
-        self.bounding_box.width = self.img.get_width()
-        self.bounding_box.height = self.img.get_height()
     
     def render(self, screen, pos):
         screen.blit(self.tail_img, pos)
