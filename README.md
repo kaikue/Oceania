@@ -51,6 +51,7 @@ TODO
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
 - Keybinding (first in config, then in game menu)
+    - Controller support
 - DamageSourceStab and spear- hitbox around tip of spear
 - Add reach attribute to items (just weapons)
 - Render rotating attacks
@@ -108,16 +109,35 @@ NEEDED FEATURES
             - button to blow up structure
             - max health increasers
         - Backgrounds in structures- hidden secrets behind some tiles
-        - Sliding puzzle lock
+        - Dungeons
+            - Sliding puzzle lock
+            - Monster chases you around hallways
+            - 4 branches
+            - Fire/demonic themed
+            - Kelp forest themed- grow stuff
+            - Maze
+            - Creature's nest (crabs?)
+            - Light/color
+            - Should all have a reason to exist in world
+            - Procedurally generate layout?
+    - More stuff in the empty water- enemies, ???
 - Entities
     - Enemies
         - Load from JSON
-        - Spawn where no background
+        - Spawn where no background (or specific based on background)
         - Item drops
         - Attacks
         - More pathfinding options
+        - Fun AI
+            - Sometimes attack each other
+        - Mirror- steals your attack (can be abused with healing)
+        - Mimic
+        - Giant sunfish
     - Bosses
+        - In structures and elsewhere
         - Drop weapons/armor based on abilities
+        - Danmaku
+        - Puzzle
     - Friendlies?
 - Player animation- attack, transitions?
 - Crafting
@@ -130,6 +150,7 @@ NEEDED FEATURES
     - https://en.wikipedia.org/wiki/Roman_economy#Mining_and_metallurgy
     - https://i.imgur.com/jYvaxQ1.jpg
 - Fruit farming and cooking
+    - Life plants to make healing easier
 - Combat
     - Armor
     - Weapons
