@@ -220,6 +220,7 @@ Progression:
     - Collect copper ore
     - Cold forging- heat? then hit with hammer? to make pick head or sword blade
     - Copper tools, armor
+    - Shells, eggshells, coral -heat-> quicklime + sand -> limestone
 - T2: Bronze Age
     - Collect tin, lead, zinc ore
     - Crucible
