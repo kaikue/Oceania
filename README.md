@@ -7,6 +7,21 @@ Created by Kai Kuehner, 2013-2018.
 
 TODO
 --
+- Port to Monogame
+- Worldgen redo
+    - Biomes
+        - Terrain scale
+        - Surface material cutoffs
+        - 1d Perlin noise
+        - prescriptive (base height on biome) or descriptive (base biome on height)?
+	    - Smooth transitions between biomes
+            - vertically- heights
+            - horizontally- mix blocks together?
+            - transition minibiomes?
+    - Decorations
+        - 1d Perlin noise
+        - Might allow for multi-chunk structures
+    - Multithreading
 - All TODOs in code
 - Structures can only be in one chunk (and overwrite each other all the time)
     - also messes up entity generation
@@ -63,6 +78,7 @@ TODO
     - Moving right on the ground keeps standing anim
     - Player's head can clip into blocks on bottom or right corners
     - Keep swimming animation while key is held down (so player can slide into 1 block hole)?
+    - Left and right animations for swimming up and down
 - Press (or hold?) CTRL to switch to raycast-closest-hit mode (for mining a tunnel)
 - Unpickling messes up inter-object references
     - DamageSourceSweep item and parent
@@ -70,6 +86,11 @@ TODO
     - Player doesn't naturally align to grid against a horizontal block collision (can bump into block by holding down key)
     - Player can clip up/down into blocks
 - Icon should load with main menu, not World
+- Pixel scale
+    - Add pixel scale to options menu
+        - any problems when changing dynamically?
+    - Make world load menu background work with any scale
+    - Performance is awful with scale = 1
 
 NEEDED FEATURES
 --
@@ -121,6 +142,7 @@ NEEDED FEATURES
             - Should all have a reason to exist in world
             - Procedurally generate layout?
     - More stuff in the empty water- enemies, ???
+    - Vertical chunks? caves could be extended indefinitely
 - Entities
     - Enemies
         - Load from JSON
@@ -169,6 +191,7 @@ NEEDED FEATURES
 - Lighting
   - decreases with greater depth
     - set brightness per tile? use circlecollector style gradient hacks?
+- Biome backgrounds
 - Energy
     - http://iopscience.iop.org/0964-1726/23/8/085023
     - http://ieeexplore.ieee.org/xpl/articleDetails.jsp?reload=true&arnumber=6220721

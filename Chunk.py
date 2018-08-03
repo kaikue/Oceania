@@ -4,6 +4,7 @@ import json
 import Game
 import Convert
 import World
+import Generate
 
 WIDTH = 16
 
@@ -35,12 +36,17 @@ class Chunk(object):
             for biome in World.biomes:
                 if World.biomes[biome]["maxelevation"] <= sideheight <= World.biomes[biome]["minelevation"]:
                     biomes_wanted.append(World.biomes[biome])
-            self.biome = biomes_wanted[random.randrange(len(biomes_wanted))] #select random from biomes_wanted
+            if len(biomes_wanted) == 0:
+                #no valid biomes- just use the same one
+                self.biome = chunk.biome
+            else:
+                self.biome = biomes_wanted[random.randrange(len(biomes_wanted))] #select random from biomes_wanted
         else:
             self.biome = chunk.biome
-        self.generate_heights_from_chunk(chunk, sidegenerated)
+        #self.generate_heights_from_chunk(chunk, sidegenerated)
         self.populate()
     
+    """
     def generate_heights_from_chunk(self, chunk, sidegenerated):
         displace = self.biome["displacement"]
         floor = self.biome["maxelevation"]
@@ -93,20 +99,32 @@ class Chunk(object):
             newpoints.append(int(lst[-1])) #add the last point which wasn't counted
             lst = newpoints
         return lst
+    """
     
     def populate(self):
+        
         #Fill in blocks based on heights
         for y in range(len(self.foreground_blocks)):
             for x in range(len(self.foreground_blocks[y])):
-                surface_depth = self.heights[x] + 2 + random.randrange(4)
+                #surface_depth = self.heights[x] + 2 + random.randrange(4)
                 if y < World.SEA_LEVEL:
                     self.set_blocks_at(x, y, World.get_block("air"))
-                elif y < self.heights[x]:
+                else:
+                    world_x = Convert.chunk_to_world(x, self)
+                    noise = Generate.terrain((world_x, y), (self.biome["maxelevation"], self.biome["minelevation"]))
+                    #TODO: variable thresholds
+                    if noise > -0.4:
+                        self.set_blocks_at(x, y, World.get_block(self.biome["base"]))
+                    elif noise > -0.5:
+                        self.set_blocks_at(x, y, World.get_block(self.biome["surface"]))
+                    else:
+                        self.set_blocks_at(x, y, World.get_block("water"))
+                """elif y < self.heights[x]:
                     self.set_blocks_at(x, y, World.get_block("water"))
                 elif y < surface_depth:
                     self.set_blocks_at(x, y, World.get_block(self.biome["surface"]))
                 else:
-                    self.set_blocks_at(x, y, World.get_block(self.biome["base"]))
+                    self.set_blocks_at(x, y, World.get_block(self.biome["base"]))"""
         self.decorate()
     
     def decorate(self):

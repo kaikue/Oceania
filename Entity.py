@@ -6,6 +6,8 @@ import Chunk
 import World
 import Images
 
+NOCLIP = True
+
 class Entity(object):
     
     def __init__(self, pos, imageurl, background=False):
@@ -89,7 +91,7 @@ class Entity(object):
         #try updating the position, if it causes a collision undo it
         self.pos[index] += self.vel[index]
         self.update_bounding_box(index)
-        if self.check_collisions(world):
+        if self.check_collisions(world) and not NOCLIP:
             self.vel[index] = 0
             self.pos[index] = old_pos[index]
             self.update_bounding_box(index)

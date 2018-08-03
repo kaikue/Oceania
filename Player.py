@@ -134,7 +134,7 @@ class Player(EntityLiving):
         self.update_pos(old_pos)
         self.bounding_box.width = old_width
         self.bounding_box.height = old_height
-        print("FAIL", old_height, new_height, anim_state, anim_dir, self.anim_state, self.anim_dir)
+        #print("FAIL", old_height, new_height, anim_state, anim_dir, self.anim_state, self.anim_dir)
         return False
     
     def set_anim(self, anim_state, anim_dir, new_img):
