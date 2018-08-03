@@ -10,10 +10,14 @@ TODO
 - Port to Monogame
 - Worldgen redo
     - Biomes
-        - Terrain scale
-        - Surface material cutoffs
-        - 1d Perlin noise
-        - prescriptive (base height on biome) or descriptive (base biome on height)?
+        - Choose biome based on chunk
+            - Multiple 1d Perlin noise functions
+                - Since using just 1 will cause biomes to always be sandwiched between same partners
+                - Temperature, liveliness?
+        - prescriptive (base height on biome)
+            - Terrain scale
+            - Surface material cutoffs
+            - Gradients (done)
 	    - Smooth transitions between biomes
             - vertically- heights
             - horizontally- mix blocks together?
@@ -21,6 +25,10 @@ TODO
     - Decorations
         - 1d Perlin noise
         - Might allow for multi-chunk structures
+            - check if adjacent chunk would have a structure
+            - need to prevent same structure from spawning in a bunch- local maximum?
+    - Ores, etc.
+        - 2d Perlin noise
     - Multithreading
 - All TODOs in code
 - Structures can only be in one chunk (and overwrite each other all the time)
