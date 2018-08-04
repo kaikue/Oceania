@@ -8,6 +8,7 @@ Created by Kai Kuehner, 2013-2018.
 TODO
 --
 - Port to Monogame
+    - just try rendering 2 layers of tiles
 - Worldgen redo
     - Biomes
         - Choose biome based on chunk
@@ -23,12 +24,17 @@ TODO
             - horizontally- mix blocks together?
             - transition minibiomes?
     - Decorations
-        - 1d Perlin noise
+        - 1d Perlin noise? or just seeded random?
         - Might allow for multi-chunk structures
             - check if adjacent chunk would have a structure
             - need to prevent same structure from spawning in a bunch- local maximum?
     - Ores, etc.
         - 2d Perlin noise
+    - What is at the center (bottom) of the world?
+        - hot impassible water?
+        - solid rock?
+        - lava?
+    - Figure out how to make it use seed
     - Multithreading
 - All TODOs in code
 - Structures can only be in one chunk (and overwrite each other all the time)
@@ -66,6 +72,10 @@ TODO
 - When player is hurt, make the whole player image flash red
 - Menus
     - Better text fields
+        - show cursor
+        - tab to go to next one
+        - filter invalid keypresses (is this done already?)
+        - arrow keys, shift, home/end, mouse click, etc. to change cursor
     - Scroll wheel scrolls world list
     - Validate name in world creation
     - More options
@@ -99,6 +109,9 @@ TODO
         - any problems when changing dynamically?
     - Make world load menu background work with any scale
     - Performance is awful with scale = 1
+- CTM slowness
+    - only change block image when updating adjacent in 8 sides?
+    - also auto-generate CTM images from center, corners, edges, inside corners
 
 NEEDED FEATURES
 --
@@ -107,9 +120,6 @@ NEEDED FEATURES
         - Perlin Worms
         - Lava tubes
         - Air pockets?
-    - Hydrothermal vents
-    - Redo worldgen to be Perlin noise based
-        - AccidentalNoiseLib- https://stackoverflow.com/questions/145270/calling-c-c-from-python
     - Biomes
         - Island
         - Beach
@@ -131,6 +141,7 @@ NEEDED FEATURES
     - More structures
         - Improve temple
         - Volcanic pipe- kimberlite, diamond
+        - Hydrothermal vents
         - Treasures
             - bunch of building blocks
             - tool improvement items

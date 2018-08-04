@@ -102,8 +102,7 @@ class Chunk(object):
     """
     
     def populate(self):
-        
-        #Fill in blocks based on heights
+        #Fill in blocks of this chunk
         for y in range(len(self.foreground_blocks)):
             for x in range(len(self.foreground_blocks[y])):
                 #surface_depth = self.heights[x] + 2 + random.randrange(4)
