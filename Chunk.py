@@ -111,13 +111,8 @@ class Chunk(object):
                 else:
                     world_x = Convert.chunk_to_world(x, self)
                     noise = Generate.terrain((world_x, y), (self.biome["maxelevation"], self.biome["minelevation"]))
-                    #TODO: variable thresholds
-                    if noise > -0.4:
-                        self.set_blocks_at(x, y, World.get_block(self.biome["base"]))
-                    elif noise > -0.5:
-                        self.set_blocks_at(x, y, World.get_block(self.biome["surface"]))
-                    else:
-                        self.set_blocks_at(x, y, World.get_block("water"))
+                    self.set_blocks_from_noise(x, y, noise[0], False)
+                    self.set_blocks_from_noise(x, y, noise[1], True)
                 """elif y < self.heights[x]:
                     self.set_blocks_at(x, y, World.get_block("water"))
                 elif y < surface_depth:
@@ -126,8 +121,17 @@ class Chunk(object):
                     self.set_blocks_at(x, y, World.get_block(self.biome["base"]))"""
         self.decorate()
     
+    def set_blocks_from_noise(self, x, y, noise, background):
+        #TODO: variable thresholds from biome
+        if noise > -0.4:
+            self.set_block_at(x, y, World.get_block(self.biome["base"]), background)
+        elif noise > -0.5:
+            self.set_block_at(x, y, World.get_block(self.biome["surface"]), background)
+        else:
+            self.set_block_at(x, y, World.get_block("water"), background)
+    
     def decorate(self):
-        #TODO: caves, ore
+        #TODO: ore
         for x in range(WIDTH):
             for structure_name in self.biome["structures"]:
                 structure = World.structures[structure_name]
@@ -188,7 +192,7 @@ class Chunk(object):
     
     def render_blocks(self, screen, viewport, background):
         top = max(Convert.pixel_to_world(viewport.y), 0)
-        bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT)
+        bottom = min(Convert.pixel_to_world(viewport.y + viewport.height) + 1, World.HEIGHT - 1)
         for blocky in range(top, bottom):
             leftData = Convert.pixel_to_chunk(viewport.x)
             rightData = Convert.pixel_to_chunk(viewport.x + viewport.width)

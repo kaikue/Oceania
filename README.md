@@ -93,6 +93,7 @@ TODO
 - Player jumps between swimming and stopped images while slowing down while hitting a block
 - Scroll wheel click to pull out targeted block from inventory (or scroll to it if in hotbar)
 - Bounding box issues
+    - Just make player bounding box a constant small square in the middle
     - Moving right on the ground keeps standing anim
     - Player's head can clip into blocks on bottom or right corners
     - Keep swimming animation while key is held down (so player can slide into 1 block hole)?

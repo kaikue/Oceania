@@ -7,7 +7,7 @@ import World
 def gen(width, height, screen):
     for x in range(width):
         for y in range(height):
-            value = Generate.terrain((x, y), (50, 150))
+            value = Generate.terrain((x, y), (50, 150), True)[0]
             w = 128 + 127 * value
             color = (w, w, w)
             if value > -0.5:

@@ -8,7 +8,6 @@ CAVE_EXPANSION = 0.7 #controls how much thicker caves are at the bottom of the w
 noise2d = perlin.PerlinNoiseFactory(2, octaves=3)
 
 def terrain(pos, limits):
-    #TODO: only subtract caves if foreground
     (x, y) = pos
     
     #regular 2d Perlin noise
@@ -17,16 +16,17 @@ def terrain(pos, limits):
     #apply gradient to make lower areas denser
     noise_g = gradient_filter(noise, y, limits)
     
-    #cut out caves
+    noise_g_fg = noise_g
+    #cut out caves if foreground
     cave = noise2d(x / CAVE_SCALE, y / CAVE_SCALE)
     #caves get bigger as you get further down
     cave_g = gradient(y, (limits[0], World.HEIGHT))
     cave_adjust = 1 - cave_g * CAVE_EXPANSION
     cave = cave * cave_adjust
     if -CAVE_CUTOFF < cave < CAVE_CUTOFF:
-        return -1
+        noise_g_fg = -1
     
-    return noise_g
+    return (noise_g_fg, noise_g)
 
 def gradient(y, limits):
     g = (y - limits[0]) / (limits[1] - limits[0])
