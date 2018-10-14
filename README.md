@@ -118,7 +118,6 @@ NEEDED FEATURES
 --
 - World generation
     - Caves
-        - Perlin Worms
         - Lava tubes
         - Air pockets?
     - Biomes

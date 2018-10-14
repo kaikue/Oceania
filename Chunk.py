@@ -175,6 +175,8 @@ class Chunk(object):
             self.set_block_at(x, self.heights[x] - 1, World.get_block(structure["block"]), False)
     
     def get_block_at(self, x, y, background):
+        if y < 0 or y >= World.HEIGHT:
+            return "air"
         if background:
             return World.get_id_name(self.background_blocks[y][x])
         else:
