@@ -1,13 +1,16 @@
 import sys
+import random
 import pygame
 import perlin
 import Generate
 import World
 
 def gen(width, height, screen):
-    for x in range(width):
+    xs = list(range(width))
+    random.shuffle(xs)
+    for x in xs:
         for y in range(height):
-            value = Generate.terrain((x, y), (50, 150), True)[0]
+            value = Generate.terrain((x, y), (50, 150))[0]
             w = 128 + 127 * value
             color = (w, w, w)
             if value > -0.5:
@@ -26,6 +29,7 @@ if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((width*2, height*2))
     
+    Generate.setup(100)
     gen(width, height, screen)
     while True:
         pygame.display.update()

@@ -9,12 +9,16 @@ TODO
 --
 - Port to Monogame
     - just try rendering 2 layers of tiles
-- Worldgen redo
+- Worldgen
     - Biomes
         - Choose biome based on chunk
             - Multiple 1d Perlin noise functions
                 - Since using just 1 will cause biomes to always be sandwiched between same partners
                 - Temperature, liveliness?
+            - Each biome has temp, life in JSON
+            - Generate Voronoi diagram from biome placements (render this for debug)
+            - When generating world, get x and y into biome diagram from a pair of 1d Perlin noise functions on world x
+            - Get nearest two biomes- if almost halfway between them, lerp between them to get mixed biome
         - prescriptive (base height on biome)
             - Terrain scale
             - Surface material cutoffs
@@ -24,17 +28,16 @@ TODO
             - horizontally- mix blocks together?
             - transition minibiomes?
     - Decorations
-        - 1d Perlin noise? or just seeded random?
-        - Might allow for multi-chunk structures
+        - seeded random(x) is within some range
+        - Allow for multi-chunk structures
             - check if adjacent chunk would have a structure
-            - need to prevent same structure from spawning in a bunch- local maximum?
     - Ores, etc.
         - 2d Perlin noise
     - What is at the center (bottom) of the world?
         - hot impassible water?
         - solid rock?
         - lava?
-    - Figure out how to make it use seed
+    - Vertical chunks
     - Multithreading
 - All TODOs in code
 - Structures can only be in one chunk (and overwrite each other all the time)
@@ -83,6 +86,7 @@ TODO
     - Delete world button (& confirm dialog)
 - Player can spawn inside generated structure and get stuck
 - CTM rendering is slow- figure out some solution for large contiguous masses
+    - only update image when adjacent block changes?
 - Keybinding (first in config, then in game menu)
     - Controller support
 - DamageSourceStab and spear- hitbox around tip of spear
@@ -113,6 +117,7 @@ TODO
 - CTM slowness
     - only change block image when updating adjacent in 8 sides?
     - also auto-generate CTM images from center, corners, edges, inside corners
+- Cache large rendering chunks of world (whole vertical chunk?)
 
 NEEDED FEATURES
 --

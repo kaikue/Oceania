@@ -5,7 +5,10 @@ TERRAIN_SCALE = 30
 CAVE_SCALE = 40 #controls overall scale & thickness of caves
 CAVE_CUTOFF = 0.05 #controls thickness of caves
 CAVE_EXPANSION = 0.7 #controls how much thicker caves are at the bottom of the world
-noise2d = perlin.PerlinNoiseFactory(2, octaves=3)
+
+def setup(seed):
+    global noise2d
+    noise2d = perlin.PerlinNoiseFactory(2, seed, octaves=3)
 
 def terrain(pos, limits):
     (x, y) = pos

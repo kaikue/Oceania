@@ -28,7 +28,7 @@ class PerlinNoiseFactory(object):
     the fly as necessary.
     """
 
-    def __init__(self, dimension, octaves=1, tile=(), unbias=False):
+    def __init__(self, dimension, seed, octaves=1, tile=(), unbias=False):
         """Create a new Perlin noise factory in the given number of dimensions,
         which should be an integer and at least 1.
 
@@ -47,6 +47,7 @@ class PerlinNoiseFactory(object):
         significant bias towards the center of its output range.
         """
         self.dimension = dimension
+        self.seed = seed
         self.octaves = octaves
         self.tile = tile + (0,) * dimension
         self.unbias = unbias
@@ -57,9 +58,13 @@ class PerlinNoiseFactory(object):
 
         self.gradient = {}
 
-    def _generate_gradient(self):
+    def _generate_gradient(self, grid_point):
         # Generate a random unit vector at each grid point -- this is the
         # "gradient" vector, in that the grid tile slopes towards it
+
+        # Modified from original algorithm- seed with world seed and hash of location
+        # Results in deterministic Perlin noise based on seed
+        random.seed(self.seed + hash(grid_point))
 
         # 1 dimension is special, since the only unit vector is trivial;
         # instead, use a slope between -1 and 1
@@ -96,7 +101,7 @@ class PerlinNoiseFactory(object):
         dots = []
         for grid_point in product(*grid_coords):
             if grid_point not in self.gradient:
-                self.gradient[grid_point] = self._generate_gradient()
+                self.gradient[grid_point] = self._generate_gradient(grid_point)
             gradient = self.gradient[grid_point]
 
             dot = 0

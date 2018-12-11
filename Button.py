@@ -49,7 +49,7 @@ class Button(object):
         elif self.effect == "create":
             player_options = self.character_menu.options
             name = self.world_menu.name_textfield.text
-            seed = self.world_menu.seed_textfield.text
+            seed = hash(self.world_menu.seed_textfield.text)
             Game.start_setup()
             Game.generate_world(name, seed, player_options)
             Game.finish_setup()

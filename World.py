@@ -1,6 +1,5 @@
 import os
 import threading
-import random
 import pickle
 import json
 import pygame
@@ -10,6 +9,7 @@ import Convert
 import Chunk
 import TwoWayList
 import Images
+import Generate
 
 HEIGHT = 256
 SEA_LEVEL = HEIGHT / 4
@@ -194,7 +194,7 @@ class World(object):
         os.makedirs(self.dir)
         self.player = Player.Player([0, 140], player_options)
         self.seed = seed
-        random.seed(seed) #TODO: make this perlin noise instead
+        Generate.setup(seed)
         self.generate_spawn()
     
     def update(self):
@@ -364,6 +364,7 @@ class World(object):
         savefile.close()
         self.player = save_data["player"]
         self.seed = save_data["seed"]
+        Generate.setup(self.seed)
         player_chunk = Convert.world_to_chunk(self.player.pos[0])[1]
         self.loaded_chunks = TwoWayList.TwoWayList()
         self.load_chunks(player_chunk)
