@@ -73,3 +73,22 @@ class EntityLiving(Entity):
         world.remove_entity(self)
         if self.attack is not None:
             self.attack.destroy(world)
+
+    def save(self):
+        save_data = super().save()
+        save_data["max_health"] = self.max_health
+        save_data["health"] = self.health
+        save_data["hurt"] = self.hurt
+        save_data["hurt_time"] = self.hurt_time
+        save_data["knockback"] = self.knockback
+        save_data["attack"] = self.attack
+        return save_data
+
+    def load(self, save_data):
+        super().load(save_data)
+        self.max_health = save_data["max_health"]
+        self.health = save_data["health"]
+        self.hurt = save_data["hurt"]
+        self.hurt_time = save_data["hurt_time"]
+        self.knockback = save_data["knockback"]
+        self.attack = save_data["attack"]

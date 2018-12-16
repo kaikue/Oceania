@@ -52,8 +52,8 @@ class PerlinNoiseFactory(object):
         self.tile = tile + (0,) * dimension
         self.unbias = unbias
 
-        # For n dimensions, the range of Perlin noise is ±sqrt(n)/2; multiply
-        # by this to scale to ±1
+        # For n dimensions, the range of Perlin noise is ï¿½sqrt(n)/2; multiply
+        # by this to scale to ï¿½1
         self.scale_factor = 2 * dimension ** -0.5
 
         self.gradient = {}
@@ -146,10 +146,10 @@ class PerlinNoiseFactory(object):
             ret += self.get_plain_noise(*new_point) / o2
 
         # Need to scale n back down since adding all those extra octaves has
-        # probably expanded it beyond ±1
-        # 1 octave: ±1
-        # 2 octaves: ±1½
-        # 3 octaves: ±1¾
+        # probably expanded it beyond ï¿½1
+        # 1 octave: ï¿½1
+        # 2 octaves: ï¿½1ï¿½
+        # 3 octaves: ï¿½1ï¿½
         ret /= 2 - 2 ** (1 - self.octaves)
 
         if self.unbias:

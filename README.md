@@ -9,6 +9,9 @@ TODO
 --
 - Port to Monogame
     - just try rendering 2 layers of tiles
+- Fix pickling
+    - inventory items
+    - call load_image functions in item/entity load()?
 - Worldgen
     - Biomes
         - Choose biome based on chunk
@@ -39,7 +42,7 @@ TODO
         - lava?
     - Vertical chunks
     - Multithreading
-- All TODOs in code
+- All TODOs and TO DOs in code
 - Structures can only be in one chunk (and overwrite each other all the time)
     - also messes up entity generation
     - structures across multiple chunks with perlin noise?

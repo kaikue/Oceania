@@ -4,7 +4,7 @@ import Inventory
 from gui.ChestGUI import ChestGUI
 
 class EntityChest(Entity.Entity):
-    def __init__(self, pos, chunk, background=False):
+    def __init__(self, pos, background=False):
         self.inventory = Inventory.Inventory(4, 10)
         super().__init__(pos, "", background)
     
@@ -24,6 +24,18 @@ class EntityChest(Entity.Entity):
         txt = Game.get_font().render("*", 0, Game.WHITE)
         screen.blit(txt, pos)
     
+    def save(self):
+        save_data = super().save()
+        inventory_data = self.inventory.save()
+        save_data["inventory"] = inventory_data
+        return save_data
+    
+    def load(self, save_data):
+        super().load(save_data)
+        inventory_data = save_data["inventory"]
+        inventory = Inventory.Inventory(0, 0)
+        inventory.load(inventory_data)
+
     #breaks entity pickup
     """def __eq__(self, other):
         if type(other) is type(self):

@@ -323,7 +323,7 @@ class Player(EntityLiving):
         if held_item is not None:
             damage = held_item.get_attack_damage()
             knockback = held_item.get_knockback()
-            reach = ent.DamageSourceSweep.DEFAULT_REACH #TODO
+            reach = ent.DamageSourceSweep.DEFAULT_REACH #TO DO
         else:
             damage = ent.DamageSource.DEFAULT_ATTACK
             knockback = ent.DamageSource.DEFAULT_KNOCKBACK
@@ -469,7 +469,33 @@ class Player(EntityLiving):
     
     def die(self, world):
         self.health = self.max_health
-        #TODO: only create grave at nearest empty foreground space
+        #TO DO: only create grave at nearest empty foreground space
         world.set_block_at([int(self.pos[0]), int(self.pos[1])], World.get_block("grave"), False)
-        #TODO: fill it up with items and clear inventory
-        #TODO: respawn
+        #TO DO: fill it up with items and clear inventory
+        #TO DO: respawn
+
+    def save(self):
+        save_data = super().save()
+        inventory_data = self.inventory.save()
+        save_data["inventory"] = inventory_data
+        save_data["hair_color"] = self.hair_color
+        save_data["hair_length"] = self.hair_length
+        save_data["body_color"] = self.body_color
+        save_data["tail_color"] = self.tail_color
+        save_data["max_speed"] = self.max_speed
+        save_data["acceleration"] = self.acceleration
+        save_data["selected_slot"] = self.selected_slot
+        return save_data
+    
+    def load(self, save_data):
+        super().load(save_data)
+        inventory_data = save_data["inventory"]
+        inventory = Inventory(0, 0)
+        inventory.load(inventory_data)
+        self.hair_color = save_data["hair_color"]
+        self.hair_length = save_data["hair_length"]
+        self.body_color = save_data["body_color"]
+        self.tail_color = save_data["tail_color"]
+        self.max_speed = save_data["max_speed"]
+        self.acceleration = save_data["acceleration"]
+        self.selected_slot = save_data["selected_slot"]

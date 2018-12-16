@@ -1,4 +1,5 @@
 import math
+import importlib
 import pygame
 import Game
 import World
@@ -53,7 +54,7 @@ class Inventory(object):
         return not self.__eq__(other)
     
     def slot_at(self, pos, left, top, hotbargap):
-        #TODO: give armor slot if necessary... negative coordinate?
+        #TO DO: give armor slot if necessary... negative coordinate?
         pos = (pos[0] - left - GUI.SCALING * 13 // 8, pos[1] - top - GUI.SCALING // 2)
         if hotbargap and pos[1] > GUI.SCALING:
             pos = (pos[0], pos[1] - HOTBAR_GAP)
@@ -83,7 +84,7 @@ class Inventory(object):
                     if rect.collidepoint(mouse_pos):
                         tooltip_item = inv_item
                         highlight_pos = (slotX, slotY)
-        #TODO: draw armor if not none
+        #TO DO: draw armor if not none
         
         if tooltip_item is not None and item_to_skip is None:
             screen.blit(Images.highlight_image, highlight_pos)
@@ -143,3 +144,42 @@ class Inventory(object):
         #text
         screen.blit(name_image, (pos[0] + corner, pos[1] + corner))
         screen.blit(desc_image, (pos[0] + corner, pos[1] + corner + name_height + TOOLTIP_GAP))
+
+    def save(self):
+        save_data = {}
+        items_data = []
+        rows = len(self.items)
+        for i in range(rows):
+            cols = len(self.items[i])
+            items_data.append([None] * cols)
+        for i in range(rows):
+            row = self.items[i]
+            for j in range(len(row)):
+                item = row[j]
+                item_data = None if item is None else item.save()
+                items_data[i][j] = item_data
+        save_data["items"] = items_data
+        return save_data
+
+    def load(self, save_data):
+        items_data = save_data["items"]
+        self.items = []
+        rows = len(items_data)
+        for i in range(rows):
+            cols = len(items_data[i])
+            self.items.append([None] * cols)
+        for i in range(rows):
+            row = items_data[i]
+            for j in range(len(row)):
+                item_data = row[j]
+                if item_data is None:
+                    self.items[i][j] = None
+                else:
+                    #instantiate entity class from module and class name
+                    module_name = item_data["module"]
+                    class_name = item_data["class"]
+                    item_module = importlib.import_module(module_name)
+                    item_class = getattr(item_module, class_name)
+                    item = item_class(item_data["name"])
+                    item.load(item_data)
+                    self.items[i][j] = item

@@ -81,7 +81,7 @@ def load_blocks():
     water_image = pygame.image.load("img/water.png")
     st_water_image = water_image.copy()
     st_water_image.set_alpha(128)
-    pygame.display.set_icon(water_image) #TODO: change the icon to something better
+    pygame.display.set_icon(water_image) #TO DO: change the icon to something better
     
     bid = 0
     global block_images
@@ -280,7 +280,7 @@ class World(object):
         for breaking_block in self.breaking_blocks[background]:
             break_index = int(breaking_block["progress"] / breaking_block["breaktime"] * Game.BREAK_LENGTH)
             breakimg = Images.break_images[break_index].copy()
-            blockimg = block_images[False][get_block_id(breaking_block["name"])] #TODO: make this support CTM
+            blockimg = block_images[False][get_block_id(breaking_block["name"])] #TO DO: make this support CTM
             mask = pygame.mask.from_surface(blockimg)
             olist = mask.outline()
             polysurface = pygame.Surface((Game.BLOCK_SIZE * Game.SCALE, Game.BLOCK_SIZE * Game.SCALE), pygame.SRCALPHA)
@@ -309,7 +309,7 @@ class World(object):
             return block_images[background][block_id] 
     
     def block_against(self, block_pos, x_offset, y_offset, background, chunk, field, val):
-        #TODO: this part is slow
+        #TO DO: this part is slow
         block = self.get_block_in_chunk((block_pos[0] + x_offset, block_pos[1] + y_offset), background, chunk)
         return get_block(block)[field] == val
     
@@ -320,11 +320,11 @@ class World(object):
         self.loaded_chunks.get(entity.get_chunk()).entities.append(entity)
     
     def remove_entity(self, entity):
-        #TODO: this may fail
+        #TO DO: this may fail
         self.loaded_chunks.get(entity.get_chunk()).entities.remove(entity)
     
     def get_nearby_entities(self, chunk):
-        #TODO: only update once per frame?
+        #TO DO: only update once per frame?
         entities = []
         if self.is_loaded_chunk(chunk):
             entities += self.loaded_chunks.get(chunk).entities
@@ -339,7 +339,8 @@ class World(object):
     
     def save_chunk_in_background(self, chunk):
         chunkfile = open(self.dir + "/chunk" + str(chunk.x) + "data", "wb")
-        pickle.dump(chunk, chunkfile)
+        chunk_data = chunk.save()
+        pickle.dump(chunk_data, chunkfile)
         chunkfile.close()
     
     def save_chunk(self, chunk):
@@ -352,7 +353,8 @@ class World(object):
         self.save_state()
     
     def save_state(self):
-        save_data = {"player": self.player, "seed": self.seed}
+        player_data = self.player.save()
+        save_data = {"player": player_data, "seed": self.seed}
         #more game state data
         savefile = open(self.dir + "/state", "wb")
         pickle.dump(save_data, savefile)
@@ -362,7 +364,9 @@ class World(object):
         savefile = open(path, "rb")
         save_data = pickle.load(savefile)
         savefile.close()
-        self.player = save_data["player"]
+        player_data = save_data["player"]
+        self.player = Player.Player([0, 0], (0, 0, 0, 0))
+        self.player.load(player_data)
         self.seed = save_data["seed"]
         Generate.setup(self.seed)
         player_chunk = Convert.world_to_chunk(self.player.pos[0])[1]
@@ -382,7 +386,9 @@ class World(object):
     
     def load_chunk(self, index):
         chunkfile = open(self.get_chunk_file(index), "rb")
-        chunk = pickle.load(chunkfile)
+        chunk_data = pickle.load(chunkfile)
+        chunk = Chunk.Chunk()
+        chunk.load(chunk_data)
         chunkfile.close()
         for entity in chunk.entities:
             entity.load_image()

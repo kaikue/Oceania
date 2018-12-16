@@ -20,24 +20,26 @@
 			"image": "img/dirt/dirt.png",
 			"connectedTexture": "solid"
 		},
-		{
-			"name": "basalt",
-			"displayName": "Basalt",
-			"image": "img/gabbro/gabbro_tiles.png",
-            "harvestlevel": 1,
-            "breaktime": 200,
-            "description": "A common type of stone.",
-			"connectedTexture": "solid"
-		},
-		{
-			"name": "kelp",
-			"displayName": "Kelp",
-			"solid": false,
-			"image": "img/kelp/kelp.png",
-            "breaktime": 200,
-            "description": ["Delicious kelp.",
-            				"Mmmmm-mmmmmm!"]
-		},
+    {
+      "name": "basalt",
+      "displayName": "Basalt",
+      "image": "img/gabbro/gabbro_tiles.png",
+      "harvestlevel": 1,
+      "breaktime": 200,
+      "description": "A common type of stone.",
+      "connectedTexture": "solid"
+    },
+    {
+      "name": "kelp",
+      "displayName": "Kelp",
+      "solid": false,
+      "image": "img/kelp/kelp.png",
+      "breaktime": 200,
+      "description": [
+        "Delicious kelp.",
+        "Mmmmm-mmmmmm!"
+      ]
+    },
 		{
 			"name": "basaltBricks",
 			"displayName": "Basalt Bricks",
@@ -51,46 +53,46 @@
 			"image": "img/chest/chest.png",
 			"entity": "EntityChest"
 		},
-		{
-			"name": "flint",
-			"displayName": "Flint",
-			"solid": false,
-			"image": "img/flint/flint.png",
-            "breaktime": 20,
-            "item": "ItemFlint"
-		},
-		{
-			"name": "flint_knapped_1",
-			"displayName": "Knapped Flint",
-			"solid": false,
-			"image": "img/flint/flint_knapped_1.png",
-            "breaktime": 20,
-            "item": "ItemFlint"
-		},
-		{
-			"name": "flint_knapped_2",
-			"displayName": "Knapped Flint",
-			"solid": false,
-			"image": "img/flint/flint_knapped_2.png",
-            "breaktime": 20,
-            "item": "ItemFlint"
-		},
-		{
-			"name": "flint_knapped_3",
-			"displayName": "Knapped Flint",
-			"solid": false,
-			"image": "img/flint/flint_knapped_3.png",
-            "breaktime": 20,
-            "item": "ItemFlint"
-		},
-		{
-			"name": "flint_knapped_4",
-			"displayName": "Sharp Flint",
-			"solid": false,
-			"image": "img/flint/flint_knapped_4.png",
-            "breaktime": 20,
-            "item": "ItemSharpFlint"
-		},
+    {
+      "name": "flint",
+      "displayName": "Flint",
+      "solid": false,
+      "image": "img/flint/flint.png",
+      "breaktime": 20,
+      "item": "ItemFlint"
+    },
+    {
+      "name": "flint_knapped_1",
+      "displayName": "Knapped Flint",
+      "solid": false,
+      "image": "img/flint/flint_knapped_1.png",
+      "breaktime": 20,
+      "item": "ItemFlint"
+    },
+    {
+      "name": "flint_knapped_2",
+      "displayName": "Knapped Flint",
+      "solid": false,
+      "image": "img/flint/flint_knapped_2.png",
+      "breaktime": 20,
+      "item": "ItemFlint"
+    },
+    {
+      "name": "flint_knapped_3",
+      "displayName": "Knapped Flint",
+      "solid": false,
+      "image": "img/flint/flint_knapped_3.png",
+      "breaktime": 20,
+      "item": "ItemFlint"
+    },
+    {
+      "name": "flint_knapped_4",
+      "displayName": "Sharp Flint",
+      "solid": false,
+      "image": "img/flint/flint_knapped_4.png",
+      "breaktime": 20,
+      "item": "ItemSharpFlint"
+    },
 		{
 			"name": "puzzleController",
 			"displayName": "Puzzle Controller",
@@ -120,7 +122,7 @@
 			"connectedTexture": "sametype",
 			"solid": false,
 			"entity": "EntityPipe",
-            "breaktime": 30
+      "breaktime": 30
 		},
 		{
 			"name": "grave",

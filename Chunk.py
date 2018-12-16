@@ -122,7 +122,7 @@ class Chunk(object):
         self.decorate()
     
     def set_blocks_from_noise(self, x, y, noise, background):
-        #TODO: variable thresholds from biome
+        #TO DO: variable thresholds from biome
         if noise > -0.4:
             self.set_block_at(x, y, World.get_block(self.biome["base"]), background)
         elif noise > -0.5:
@@ -131,7 +131,7 @@ class Chunk(object):
             self.set_block_at(x, y, World.get_block("water"), background)
     
     def decorate(self):
-        #TODO: ore
+        #TO DO: ore
         for x in range(WIDTH):
             for structure_name in self.biome["structures"]:
                 structure = World.structures[structure_name]
@@ -140,7 +140,7 @@ class Chunk(object):
                     break #can only have one structure at a given x
     
     def generate_structure(self, structure, x):
-        #TODO: add background blocks defined separately
+        #TO DO: add background blocks defined separately
         if structure["type"] == "column":
             height = random.randint(structure["minheight"], structure["maxheight"])
             for y in range(self.heights[x] - height, self.heights[x]):
@@ -161,7 +161,7 @@ class Chunk(object):
                         else:
                             block_name = structure_json["blocks"][char]
                         block = World.get_block(block_name)
-                        #TODO: add background
+                        #TO DO: add background
                         chunk.set_block_at(curr_chunk_x, curr_y, block, False)
                         if block["entity"] != "":
                             #generate the block entity
@@ -226,3 +226,38 @@ class Chunk(object):
     
     def __str__(self):
         return "Chunk at x=" + str(self.x) + " contains entities " + str(self.entities)
+
+    def save(self):
+        save_data = {}
+        save_data["heights"] = self.heights
+        save_data["foreground_blocks"] = self.foreground_blocks
+        save_data["background_blocks"] = self.background_blocks
+        entities_data = []
+        for entity in self.entities:
+            entity_data = entity.save()
+            entities_data.append(entity_data)
+        save_data["entities"] = entities_data
+        save_data["x"] = self.x
+        save_data["biome"] = self.biome
+        return save_data
+
+    def load(self, save_data):
+        self.heights = save_data["heights"]
+        self.foreground_blocks = save_data["foreground_blocks"]
+        self.background_blocks = save_data["background_blocks"]
+        self.entities = []
+        entities_data = save_data["entities"]
+        for entity_data in entities_data:
+            #instantiate entity class from module and class name
+            module_name = entity_data["module"]
+            class_name = entity_data["class"]
+            entity_module = importlib.import_module(module_name)
+            entity_class = getattr(entity_module, class_name)
+            entity = entity_class() #TO DO: provide constructor arguments somehow...
+            # take all constructor args out? maybe too limiting
+            # special case for each entity type? nooo
+            # how does pickle do it anyway?
+            entity.load(entity_data)
+            self.entities.append(entity)
+        self.x = save_data["x"]
+        self.biome = save_data["biome"]

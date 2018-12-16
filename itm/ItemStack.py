@@ -88,3 +88,21 @@ class ItemStack(object):
     
     def __str__(self):
         return str(self.count) + "x " + self.name
+
+    def save(self):
+        save_data = {}
+        save_data["module"] = self.__module__
+        save_data["class"] = self.__class__.__name__
+        save_data["name"] = self.name
+        save_data["can_place"] = self.can_place
+        save_data["count"] = self.count
+        save_data["stackable"] = self.stackable
+        save_data["data"] = self.data
+        return save_data
+
+    def load(self, save_data):
+        self.name = save_data["name"]
+        self.can_place = save_data["can_place"]
+        self.count = save_data["count"]
+        self.stackable = save_data["stackable"]
+        self.data = save_data["data"]

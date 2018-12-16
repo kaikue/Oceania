@@ -314,7 +314,7 @@ def close():
     if gamemode in (PLAYING, OPENGUI, PAUSEMENU):
         #pickle loaded chunks and other game state data
         world.close()
-    sys.exit(0)
+    sys.exit()
 
 def get_font(big = False):
     if big:

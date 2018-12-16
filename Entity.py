@@ -73,7 +73,7 @@ class Entity(object):
             self.bounding_box.y = Convert.world_to_pixel(self.pos[index])
     
     def clamp_to_grid(self, index):
-        #TODO: this should also take into account up/down movement so we don't clip into a block that way
+        #TO DO: this should also take into account up/down movement so we don't clip into a block that way
         world_pos = Convert.world_to_pixel(self.pos[index])
         pixel_pos = world_pos / Game.SCALE
         #prevent clipping left into block
@@ -151,3 +151,19 @@ class Entity(object):
     
     def __str__(self):
         return str(self.__class__.__name__) + " at " + str(self.pos)
+    
+    def save(self):
+        save_data = {}
+        save_data["module"] = self.__module__
+        save_data["class"] = self.__class__.__name__
+        save_data["pos"] = self.pos
+        save_data["vel"] = self.vel
+        save_data["facing"] = self.facing
+        save_data["background"] = self.background
+        return save_data
+
+    def load(self, save_data):
+        self.set_pos(save_data["pos"])
+        self.vel = save_data["vel"]
+        self.facing = save_data["facing"]
+        self.background = save_data["background"]
